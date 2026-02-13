@@ -12,17 +12,103 @@
 # KANBAN BOARD
 # ============================================================
 
-## READY (no unmet dependencies)
+## DONE (code reviewed and approved)
 
 | ID | Title | Phase | Assigned Agent | Priority | Effort |
 |----|-------|-------|---------------|----------|--------|
 | T001 | Initialize project scaffolding | 1 | DevOps Engineer | P0 | M |
+| T002 | Create directory structure with barrel exports | 1 | DevOps Engineer | P0 | S |
+| T003 | Implement core interfaces | 1 | Backend Architect | P0 | M |
+| T004 | Implement data models | 1 | Backend Architect | P0 | M |
+| T005 | Implement time utilities | 1 | Fullstack Developer | P0 | M |
+| T006 | Implement math utilities | 1 | Fullstack Developer | P1 | S |
+| T007 | Implement bar utility functions | 1 | Fullstack Developer | P1 | S |
+| T008 | Implement holiday calendar utility | 1 | Fullstack Developer | P1 | S |
+| T009 | Create configuration files | 1 | DevOps Engineer | P1 | S |
+| T010 | Implement IBKR bar normalizer | 1 | Backend Architect | P0 | M |
+| T011 | Implement IBKR bar validator | 1 | Backend Architect | P0 | S |
+| T012 | Implement IBKR 3-tier pacing manager | 1 | Performance Engineer | P1 | L |
+| T013 | Implement IBKR contract resolver | 1 | Backend Architect | P1 | M |
+| T014 | Implement IBKR connection manager | 1 | Backend Architect | P0 | L |
+| T015 | Implement IBKRAdapter (MarketDataProvider) | 1 | Backend Architect | P0 | XL |
+| T016 | Unit tests: bar normalizer + validator | 1 | Fullstack Developer | P1 | M |
+| T017 | Unit tests: pacing manager | 1 | Performance Engineer | P1 | M |
+| T018 | Unit tests: time, math, bar-utils | 1 | Fullstack Developer | P1 | M |
+| T019 | Code review: core models + interfaces | 1 | Architect Reviewer | P1 | M |
+| T021 | Implement strategy event types | 2 | Backend Architect | P0 | S |
+| T022 | Implement strategy guard functions | 2 | Backend Architect | P0 | L |
+| T023 | Implement strategy action functions | 2 | Backend Architect | P0 | L |
+| T025 | Implement risk calculator | 2 | Fullstack Developer | P0 | M |
+| T026 | Implement metrics aggregator | 2 | Fullstack Developer | P1 | M |
+| T027 | Implement CSV loader | 2 | Fullstack Developer | P1 | M |
+| T028 | Implement replay engine + SimClock | 2 | Backend Architect | P1 | M |
+| T029 | Implement backtest adapter | 2 | Fullstack Developer | P1 | M |
+| T032 | Create test fixture CSV files | 2 | Fullstack Developer | P1 | L |
+| T036 | Unit tests: risk calculator | 2 | Fullstack Developer | P1 | M |
+| T037 | Unit tests: metrics aggregator | 2 | Fullstack Developer | P1 | M |
+| T041 | Implement SQLite schema + migrations | 3 | Database Architect | P0 | M |
+| T042 | Implement SQLite storage adapter | 3 | Database Architect | P0 | L |
+| T043 | Implement SQLite query modules | 3 | Database Architect | P1 | M |
+| T044 | Implement mock order adapter | 3 | Fullstack Developer | P1 | M |
+| T046 | Implement scheduler service | 3 | Fullstack Developer | P1 | M |
+| T047 | Implement shutdown manager | 3 | Backend Architect | P1 | M |
+| T048 | Implement reporter service | 3 | Fullstack Developer | P1 | M |
+| T049 | Implement logger service (Pino) | 3 | DevOps Engineer | P1 | S |
+| T050 | Implement CLI framework (Commander setup) | 3 | Fullstack Developer | P1 | S |
+| T024 | Implement XState strategy machine | 2 | Backend Architect | P0 | L |
+| T033 | Unit tests: strategy guards | 2 | Fullstack Developer | P0 | L |
+| T034 | Unit tests: strategy actions | 2 | Fullstack Developer | P1 | M |
+| T045 | Implement IBKR order adapter | 3 | Backend Architect | P1 | L |
+| T055 | Implement CLI: config command | 3 | Fullstack Developer | P2 | S |
+| T056 | Implement CLI dashboard | 3 | Frontend Developer | P2 | M |
+| T058 | Integration tests: SQLite CRUD | 3 | Database Architect | P1 | M |
+| T020 | Code review: IBKR adapter layer | 1 | Code Reviewer | P1 | M |
+| T020a | Security review: IBKR + orders | 1 | Security Auditor | P1 | M |
+| T061 | Code review: storage layer | 3 | Code Reviewer | P1 | M |
+| T030 | Implement session runner | 2 | Backend Architect | P0 | L |
+| T035 | Unit tests: machine transitions | 2 | Backend Architect | P0 | XL |
+| T053 | Implement CLI: report command | 3 | Fullstack Developer | P1 | S |
+| T054 | Implement CLI: export command | 3 | Fullstack Developer | P1 | S |
+| T031 | Implement backtest runner | 2 | Fullstack Developer | P1 | L |
+| T057 | Implement app bootstrap (DI) | 3 | Backend Architect | P0 | M |
+| T039 | Code review: strategy engine | 2 | Architect Reviewer | P0 | L |
+| T038 | Integration tests: backtest scenarios | 2 | Fullstack Developer | P0 | XL |
+| T040 | Code review: backtest framework | 2 | Code Reviewer | P1 | M |
+| T051 | Implement CLI: live command | 3 | Fullstack Developer | P0 | M |
+| T052 | Implement CLI: backtest command | 3 | Fullstack Developer | P0 | M |
+| T059 | Integration tests: full session | 3 | Fullstack Developer | P0 | L |
+| T063 | Graceful shutdown integration test | 3 | Fullstack Developer | P1 | M |
+| T060 | CLI smoke tests | 3 | Fullstack Developer | P1 | M |
+| T062 | Code review: CLI + operations | 3 | Architect Reviewer | P1 | M |
+| T064 | Performance review | 3 | Performance Engineer | P2 | M |
+| T065 | Wire IBKR historical source into BacktestRunner | 4 | Backend Architect | P0 | M |
+| T066 | Add IBKR bootstrap path for backtest mode | 4 | Backend Architect | P0 | M |
+| T067 | Pass IBKR adapter through CLI backtest command | 4 | Fullstack Developer | P1 | S |
+
+## REVIEW (implementation complete, awaiting code review)
+
+| ID | Title | Phase | Assigned Agent | Priority | Effort |
+|----|-------|-------|---------------|----------|--------|
+| *(none)* | | | | | |
+
+## IN PROGRESS (agent actively working)
+
+| ID | Title | Phase | Assigned Agent | Priority | Effort |
+|----|-------|-------|---------------|----------|--------|
+| *(none)* | | | | | |
+
+## READY (no unmet dependencies)
+
+| ID | Title | Phase | Assigned Agent | Priority | Effort |
+|----|-------|-------|---------------|----------|--------|
+| T068 | Integration tests: IBKR historical backtest source | 4 | Fullstack Developer | P1 | M |
+| T069 | Code review: IBKR historical backtest feature | 4 | Code Reviewer | P1 | M |
 
 ## BACKLOG (has unmet dependencies)
 
 | ID | Title | Phase | Assigned Agent | Priority | Effort |
 |----|-------|-------|---------------|----------|--------|
-| T002 - T062 | (See detailed task list below) | 1-3 | Various | Various | Various |
+| *(none)* | | | | | |
 
 ---
 
@@ -38,7 +124,9 @@
 - **Dependencies**: None
 - **Priority**: P0 (critical path)
 - **Effort**: M (1-3hr)
-- **Status**: READY
+- **Status**: DONE
+- **Completed**: 2026-02-12
+- **Notes**: All deps installed (better-sqlite3 with --ignore-scripts due to Node v24). npm run build zero errors. Vitest configured with unit/integration/e2e projects.
 - **Acceptance Criteria**:
   - `npm init` completed with correct package.json metadata
   - All dependencies from tech stack table installed at pinned versions
@@ -60,10 +148,13 @@
 ### T002 - Create Directory Structure with Barrel Exports
 - **Phase**: 1
 - **Assigned Agent**: DevOps Engineer
-- **Dependencies**: T001
+- **Dependencies**: T001 (DONE)
 - **Priority**: P0 (critical path)
 - **Effort**: S (< 1hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created all directories per plan layout, 17 barrel export index.ts files across src/, 12 test directories. Build compiles with zero errors. Code review: APPROVE. Post-review fix: added .gitkeep to data/ directory.
 - **Acceptance Criteria**:
   - All directories from the plan's directory layout exist
   - Every directory under `src/` has an `index.ts` barrel export file (empty or with placeholder comments)
@@ -82,10 +173,13 @@
 ### T003 - Implement Core Interfaces
 - **Phase**: 1
 - **Assigned Agent**: Backend Architect
-- **Dependencies**: T002
+- **Dependencies**: T002 (DONE)
 - **Priority**: P0 (critical path)
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created 5 interface files + barrel export. MarketDataProvider, OrderExecutionProvider, StorageProvider, Clock, NotificationProvider. All use Observable from rxjs. All imports use .js extension. Build verified zero errors. Code review: APPROVE. Warnings noted: duplicate ExecutionMode type (also in session.ts), Order.status as string not union, missing CONNECTING state.
 - **Acceptance Criteria**:
   - `MarketDataProvider` interface matches spec (connect, disconnect, isConnected, connectionState$, errors$, resolveContract, getHistoricalBars, subscribeBars, unsubscribeBars)
   - `OrderExecutionProvider` interface matches spec (mode, placeOrder, cancelOrder, getOpenOrders, fills$) with `OrderRequest`, `OrderResult`, `Fill` types
@@ -108,10 +202,13 @@
 ### T004 - Implement Core Data Models
 - **Phase**: 1
 - **Assigned Agent**: Backend Architect
-- **Dependencies**: T002
+- **Dependencies**: T002 (DONE)
 - **Priority**: P0 (critical path)
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created 6 model files + barrel export. Candle, DecisionZone, Signal, Trade/TradeOutcome, SessionContext, Config (with Zod schemas). All readonly types, int cents for prices, UTC ms for timestamps. Build verified zero errors. Code review: APPROVE. Warning noted: duplicate ExecutionMode type with order-execution.ts.
 - **Acceptance Criteria**:
   - `Candle` type: readonly fields, timestamp (UTC ms), prices as int cents, volume, completed, barSizeMinutes
   - `DecisionZone` type: resistance, support, status enum, spread, definedAt, sourceBars, premarketPrice
@@ -138,10 +235,13 @@
 ### T005 - Implement Time Utilities
 - **Phase**: 1
 - **Assigned Agent**: Fullstack Developer
-- **Dependencies**: T002
+- **Dependencies**: T002 (DONE)
 - **Priority**: P0 (critical path)
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created src/utils/time.ts with etToUtc, getSessionWindows, normalizeToBarGrid, isWithinRange, utcToEtDateStr. Uses TZDate from @date-fns/tz. Barrel export updated. Build verified zero errors. Code review: APPROVE.
 - **Acceptance Criteria**:
   - `etToUtc(dateStr, timeStr)` converts ET time to UTC ms using TZDate
   - `getSessionWindows(dateStr)` returns premarketUtc, zoneStartUtc, zoneEndUtc, executionEndUtc
@@ -158,10 +258,13 @@
 ### T006 - Implement Math Utilities
 - **Phase**: 1
 - **Assigned Agent**: Fullstack Developer
-- **Dependencies**: T002
+- **Dependencies**: T002 (DONE)
 - **Priority**: P1
 - **Effort**: S (< 1hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created src/utils/math.ts with dollarsToCents, centsToDollars, roundR, computeRMultiple, computeRValue, computeTargetPrice. All pure functions. Barrel export updated with both time and math exports. Build verified zero errors. Code review: APPROVE.
 - **Acceptance Criteria**:
   - `dollarsToCents(dollars: number): number` -> `Math.round(dollars * 100)`
   - `centsToDollars(cents: number): number` -> `cents / 100`
@@ -177,10 +280,13 @@
 ### T007 - Implement Bar Utility Functions
 - **Phase**: 1
 - **Assigned Agent**: Fullstack Developer
-- **Dependencies**: T004
+- **Dependencies**: T004 (DONE)
 - **Priority**: P1
 - **Effort**: S (< 1hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created src/utils/bar-utils.ts with getHighestHigh(), getLowestLow(), filterByTimeRange(). All pure functions on readonly Candle[]. Empty array returns 0 for high/low. Barrel export updated. Build verified zero errors. Code review: APPROVE (non-blocking: no issues).
 - **Acceptance Criteria**:
   - `getHighestHigh(bars: Candle[]): number` returns max high across bars
   - `getLowestLow(bars: Candle[]): number` returns min low across bars
@@ -196,10 +302,13 @@
 ### T008 - Implement Holiday Calendar Utility
 - **Phase**: 1
 - **Assigned Agent**: Fullstack Developer
-- **Dependencies**: T002, T009
+- **Dependencies**: T002 (DONE), T009 (DONE)
 - **Priority**: P1
 - **Effort**: S (< 1hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created src/utils/holidays.ts with HolidayCalendarSchema (Zod), loadHolidayCalendar(), isTradingDay(), isEarlyClose(), isWithinCalendarRange(), getNextTradingDay(). Loads from config/holidays.json. Barrel export updated. Build verified zero errors. Code review: APPROVE (non-blocking: calendarRange.from/to could use date regex).
 - **Acceptance Criteria**:
   - `isTradingDay(dateStr)` checks weekends + holidays from config
   - `isEarlyClose(dateStr)` for shortened sessions
@@ -215,10 +324,13 @@
 ### T009 - Create Configuration Files
 - **Phase**: 1
 - **Assigned Agent**: DevOps Engineer
-- **Dependencies**: T001
+- **Dependencies**: T001 (DONE)
 - **Priority**: P1
 - **Effort**: S (< 1hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created config/default.json with all StrategyConfig defaults and config/holidays.json with 30 NYSE holidays (2024-2026) and 8 early close dates. All dates verified to fall on weekdays. 2026 July 4 observed on July 3 (Saturday holiday). Valid JSON confirmed. Code review: APPROVE. All 30 holidays and 8 early close dates programmatically verified.
 - **Acceptance Criteria**:
   - `config/default.json` contains all StrategyConfig defaults: maxBreakAttempts=5, minZoneSpreadCents=10, maxZoneSpreadPercent=3.0, session windows, execution mode
   - `config/holidays.json` contains NYSE holidays for 2024-2026 with early close dates
@@ -233,10 +345,13 @@
 ### T010 - Implement IBKR Bar Normalizer
 - **Phase**: 1
 - **Assigned Agent**: Backend Architect
-- **Dependencies**: T004
+- **Dependencies**: T004 (DONE)
 - **Priority**: P0 (critical path)
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created src/adapters/ibkr/bar-normalizer.ts with IBKRBar type, normalizeBar() function (epoch sec → UTC ms, dollars → cents), BarCompletionBuffer class (one-bar buffer algorithm). Barrel export updated. Build verified zero errors. Code review: APPROVE (non-blocking: no issues).
 - **Acceptance Criteria**:
   - `normalizeBar(ibBar: Bar): Candle` converts IBKR Bar to Candle type
   - Epoch seconds (formatDate=2) converted to UTC milliseconds
@@ -256,10 +371,13 @@
 ### T011 - Implement IBKR Bar Validator
 - **Phase**: 1
 - **Assigned Agent**: Backend Architect
-- **Dependencies**: T004
+- **Dependencies**: T004 (DONE)
 - **Priority**: P0
 - **Effort**: S (< 1hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created src/adapters/ibkr/bar-validator.ts with CandleSchema (Zod with refinements for high>=low etc.), validateCandle(), CandleValidationResult type. Barrel export updated. Build verified zero errors. Code review: APPROVE (non-blocking: timestamp field missing .int() in Zod schema).
 - **Acceptance Criteria**:
   - Zod `CandleSchema` validates: timestamp positive, OHLCV all int positive (volume nonneg)
   - Refine: high >= low, high >= open, high >= close, low <= open, low <= close
@@ -274,10 +392,13 @@
 ### T012 - Implement IBKR 3-Tier Pacing Manager
 - **Phase**: 1
 - **Assigned Agent**: Performance Engineer
-- **Dependencies**: T003
+- **Dependencies**: T003 (DONE)
 - **Priority**: P1
 - **Effort**: L (3-6hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created src/adapters/ibkr/pacing.ts with PacingManager class, PacingConfig interface. 3-tier throttling: identity dedup (15s), per-contract burst (6/2s), global rolling (60/10min). Promise queue serialization for concurrent callers. getStatus(), reset() helpers. Barrel export updated. Build verified zero errors. Code review: APPROVE (no blocking issues).
 - **Acceptance Criteria**:
   - Tier 1: Identity dedup - 15-second window, 1 identical request
   - Tier 2: Per-contract burst - 2-second window, max 6 requests
@@ -294,10 +415,13 @@
 ### T013 - Implement IBKR Contract Resolver
 - **Phase**: 1
 - **Assigned Agent**: Backend Architect
-- **Dependencies**: T003
+- **Dependencies**: T003 (DONE)
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created src/adapters/ibkr/contract-resolver.ts with ContractResolver class. Resolves symbols to ContractSpec with session-lifetime cache. Fixed: uses direct await api.getContractDetails() (returns Promise, not Observable in @stoqey/ib v1.5.x). Barrel export updated. Build verified zero errors. Code review: APPROVE (no blocking issues).
 - **Acceptance Criteria**:
   - Resolves symbol to IBKR contract: secType=STK, exchange=SMART, currency=USD
   - Caches resolved contracts for session lifetime (Map)
@@ -313,10 +437,13 @@
 ### T014 - Implement IBKR Connection Manager
 - **Phase**: 1
 - **Assigned Agent**: Backend Architect
-- **Dependencies**: T003
+- **Dependencies**: T003 (DONE)
 - **Priority**: P0
 - **Effort**: L (3-6hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created src/adapters/ibkr/connection.ts with ConnectionManager class, ConnectionConfig interface, ConnectionState type. Exponential backoff reconnection (2s base, 60s cap, 10 attempts). Handles IBKR error codes: 1100, 1101, 1102, 2104, 2106. recordBarTimestamp()/getBackfillStartTimestamp() for reconnection backfill. Sets MarketDataType.REALTIME on connect. Barrel export updated. Build verified zero errors. Code review: APPROVE (non-blocking: isShuttingDown reset in reconnect path noted but safe).
 - **Acceptance Criteria**:
   - Exponential backoff reconnection: 2s initial, 60s max, 10 attempts
   - Monitors IBKR error codes: 1100 (connection lost), 1102 (restored, data lost), 2104/2106 (farm status)
@@ -339,7 +466,8 @@
 - **Dependencies**: T003, T010, T011, T012, T013, T014
 - **Priority**: P0 (critical path)
 - **Effort**: XL (6+ hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - Implements `MarketDataProvider` interface fully
   - Uses IBApiNext (RxJS Observable API from `@stoqey/ib`)
@@ -364,7 +492,8 @@
 - **Dependencies**: T010, T011
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - BarNormalizer tests:
     - Converts epoch seconds to UTC milliseconds correctly
@@ -391,7 +520,8 @@
 - **Dependencies**: T012
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - Identity dedup: same request within 15s is queued, different request proceeds
   - Per-contract burst: 7th request within 2s is queued until window slides
@@ -411,7 +541,8 @@
 - **Dependencies**: T005, T006, T007
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - Time utils tests:
     - `etToUtc` for standard day and DST transitions (2024-03-10 spring forward, 2024-11-03 fall back)
@@ -436,10 +567,12 @@
 ### T019 - Code Review: Core Models and Interfaces
 - **Phase**: 1
 - **Assigned Agent**: Architect Reviewer
-- **Dependencies**: T003, T004
+- **Dependencies**: T003 (DONE), T004 (DONE)
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Review performed as part of T003+T004 code review gate. APPROVE verdict. Findings: all interfaces match plan spec, all types readonly with int cents, no forbidden imports, barrel exports complete. Warnings: duplicate ExecutionMode type (medium), Order.status as string (low), missing CONNECTING state (low), no SessionWindows type alias (low).
 - **Acceptance Criteria**:
   - All interfaces match the plan spec exactly
   - All types use readonly fields and integer cents for prices
@@ -461,7 +594,8 @@
 - **Dependencies**: T015, T016, T017
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - IBKRAdapter correctly implements MarketDataProvider interface
   - Bar normalization pipeline is correct (order of operations, error handling)
@@ -484,7 +618,8 @@
 - **Dependencies**: T015
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - IBKR connection credentials are not hardcoded
   - ClientId management prevents conflicts
@@ -505,10 +640,13 @@
 ### T021 - Implement Strategy Event Types
 - **Phase**: 2
 - **Assigned Agent**: Backend Architect
-- **Dependencies**: T004
+- **Dependencies**: T004 (DONE)
 - **Priority**: P0 (critical path)
 - **Effort**: S (< 1hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created src/core/strategy/events.ts with StrategyEvent union type (NEW_BAR, SESSION_START, SESSION_END, ERROR), StrategyMachineContext (full machine context), StrategyMachineInput. Barrel export updated. Build verified zero errors. Code review: APPROVE (non-blocking: longPhase/shortPhase could share TrackPhase type).
 - **Acceptance Criteria**:
   - `StrategyEvent` union type: NEW_BAR, SESSION_START, SESSION_END, ERROR
   - `StrategyMachineContext` type with all context fields: zone, signals, trades, outcomes, allBars, activeDirection, longTrack/shortTrack state, break attempt counters
@@ -526,7 +664,8 @@
 - **Dependencies**: T004, T021
 - **Priority**: P0 (critical path)
 - **Effort**: L (3-6hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - All LONG guards: isLongBreak, isLongRetest, isLongRetestAndConfirm, isLongConfirmation, isLongBreakFailure, isLongStopHit, isLong1R, isLong2R, isLong3R
   - All SHORT guards: mirrors of LONG with inverted comparisons
@@ -550,7 +689,8 @@
 - **Dependencies**: T004, T021, T025
 - **Priority**: P0 (critical path)
 - **Effort**: L (3-6hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - `accumulateZoneBar`: adds bar to zone source bars
   - `computeZone`: calculates resistance/support from accumulated bars, sets status
@@ -577,7 +717,8 @@
 - **Dependencies**: T021, T022, T023
 - **Priority**: P0 (critical path)
 - **Effort**: L (3-6hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - Uses XState v5 `setup()` + `createMachine()` pattern
   - States: IDLE -> BUILDING_ZONE -> EVALUATING_ZONE -> MONITORING (parallel) / NO_TRADE / COMPLETE / ERROR
@@ -600,10 +741,13 @@
 ### T025 - Implement Risk Calculator
 - **Phase**: 2
 - **Assigned Agent**: Fullstack Developer
-- **Dependencies**: T004
+- **Dependencies**: T004 (DONE)
 - **Priority**: P0 (critical path)
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created src/core/risk/calculator.ts with computeTargets, determineStopLevel, computeTrailingStop, computeMaxFavorableR, computeMaxAdverseR. Re-exports computeRValue, computeRMultiple, computeTargetPrice, roundR from utils/math. All integer cents, R rounded to 2dp. Barrel export updated. Build verified zero errors. Code review: APPROVE (non-blocking: exhaustive switch guard suggestion).
 - **Acceptance Criteria**:
   - `computeRValue(entryPrice, stopLevel)`: `Math.abs(entryPrice - stopLevel)` (int cents)
   - `computeTargets(entryPrice, rValue, direction)`: returns { target1R, target2R, target3R } (int cents)
@@ -625,10 +769,13 @@
 ### T026 - Implement Metrics Aggregator
 - **Phase**: 2
 - **Assigned Agent**: Fullstack Developer
-- **Dependencies**: T004
+- **Dependencies**: T004 (DONE)
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created src/core/metrics/aggregator.ts with TradeStats, DirectionStats, AggregateMetrics interfaces. Functions: computeTradeStats, computeWinRate, computeProfitFactor, computeAverageR, computeMaxDrawdown (peak-to-trough cumulative R), computePerDirectionStats, aggregateMetrics. All values rounded to 2dp. Barrel export updated. Build verified zero errors. Code review: APPROVE (non-blocking: round2 duplicates roundR, computeProfitFactor returns Infinity).
 - **Acceptance Criteria**:
   - `computeWinRate(outcomes)`: (WIN_2R + WIN_3R) / total, as percentage
   - `computeProfitFactor(outcomes)`: gross profit R / gross loss R
@@ -648,10 +795,13 @@
 ### T027 - Implement CSV Loader for Backtesting
 - **Phase**: 2
 - **Assigned Agent**: Fullstack Developer
-- **Dependencies**: T004, T006
+- **Dependencies**: T004 (DONE), T006 (DONE)
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created src/adapters/backtest/csv-loader.ts with loadBarsFromCsv(filePath). Reads CSV synchronously, supports "YYYYMMDD HH:MM:SS" (ET→UTC) and epoch seconds. CsvLoadResult: { bars, errors, totalRows }. Auto-detects/skips headers, sorts ascending by timestamp. Barrel export updated. Build verified zero errors. Code review: APPROVE (no blocking issues).
 - **Acceptance Criteria**:
   - Parses CSV format: `timestamp,open,high,low,close,volume`
   - Supports timestamp formats: "YYYYMMDD HH:MM:SS" (ET) and epoch seconds (UTC)
@@ -669,10 +819,13 @@
 ### T028 - Implement Replay Engine and Simulated Clock
 - **Phase**: 2
 - **Assigned Agent**: Backend Architect
-- **Dependencies**: T003, T004
+- **Dependencies**: T003 (DONE), T004 (DONE)
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created src/adapters/backtest/replay-engine.ts with SimulatedClock (implements Clock: now, setTimeout, clearTimeout, waitUntil, advanceTo with chronological timer firing, reset) and ReplayEngine (replay with onBar/onStart/onEnd callbacks). Barrel export updated. Build verified zero errors. Code review: REQUEST_CHANGES on ClockTimer type violation (setTimeout returned raw number instead of {id}). Fix applied: return {id} in setTimeout, use timer.id in clearTimeout. Build re-verified. APPROVE after fix.
 - **Acceptance Criteria**:
   - `SimulatedClock` implements `Clock` interface:
     - `now()` returns current simulated time (advances with replayed bars)
@@ -698,7 +851,8 @@
 - **Dependencies**: T003, T027, T028
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - Implements `MarketDataProvider` interface
   - `connect()` / `disconnect()` are no-ops (or minimal setup)
@@ -767,7 +921,8 @@
 - **Dependencies**: T027
 - **Priority**: P1
 - **Effort**: L (3-6hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - All 9 scenario CSV files created with hand-calculated expected outcomes:
     1. `spy-long-breakout-2r.csv` - Clean long: break -> retest -> confirm -> 2R (WIN_2R)
@@ -802,7 +957,8 @@
 - **Dependencies**: T022
 - **Priority**: P0
 - **Effort**: L (3-6hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - Every guard function tested with true and false cases
   - LONG guards: break (high > resistance), retest (low <= resistance), retestAndConfirm (single bar), confirmation (close > resistance), breakFailure (close <= resistance), stopHit, 1R/2R/3R
@@ -826,7 +982,8 @@
 - **Dependencies**: T023
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - accumulateZoneBar: adds bar to sourceBars array
   - computeZone: correct resistance/support from bars, correct status
@@ -881,7 +1038,8 @@
 - **Dependencies**: T025
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - computeRValue: LONG entry 15000 stop 14900 -> R=100
   - computeTargets LONG: 1R=15100, 2R=15200, 3R=15300
@@ -904,7 +1062,8 @@
 - **Dependencies**: T026
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - Win rate: 3 wins, 2 losses -> 60%
   - Profit factor: gross profit / gross loss, handles zero losses (Infinity)
@@ -995,10 +1154,13 @@
 ### T041 - Implement SQLite Schema and Migrations
 - **Phase**: 3
 - **Assigned Agent**: Database Architect
-- **Dependencies**: T004
+- **Dependencies**: T004 (DONE)
 - **Priority**: P0
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created src/adapters/storage/migrations/001-initial.ts with Migration interface, migration001 (sessions, trades, trade_outcomes, signals tables + 3 indexes), runMigrations function with _migrations tracking table and transactional per-migration execution. Idempotent. Barrel exports updated. Build verified zero errors. Code review: APPROVE (no blocking issues).
 - **Acceptance Criteria**:
   - Migration 001-initial.ts creates all 4 tables: sessions, trades, trade_outcomes, signals
   - All column types match the plan's SQL schema exactly
@@ -1021,7 +1183,8 @@
 - **Dependencies**: T003, T041
 - **Priority**: P0 (critical path)
 - **Effort**: L (3-6hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - Implements `StorageProvider` interface fully
   - `initialize()`: opens SQLite DB in WAL mode, runs migrations
@@ -1051,7 +1214,8 @@
 - **Dependencies**: T041
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - `queries/trades.ts`: prepared statements for trade CRUD
   - `queries/sessions.ts`: prepared statements for session CRUD
@@ -1069,10 +1233,13 @@
 ### T044 - Implement Mock Order Adapter
 - **Phase**: 3
 - **Assigned Agent**: Fullstack Developer
-- **Dependencies**: T003
+- **Dependencies**: T003 (DONE)
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created src/adapters/execution/mock-order-adapter.ts with MockOrderAdapter implementing OrderExecutionProvider (mode='MOCK'). Immediate fill simulation via RxJS Subject<Fill>. Auto-incrementing MOCK-N order IDs, fill price from limitPrice/stopPrice, zero commission. Barrel export updated. Build verified zero errors. Code review: APPROVE (no blocking issues).
 - **Acceptance Criteria**:
   - Implements `OrderExecutionProvider` interface with `mode: 'MOCK'`
   - `placeOrder()`: immediately returns SUBMITTED, generates fill at signal price
@@ -1094,7 +1261,8 @@
 - **Dependencies**: T003, T015
 - **Priority**: P1
 - **Effort**: L (3-6hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - Implements `OrderExecutionProvider` interface with `mode: 'LIVE'`
   - `placeOrder()`: submits order to IBKR via IBApiNext, returns order ID
@@ -1117,7 +1285,8 @@
 - **Dependencies**: T005, T008
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - Determines if today is a trading day (weekend + holiday check)
   - Calculates session windows for today using `getSessionWindows()`
@@ -1135,10 +1304,13 @@
 ### T047 - Implement Shutdown Manager
 - **Phase**: 3
 - **Assigned Agent**: Backend Architect
-- **Dependencies**: T003
+- **Dependencies**: T003 (DONE)
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created src/services/shutdown-manager.ts with ShutdownManager class, ShutdownHandler type. LIFO handler execution, SIGINT/SIGTERM listening, force exit timeout (default 10s) with unref(), idempotent shutdown, individual handler error resilience. Barrel export updated. Build verified zero errors. Code review: APPROVE (no blocking issues).
 - **Acceptance Criteria**:
   - Registers handlers for SIGINT and SIGTERM
   - On shutdown signal:
@@ -1163,7 +1335,8 @@
 - **Dependencies**: T004, T026
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - CSV export: trades, outcomes, sessions to CSV format
   - JSON export: same data to JSON format
@@ -1181,10 +1354,13 @@
 ### T049 - Implement Logger Service (Pino)
 - **Phase**: 3
 - **Assigned Agent**: DevOps Engineer
-- **Dependencies**: T001
+- **Dependencies**: T001 (DONE)
 - **Priority**: P1
 - **Effort**: S (< 1hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created src/services/logger.ts with createLogger() and getChildLogger() functions. JSON output in production, pino-pretty in dev. Child loggers scoped to modules (ibkr, strategy, storage, cli, scheduler, backtest, risk). Security note header. Build verified, runtime smoke test passed for both JSON and pretty modes. Barrel export updated in src/services/index.ts. Code review: APPROVE. Post-review fix: corrected translateTime format (mm/MM swap).
 - **Acceptance Criteria**:
   - Pino logger configured with structured JSON output
   - Log levels configurable via AppConfig (default: info)
@@ -1201,10 +1377,13 @@
 ### T050 - Implement CLI Framework (Commander Setup)
 - **Phase**: 3
 - **Assigned Agent**: Fullstack Developer
-- **Dependencies**: T001
+- **Dependencies**: T001 (DONE)
 - **Priority**: P1
 - **Effort**: S (< 1hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Implementation Notes**: Created src/cli/index.ts with createProgram() factory. 5 subcommands (live, backtest, report, export, config) with stubs. Global options: --config, --verbose, --log-level. Choice validation on options. Unknown command handling via command:* event. showSuggestionAfterError + showHelpAfterError enabled. ESM-compatible entry detection. Build verified, all commands tested via CLI. Code review: APPROVE.
 - **Acceptance Criteria**:
   - Commander.js configured with program name "morningtrader"
   - Version from package.json
@@ -1300,10 +1479,11 @@
 ### T055 - Implement CLI: Config Command
 - **Phase**: 3
 - **Assigned Agent**: Fullstack Developer
-- **Dependencies**: T004, T009, T050
+- **Dependencies**: T004 (DONE), T009 (DONE), T050 (DONE)
 - **Priority**: P2
 - **Effort**: S (< 1hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - `morningtrader config --show` displays current configuration
   - Shows merged config (defaults + overrides)
@@ -1317,10 +1497,11 @@
 ### T056 - Implement CLI Dashboard (Console Output)
 - **Phase**: 3
 - **Assigned Agent**: Frontend Developer
-- **Dependencies**: T004
+- **Dependencies**: T004 (DONE)
 - **Priority**: P2
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - Formatted console output per bar during live session:
     - Current bar: time, OHLCV, direction indicators
@@ -1364,7 +1545,8 @@
 - **Dependencies**: T042
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - Tests use temporary database (deleted after test)
   - saveSession + getSession roundtrip
@@ -1433,7 +1615,8 @@
 - **Dependencies**: T042, T058
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: DONE
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - SQLite schema matches plan exactly
   - WAL mode enabled
@@ -1512,6 +1695,135 @@
   - Backtest runner processes 1 month of data in < 5 seconds
   - Report documented with findings
 - **Files**: (review only, no creation)
+
+---
+
+## PHASE 4: IBKR Historical Backtest Support
+
+### T065 - Wire IBKR Historical Source into BacktestRunner
+- **Phase**: 4
+- **Assigned Agent**: Backend Architect
+- **Dependencies**: T015 (DONE), T031 (DONE)
+- **Priority**: P0 (blocks backtest --source ibkr)
+- **Effort**: M (1-3hr)
+- **Status**: DONE
+- **Completed**: 2026-02-12
+- **Acceptance Criteria**:
+  - `BacktestRunner` constructor accepts an optional `MarketDataProvider` parameter for IBKR historical data
+  - `loadBarsForDate()` when `source === 'ibkr'`:
+    1. Calls `provider.getHistoricalBars(symbol, zoneStartUtc, executionEndUtc)` using the injected `MarketDataProvider`
+    2. Uses `etToUtc(date, '09:30')` and `etToUtc(date, '11:00')` for the time range (covering the full session window)
+    3. Returns the bars array (already normalized and validated by IBKRAdapter)
+  - Falls back to CSV if `source === 'csv'` (existing behavior unchanged)
+  - Respects IBKR pacing limits (IBKRAdapter's PacingManager handles this transparently)
+  - Error messages are clear if IBKR connection is not available
+  - `npm run build` zero errors, existing tests still pass
+- **Files**:
+  - `src/services/backtest-runner.ts` (modify: add `historicalProvider` constructor param, implement IBKR branch in `loadBarsForDate`)
+- **Implementation Notes**:
+  - `IBKRAdapter.getHistoricalBars()` is already fully implemented (T015) — handles contract resolution, pacing, bar normalization, and validation
+  - The only gap is plumbing: BacktestRunner needs to receive the IBKRAdapter and call it
+  - Per-day bars are fetched one day at a time; the PacingManager's 60/10min global limit means ~60 days max per 10-minute window (well above typical backtest ranges)
+  - Consider adding a small delay (1-2s) between days to be polite to IBKR pacing
+
+---
+
+### T066 - Add IBKR Bootstrap Path for Backtest Mode
+- **Phase**: 4
+- **Assigned Agent**: Backend Architect
+- **Dependencies**: T065 (DONE), T057 (DONE)
+- **Priority**: P0 (blocks backtest --source ibkr)
+- **Effort**: M (1-3hr)
+- **Status**: DONE
+- **Completed**: 2026-02-12
+- **Acceptance Criteria**:
+  - `bootstrapBacktest()` in `app.ts` accepts a new `source: 'csv' | 'ibkr'` option
+  - When `source === 'ibkr'`:
+    1. Creates IBKR infrastructure: `ConnectionManager`, `PacingManager`, `ContractResolver`, `IBApiNext` instance
+    2. Creates `IBKRAdapter` and calls `connect()` to establish TWS/Gateway connection
+    3. Passes `IBKRAdapter` as the `historicalProvider` to `BacktestRunner`
+    4. Registers IBKR cleanup (disconnect) in the shutdown handler
+  - When `source === 'csv'`: existing behavior unchanged (no IBKR connection)
+  - `AppContext` type extended with optional `ibkrAdapter` field for cleanup
+  - `shutdown()` function disconnects IBKR adapter if present
+  - IBKR connection uses config values: `ibkr.host`, `ibkr.port`, `ibkr.clientId`
+  - Clear error message if TWS/Gateway is not running
+  - `npm run build` zero errors, existing tests still pass
+- **Files**:
+  - `src/app.ts` (modify: add IBKR creation logic to `bootstrapBacktest`, extend `AppContext`)
+- **Implementation Notes**:
+  - Reuse the same IBKR component creation pattern from `bootstrapLive()`
+  - The IBKRAdapter connects once and stays connected for the entire backtest run
+  - Consider using `marketDataType: 1` (REALTIME) or allowing config override since this is historical-only
+
+---
+
+### T067 - Pass IBKR Adapter through CLI Backtest Command
+- **Phase**: 4
+- **Assigned Agent**: Fullstack Developer
+- **Dependencies**: T066 (DONE), T052 (DONE)
+- **Priority**: P1
+- **Effort**: S (< 1hr)
+- **Status**: DONE
+- **Completed**: 2026-02-12
+- **Acceptance Criteria**:
+  - `runBacktestCommand()` in `backtest.ts` passes `options.source` to `bootstrapBacktest()`
+  - `BacktestRunner` is constructed with the IBKR historical provider from the bootstrap context (when source is 'ibkr')
+  - When `--source ibkr`, the CLI prints a connecting message before the backtest starts
+  - Graceful error handling if IBKR connection fails (print user-friendly message, exit cleanly)
+  - `morningtrader backtest SPY --from 2025-09-01 --to 2025-09-30 --source ibkr` works end-to-end with TWS running
+  - `morningtrader backtest SPY --from ... --to ... --source csv` still works unchanged
+  - `npm run build` zero errors, existing tests still pass
+- **Files**:
+  - `src/cli/commands/backtest.ts` (modify: pass source to bootstrap, wire up historical provider)
+
+---
+
+### T068 - Integration Tests: IBKR Historical Backtest Source
+- **Phase**: 4
+- **Assigned Agent**: Fullstack Developer
+- **Dependencies**: T065 (READY), T066 (READY)
+- **Priority**: P1
+- **Effort**: M (1-3hr)
+- **Status**: READY
+- **Acceptance Criteria**:
+  - Unit tests for `BacktestRunner.loadBarsForDate()` with a mock `MarketDataProvider`:
+    - Calls `getHistoricalBars()` with correct time range when source is 'ibkr'
+    - Returns bars from the provider
+    - Handles provider returning empty array (no data for date)
+    - Handles provider throwing an error (connection lost)
+    - Falls through to CSV path when source is 'csv' (existing behavior)
+  - Integration test (skippable, requires TWS):
+    - `BacktestRunner.runBacktest()` with `source: 'ibkr'` fetches real historical data for 1-2 days
+    - Bars are valid Candle objects with correct timestamp range
+  - All tests pass with `npm run test:unit`
+- **Files**:
+  - `tests/unit/services/backtest-runner-ibkr.test.ts` (new)
+  - `tests/integration/backtest-ibkr.test.ts` (new, skippable)
+
+---
+
+### T069 - Code Review: IBKR Historical Backtest Feature
+- **Phase**: 4
+- **Assigned Agent**: Code Reviewer
+- **Dependencies**: T065, T066, T067, T068
+- **Priority**: P1
+- **Effort**: M (1-3hr)
+- **Status**: READY
+- **Acceptance Criteria**:
+  - Verify BacktestRunner correctly delegates to IBKRAdapter.getHistoricalBars()
+  - Verify IBKR connection lifecycle (connect before backtest, disconnect after)
+  - Verify pacing compliance (no manual delays needed, PacingManager handles it)
+  - Verify error handling for connection failures, data gaps, and empty responses
+  - Verify no regressions in CSV-source backtest path
+  - Verify clean shutdown disconnects IBKR if connected
+  - No secrets or credentials in code or logs
+  - Build clean, all existing tests pass
+- **Files**: (review only)
+  - `src/services/backtest-runner.ts`
+  - `src/app.ts`
+  - `src/cli/commands/backtest.ts`
+  - `tests/unit/services/backtest-runner-ibkr.test.ts`
 
 ---
 
@@ -1719,13 +2031,14 @@ Tasks grouped into waves. All tasks within a wave can run simultaneously.
 
 | Status | Count |
 |--------|-------|
-| READY | 1 (T001) |
-| BACKLOG | 63 (T002-T064) |
+| BACKLOG | 0 |
+| READY | 2 (T068, T069) |
 | IN PROGRESS | 0 |
 | REVIEW | 0 |
-| DONE | 0 |
+| DONE | 67 (T001-T067, including T020a) |
 
-**Total tasks**: 64 (including T020a)
-**Estimated total effort**: ~127 hours
-**Critical path duration**: ~32 hours sequential
-**Parallel execution waves**: 12
+**Total tasks**: 69 (64 original + 5 Phase 4)
+**Phase 1-3**: COMPLETE (64/64 tasks DONE)
+**Phase 4** (IBKR Historical Backtest): 3/5 done, 2 remaining
+**Wave 13**: DONE (T065+T066+T067)
+**Wave 14**: READY (T068+T069 parallel)

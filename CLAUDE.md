@@ -72,11 +72,39 @@ The same strategy engine runs in all modes via dependency injection:
 - Bar completion uses a one-bar buffer algorithm (emit when next timestamp arrives)
 - 3-tier pacing: 15s identity dedup → 6/2s per-contract burst → 60/10min global rolling
 
-## Planning Documents
+## Task Management Workflow
 
-Detailed architecture spec and task breakdown are in `planning/`:
-- `planning/architecture-spec.md` — Full technical design (interfaces, models, state machine, IBKR integration, SQL schema)
-- `planning/kanban-tasks.md` — 64 tasks with dependencies and parallel execution waves
+The project uses a Kanban board at `planning/kanban-tasks.md` to track all implementation tasks. **You MUST update the Kanban board for every status transition.** No task moves between statuses without updating both the top-level board section AND the detailed task entry.
+
+### Task Lifecycle: BACKLOG → READY → IN PROGRESS → REVIEW → DONE
+
+**BACKLOG → READY** (when all dependencies are satisfied):
+- Move the task from the BACKLOG table to the READY table in the board section.
+- Update the task's detailed entry status to `READY`.
+
+**READY → IN PROGRESS** (when an agent begins work):
+- Move the task from the READY table to the IN PROGRESS table in the board section.
+- Update the task's detailed entry status to `IN PROGRESS` with the start date.
+
+**IN PROGRESS → REVIEW** (when the implementing agent finishes):
+- Move the task from IN PROGRESS to the REVIEW table in the board section.
+- Update the task's detailed entry status to `REVIEW` with completion notes.
+- **Do NOT move to DONE.** Every task must be code reviewed before it can be marked DONE.
+- Dispatch the Code Reviewer agent to review the task's output.
+
+**REVIEW → DONE** (only after code review passes):
+- The Code Reviewer agent reviews the implementation.
+- If changes are needed: create **new tasks** in `kanban-tasks.md` for each required change (as sub-tasks referencing the parent, e.g., `T002-fix1`). The original task stays in REVIEW until the fixes are completed and re-reviewed.
+- Only when the Code Reviewer approves with no outstanding issues: move the task to the DONE table and update the detailed entry with `Completed` date and `Notes`.
+
+**After any task reaches DONE:**
+- Check dependencies: find all tasks whose dependencies are now fully satisfied and promote them from BACKLOG to READY.
+- Update the STATUS SUMMARY counts at the bottom of the file.
+- Present the newly READY tasks to the user for confirmation before dispatching agents.
+
+### Planning Documents
+
+Refer to `planning/architecture-spec.md` for the full technical design (interfaces, models, state machine, IBKR integration, SQL schema). The Kanban board references task dependencies and parallel execution waves.
 
 ## Tech Stack
 

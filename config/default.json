@@ -1,0 +1,38 @@
+{
+  "strategy": {
+    "maxBreakAttempts": 5,
+    "minZoneSpreadCents": 10,
+    "maxZoneSpreadPercent": 3.0,
+    "barSizeMinutes": 5,
+    "sessionWindows": {
+      "premarketTime": "09:00",
+      "zoneStartTime": "09:30",
+      "zoneEndTime": "10:00",
+      "executionEndTime": "11:00"
+    },
+    "minZoneBars": 3,
+    "targets": {
+      "target1RMultiple": 1.0,
+      "target2RMultiple": 2.0,
+      "target3RMultiple": 3.0
+    },
+    "trailingStopAt1R": true
+  },
+  "ibkr": {
+    "host": "127.0.0.1",
+    "port": 4002,
+    "clientId": 1,
+    "marketDataType": 1
+  },
+  "execution": {
+    "mode": "MOCK",
+    "defaultQuantity": 100
+  },
+  "logging": {
+    "level": "info",
+    "pretty": false
+  },
+  "storage": {
+    "dbPath": "data/morningtrader.db"
+  }
+}
