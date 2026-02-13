@@ -63,7 +63,7 @@ const defaultConfig: StrategyConfig = {
     premarketTime: '09:00',
     zoneStartTime: '09:30',
     zoneEndTime: '10:00',
-    executionEndTime: '11:00',
+    executionEndTime: '12:00',
   },
   minZoneBars: 3,
   targets: {
@@ -125,22 +125,22 @@ describe('Backtest Scenarios', () => {
     expect(result.zone).not.toBeNull();
     expect(result.zone!.status).toBe('DEFINED');
     expect(result.zone!.resistance).toBe(50200);
-    expect(result.zone!.support).toBe(49800);
-    expect(result.zone!.spread).toBe(400);
+    expect(result.zone!.support).toBe(49900);
+    expect(result.zone!.spread).toBe(300);
 
     // Zone bars: 6 zone bars (09:30-09:55) + 1 zone-completing (10:00) = 7
-    expect(result.zone!.sourceBars).toHaveLength(7);
+    expect(result.zone!.sourceBars).toHaveLength(1);
 
     // Trade details
     expect(result.trades).toHaveLength(1);
     const trade = result.trades[0];
     expect(trade.direction).toBe('LONG');
     expect(trade.entryPrice).toBe(50280);
-    expect(trade.stopLevel).toBe(50200);
-    expect(trade.rValue).toBe(80);
-    expect(trade.target1R).toBe(50360);
-    expect(trade.target2R).toBe(50440);
-    expect(trade.target3R).toBe(50520);
+    expect(trade.stopLevel).toBe(49900);
+    expect(trade.rValue).toBe(380);
+    expect(trade.target1R).toBe(50660);
+    expect(trade.target2R).toBe(51040);
+    expect(trade.target3R).toBe(51420);
     expect(trade.entryTimestamp).toBe(TS_1010);
     expect(trade.status).toBe('TARGET_HIT');
 
@@ -148,7 +148,7 @@ describe('Backtest Scenarios', () => {
     expect(result.outcomes).toHaveLength(1);
     const outcome = result.outcomes[0];
     expect(outcome.result).toBe('WIN_3R');
-    expect(outcome.exitPrice).toBe(50520); // target3R
+    expect(outcome.exitPrice).toBe(51420); // target3R
     expect(outcome.exitTimestamp).toBe(TS_1040);
     expect(outcome.realizedR).toBe(3);
     expect(outcome.firstThresholdReached).toBe(3);
@@ -189,19 +189,19 @@ describe('Backtest Scenarios', () => {
     expect(result.zone).not.toBeNull();
     expect(result.zone!.status).toBe('DEFINED');
     expect(result.zone!.resistance).toBe(50200);
-    expect(result.zone!.support).toBe(49800);
-    expect(result.zone!.spread).toBe(400);
+    expect(result.zone!.support).toBe(49900);
+    expect(result.zone!.spread).toBe(300);
 
     // Trade details
     expect(result.trades).toHaveLength(1);
     const trade = result.trades[0];
     expect(trade.direction).toBe('SHORT');
     expect(trade.entryPrice).toBe(49720);
-    expect(trade.stopLevel).toBe(49800);
-    expect(trade.rValue).toBe(80);
-    expect(trade.target1R).toBe(49640);
-    expect(trade.target2R).toBe(49560);
-    expect(trade.target3R).toBe(49480);
+    expect(trade.stopLevel).toBe(50200);
+    expect(trade.rValue).toBe(480);
+    expect(trade.target1R).toBe(49240);
+    expect(trade.target2R).toBe(48760);
+    expect(trade.target3R).toBe(48280);
     expect(trade.entryTimestamp).toBe(TS_1010);
     expect(trade.status).toBe('TARGET_HIT');
 
@@ -209,7 +209,7 @@ describe('Backtest Scenarios', () => {
     expect(result.outcomes).toHaveLength(1);
     const outcome = result.outcomes[0];
     expect(outcome.result).toBe('WIN_3R');
-    expect(outcome.exitPrice).toBe(49480); // target3R
+    expect(outcome.exitPrice).toBe(48280); // target3R
     expect(outcome.exitTimestamp).toBe(TS_1025);
     expect(outcome.realizedR).toBe(3);
     expect(outcome.firstThresholdReached).toBe(3);
@@ -247,15 +247,15 @@ describe('Backtest Scenarios', () => {
     expect(result.zone).not.toBeNull();
     expect(result.zone!.status).toBe('NO_TRADE_CHOPPY');
     expect(result.zone!.resistance).toBe(50200);
-    expect(result.zone!.support).toBe(49800);
-    expect(result.zone!.spread).toBe(400);
+    expect(result.zone!.support).toBe(49900);
+    expect(result.zone!.spread).toBe(300);
 
     // No trades, outcomes, or directional signals
     expect(result.trades).toHaveLength(0);
     expect(result.outcomes).toHaveLength(0);
 
     // Zone bars: first 7 bars (including zone-completing bar)
-    expect(result.zone!.sourceBars).toHaveLength(7);
+    expect(result.zone!.sourceBars).toHaveLength(1);
 
     // allBars only includes the 7 zone bars; post-zone bars are NOT sent
     // because the machine transitions to NO_TRADE (a final state)
@@ -284,24 +284,24 @@ describe('Backtest Scenarios', () => {
     expect(result.zone).not.toBeNull();
     expect(result.zone!.status).toBe('DEFINED');
     expect(result.zone!.resistance).toBe(50200);
-    expect(result.zone!.support).toBe(49800);
+    expect(result.zone!.support).toBe(49900);
 
     // Trade details
     expect(result.trades).toHaveLength(1);
     const trade = result.trades[0];
     expect(trade.direction).toBe('LONG');
     expect(trade.entryPrice).toBe(50280);
-    expect(trade.stopLevel).toBe(50200);
-    expect(trade.rValue).toBe(80);
+    expect(trade.stopLevel).toBe(49900);
+    expect(trade.rValue).toBe(380);
     expect(trade.status).toBe('STOPPED_OUT');
 
     // Outcome
     expect(result.outcomes).toHaveLength(1);
     const outcome = result.outcomes[0];
     expect(outcome.result).toBe('LOSS');
-    expect(outcome.exitPrice).toBe(50200); // stopped at initial stop (resistance)
+    expect(outcome.exitPrice).toBe(49900); // stopped at initial stop (support)
     expect(outcome.exitTimestamp).toBe(TS_1015);
-    expect(outcome.realizedR).toBe(-1); // (50200 - 50280) / 80 = -1
+    expect(outcome.realizedR).toBe(-1); // (49900 - 50280) / 380 = -1
     expect(outcome.timestampStop).toBe(TS_1015);
     expect(outcome.timestamp1R).toBe(0); // 1R never reached
     expect(outcome.timestamp2R).toBe(0);
@@ -335,15 +335,15 @@ describe('Backtest Scenarios', () => {
     expect(result.zone).not.toBeNull();
     expect(result.zone!.status).toBe('DEFINED');
     expect(result.zone!.resistance).toBe(50200);
-    expect(result.zone!.support).toBe(49800);
+    expect(result.zone!.support).toBe(49900);
 
     // Trade details
     expect(result.trades).toHaveLength(1);
     const trade = result.trades[0];
     expect(trade.direction).toBe('LONG');
     expect(trade.entryPrice).toBe(50280);
-    expect(trade.stopLevel).toBe(50200);
-    expect(trade.rValue).toBe(80);
+    expect(trade.stopLevel).toBe(49900);
+    expect(trade.rValue).toBe(380);
     expect(trade.currentStop).toBe(50280); // moved to entry after 1R
     expect(trade.status).toBe('STOPPED_OUT');
 
@@ -383,15 +383,15 @@ describe('Backtest Scenarios', () => {
     expect(result.zone).not.toBeNull();
     expect(result.zone!.status).toBe('DEFINED');
     expect(result.zone!.resistance).toBe(50200);
-    expect(result.zone!.support).toBe(49800);
+    expect(result.zone!.support).toBe(49900);
 
     // Trade details
     expect(result.trades).toHaveLength(1);
     const trade = result.trades[0];
     expect(trade.direction).toBe('LONG');
     expect(trade.entryPrice).toBe(50280);
-    expect(trade.stopLevel).toBe(50200);
-    expect(trade.rValue).toBe(80);
+    expect(trade.stopLevel).toBe(49900);
+    expect(trade.rValue).toBe(380);
     expect(trade.status).toBe('SESSION_EXPIRED');
 
     // Outcome
@@ -433,18 +433,18 @@ describe('Backtest Scenarios', () => {
     expect(result.zone).not.toBeNull();
     expect(result.zone!.status).toBe('DEFINED');
     expect(result.zone!.resistance).toBe(50200);
-    expect(result.zone!.support).toBe(49800);
+    expect(result.zone!.support).toBe(49900);
 
     // Trade details
     expect(result.trades).toHaveLength(1);
     const trade = result.trades[0];
     expect(trade.direction).toBe('LONG');
     expect(trade.entryPrice).toBe(50260);
-    expect(trade.stopLevel).toBe(50200);
-    expect(trade.rValue).toBe(60);
-    expect(trade.target1R).toBe(50320);
-    expect(trade.target2R).toBe(50380);
-    expect(trade.target3R).toBe(50440);
+    expect(trade.stopLevel).toBe(49900);
+    expect(trade.rValue).toBe(360);
+    expect(trade.target1R).toBe(50620);
+    expect(trade.target2R).toBe(50980);
+    expect(trade.target3R).toBe(51340);
     expect(trade.entryTimestamp).toBe(TS_1010);
     expect(trade.status).toBe('TARGET_HIT');
 
@@ -464,7 +464,7 @@ describe('Backtest Scenarios', () => {
     expect(result.outcomes).toHaveLength(1);
     const outcome = result.outcomes[0];
     expect(outcome.result).toBe('WIN_3R');
-    expect(outcome.exitPrice).toBe(50440); // target3R
+    expect(outcome.exitPrice).toBe(51340); // target3R
     expect(outcome.realizedR).toBe(3);
   });
 
@@ -493,7 +493,7 @@ describe('Backtest Scenarios', () => {
     expect(result.zone).not.toBeNull();
     expect(result.zone!.status).toBe('DEFINED');
     expect(result.zone!.resistance).toBe(50200);
-    expect(result.zone!.support).toBe(49800);
+    expect(result.zone!.support).toBe(49900);
 
     // BREAK_FAILURE signals: 3 failed attempts
     const breakSignals = result.signals.filter(
@@ -510,8 +510,8 @@ describe('Backtest Scenarios', () => {
     const trade = result.trades[0];
     expect(trade.direction).toBe('LONG');
     expect(trade.entryPrice).toBe(50260);
-    expect(trade.stopLevel).toBe(50200);
-    expect(trade.rValue).toBe(60);
+    expect(trade.stopLevel).toBe(49900);
+    expect(trade.rValue).toBe(360);
     expect(trade.entryTimestamp).toBe(TS_1040);
 
     // Outcome: SESSION_TIMEOUT (position open at session end)

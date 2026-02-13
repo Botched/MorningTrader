@@ -491,14 +491,14 @@ describe('recordLongConfirmation', () => {
     expect(trade.direction).toBe('LONG');
     expect(trade.entryPrice).toBe(15200);
     expect(trade.status).toBe('OPEN');
-    // For LONG: stop at resistance = 15100, rValue = |15200 - 15100| = 100
-    expect(trade.stopLevel).toBe(15100);
-    expect(trade.currentStop).toBe(15100);
-    expect(trade.rValue).toBe(100);
-    // Targets: 1R=15300, 2R=15400, 3R=15500
-    expect(trade.target1R).toBe(15300);
-    expect(trade.target2R).toBe(15400);
-    expect(trade.target3R).toBe(15500);
+    // For LONG: stop at support = 14900, rValue = |15200 - 14900| = 300
+    expect(trade.stopLevel).toBe(14900);
+    expect(trade.currentStop).toBe(14900);
+    expect(trade.rValue).toBe(300);
+    // Targets: 1R=15500, 2R=15800, 3R=16100
+    expect(trade.target1R).toBe(15500);
+    expect(trade.target2R).toBe(15800);
+    expect(trade.target3R).toBe(16100);
     expect(trade.entryTimestamp).toBe(5000);
     expect(trade.id).toBe('2024-01-02_SPY_LONG_1');
   });
@@ -536,14 +536,14 @@ describe('recordShortConfirmation', () => {
     expect(trade.direction).toBe('SHORT');
     expect(trade.entryPrice).toBe(14800);
     expect(trade.status).toBe('OPEN');
-    // For SHORT: stop at support = 14900, rValue = |14800 - 14900| = 100
-    expect(trade.stopLevel).toBe(14900);
-    expect(trade.currentStop).toBe(14900);
-    expect(trade.rValue).toBe(100);
-    // Targets: 1R=14700, 2R=14600, 3R=14500
-    expect(trade.target1R).toBe(14700);
-    expect(trade.target2R).toBe(14600);
-    expect(trade.target3R).toBe(14500);
+    // For SHORT: stop at resistance = 15100, rValue = |14800 - 15100| = 300
+    expect(trade.stopLevel).toBe(15100);
+    expect(trade.currentStop).toBe(15100);
+    expect(trade.rValue).toBe(300);
+    // Targets: 1R=14500, 2R=14200, 3R=13900
+    expect(trade.target1R).toBe(14500);
+    expect(trade.target2R).toBe(14200);
+    expect(trade.target3R).toBe(13900);
     expect(trade.id).toBe('2024-01-02_SPY_SHORT_1');
   });
 });

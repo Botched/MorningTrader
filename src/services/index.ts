@@ -38,3 +38,15 @@ export {
   type BacktestOptions,
   type BacktestResult,
 } from './backtest-runner.js';
+
+export {
+  generateNarrative,
+} from './narrative-generator.js';
+
+export type {
+  FullSessionData,
+  SessionNarrative,
+  NarrativeSection,
+  NarrativeKeyValue,
+  KeyValueType,
+} from './narrative-types.js';

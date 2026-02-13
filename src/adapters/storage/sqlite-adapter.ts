@@ -10,6 +10,7 @@ import type { Signal, SignalDirection, SignalType } from '../../core/models/sign
 import type { DecisionZoneStatus } from '../../core/models/decision-zone.js';
 import type { Candle } from '../../core/models/candle.js';
 import { migration001, runMigrations } from './migrations/001-initial.js';
+import { migration002 } from './migrations/002-bars.js';
 
 // ── Row types returned by better-sqlite3 ────────────────────────────
 
@@ -60,7 +61,33 @@ interface OutcomeRow {
   bars_held: number;
 }
 
+interface BarRow {
+  id: number;
+  session_id: number;
+  timestamp: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+  completed: number;
+  bar_size_minutes: number;
+}
+
 // ── Helpers ──────────────────────────────────────────────────────────
+
+function rowToCandle(row: BarRow): Candle {
+  return {
+    timestamp: row.timestamp,
+    open: row.open,
+    high: row.high,
+    low: row.low,
+    close: row.close,
+    volume: row.volume,
+    completed: row.completed === 1,
+    barSizeMinutes: 5,
+  };
+}
 
 const EMPTY_CANDLE: Candle = {
   timestamp: 0,
@@ -164,17 +191,13 @@ export class SQLiteAdapter implements StorageProvider {
   // ── Lifecycle ────────────────────────────────────────────────────
 
   initialize(): void {
-    runMigrations(this.db, [migration001]);
+    runMigrations(this.db, [migration001, migration002]);
 
     const result = this.db.pragma('integrity_check') as { integrity_check: string }[];
     const status = result[0]?.integrity_check ?? '';
     if (status !== 'ok') {
       console.warn(`[SQLiteAdapter] integrity_check: ${status}`);
     }
-  }
-
-  close(): void {
-    this.db.close();
   }
 
   // ── Sessions ─────────────────────────────────────────────────────
@@ -274,6 +297,7 @@ export class SQLiteAdapter implements StorageProvider {
         SELECT t.* FROM trades t
         JOIN sessions s ON t.session_id = s.id
         WHERE s.date BETWEEN ? AND ? AND s.symbol = ?
+        ORDER BY t.entry_timestamp ASC
       `);
       return (stmt.all(from, to, symbol) as TradeRow[]).map(rowToTrade);
     }
@@ -281,6 +305,7 @@ export class SQLiteAdapter implements StorageProvider {
       SELECT t.* FROM trades t
       JOIN sessions s ON t.session_id = s.id
       WHERE s.date BETWEEN ? AND ?
+      ORDER BY t.entry_timestamp ASC
     `);
     return (stmt.all(from, to) as TradeRow[]).map(rowToTrade);
   }
@@ -412,5 +437,69 @@ export class SQLiteAdapter implements StorageProvider {
     });
 
     insertAll(signals);
+  }
+
+  // ── Bars ────────────────────────────────────────────────────────
+
+  saveBars(bars: readonly Candle[], sessionId: number): void {
+    const stmt = this.db.prepare(`
+      INSERT INTO bars
+        (session_id, timestamp, open, high, low, close, volume, completed, bar_size_minutes)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+
+    const insertAll = this.db.transaction((items: readonly Candle[]) => {
+      for (const bar of items) {
+        stmt.run(
+          sessionId,
+          bar.timestamp,
+          bar.open,
+          bar.high,
+          bar.low,
+          bar.close,
+          bar.volume,
+          bar.completed ? 1 : 0,
+          bar.barSizeMinutes,
+        );
+      }
+    });
+
+    insertAll(bars);
+  }
+
+  getBarsBySessionId(sessionId: number): Candle[] {
+    const stmt = this.db.prepare(
+      'SELECT * FROM bars WHERE session_id = ? ORDER BY timestamp ASC',
+    );
+    const rows = stmt.all(sessionId) as BarRow[];
+    return rows.map(rowToCandle);
+  }
+
+  // ── Maintenance ──────────────────────────────────────────────────
+
+  deleteAllBacktestSessions(): void {
+    // Delete only backtest data (is_backtest = 1), preserve real trades
+    // Get all backtest session IDs
+    const backtestSessionIds = this.db
+      .prepare('SELECT id FROM sessions WHERE is_backtest = 1')
+      .all() as { id: number }[];
+
+    if (backtestSessionIds.length === 0) {
+      return; // Nothing to delete
+    }
+
+    const ids = backtestSessionIds.map((row) => row.id);
+    const placeholders = ids.map(() => '?').join(',');
+
+    // Delete related data for backtest sessions only
+    this.db.prepare(`DELETE FROM signals WHERE session_id IN (${placeholders})`).run(...ids);
+    this.db.prepare(`DELETE FROM bars WHERE session_id IN (${placeholders})`).run(...ids);
+    this.db.prepare(`DELETE FROM trade_outcomes WHERE trade_id IN (SELECT id FROM trades WHERE session_id IN (${placeholders}))`).run(...ids);
+    this.db.prepare(`DELETE FROM trades WHERE session_id IN (${placeholders})`).run(...ids);
+    this.db.prepare(`DELETE FROM sessions WHERE is_backtest = 1`).run();
+  }
+
+  close(): void {
+    this.db.close();
   }
 }

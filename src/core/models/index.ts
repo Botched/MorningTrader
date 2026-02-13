@@ -22,6 +22,7 @@ export {
   ExecutionConfigSchema,
   LoggingConfigSchema,
   StorageConfigSchema,
+  WebConfigSchema,
   AppConfigSchema,
 } from './config.js';
 export type {
@@ -30,5 +31,6 @@ export type {
   ExecutionConfig,
   LoggingConfig,
   StorageConfig,
+  WebConfig,
   AppConfig,
 } from './config.js';

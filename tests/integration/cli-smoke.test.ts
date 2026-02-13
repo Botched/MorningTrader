@@ -86,10 +86,11 @@ describe('CLI Smoke Tests', () => {
     expect(commandNames).toContain('report');
     expect(commandNames).toContain('export');
     expect(commandNames).toContain('config');
+    expect(commandNames).toContain('dashboard');
   });
 
-  it('registers exactly 5 commands', () => {
-    expect(program.commands).toHaveLength(5);
+  it('registers exactly 6 commands', () => {
+    expect(program.commands).toHaveLength(6);
   });
 
   // ── Global options ──────────────────────────────────────────────
@@ -299,6 +300,43 @@ describe('CLI Smoke Tests', () => {
     });
   });
 
+  // ── dashboard command ───────────────────────────────────────────
+
+  describe('dashboard command', () => {
+    it('exists and has correct description', () => {
+      const cmd = findCommand(program, 'dashboard');
+      expect(cmd).toBeDefined();
+      expect(cmd!.description()).toBe('Start the web dashboard to visualize trading results');
+    });
+
+    it('has no required arguments', () => {
+      const cmd = findCommand(program, 'dashboard')!;
+      expect(cmd.registeredArguments).toHaveLength(0);
+    });
+
+    it('has --port option', () => {
+      const cmd = findCommand(program, 'dashboard')!;
+      expect(getOptionLongs(cmd)).toContain('--port');
+    });
+
+    it('has --host option', () => {
+      const cmd = findCommand(program, 'dashboard')!;
+      expect(getOptionLongs(cmd)).toContain('--host');
+    });
+
+    it('has --db option', () => {
+      const cmd = findCommand(program, 'dashboard')!;
+      expect(getOptionLongs(cmd)).toContain('--db');
+    });
+
+    it('has --no-open option', () => {
+      const cmd = findCommand(program, 'dashboard')!;
+      const flags = cmd.options.map((o) => o.flags);
+      const hasNoOpen = flags.some((f) => f.includes('--no-open'));
+      expect(hasNoOpen).toBe(true);
+    });
+  });
+
   // ── Help text generation ────────────────────────────────────────
 
   describe('help text', () => {
@@ -310,6 +348,7 @@ describe('CLI Smoke Tests', () => {
       expect(helpText).toContain('report');
       expect(helpText).toContain('export');
       expect(helpText).toContain('config');
+      expect(helpText).toContain('dashboard');
     });
 
     it('program help text contains global options', () => {

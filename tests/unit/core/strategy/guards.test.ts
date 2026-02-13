@@ -178,7 +178,8 @@ describe('isChoppyZone', () => {
   it('returns true when last bar close is strictly between support and resistance', () => {
     const bars = [makeCandle({ close: 15000 })];
     const ctx = makeContext({
-      zone: makeZone({ resistance: 15100, support: 14900, sourceBars: bars }),
+      zone: makeZone({ resistance: 15100, support: 14900, sourceBars: [] }),
+      allBars: bars,
     });
     expect(isChoppyZone(ctx)).toBe(true);
   });
@@ -230,10 +231,11 @@ describe('isChoppyZone', () => {
   it('uses the LAST bar close (not first) for choppy check', () => {
     const bars = [
       makeCandle({ close: 15200 }), // outside zone
-      makeCandle({ close: 15000 }), // inside zone
+      makeCandle({ close: 15000 }), // inside zone (last bar)
     ];
     const ctx = makeContext({
-      zone: makeZone({ resistance: 15100, support: 14900, sourceBars: bars }),
+      zone: makeZone({ resistance: 15100, support: 14900, sourceBars: [] }),
+      allBars: bars,
     });
     expect(isChoppyZone(ctx)).toBe(true);
   });
@@ -241,7 +243,8 @@ describe('isChoppyZone', () => {
   it('boundary: close 1 cent above support is choppy', () => {
     const bars = [makeCandle({ close: 14901 })];
     const ctx = makeContext({
-      zone: makeZone({ resistance: 15100, support: 14900, sourceBars: bars }),
+      zone: makeZone({ resistance: 15100, support: 14900, sourceBars: [] }),
+      allBars: bars,
     });
     expect(isChoppyZone(ctx)).toBe(true);
   });
@@ -249,7 +252,8 @@ describe('isChoppyZone', () => {
   it('boundary: close 1 cent below resistance is choppy', () => {
     const bars = [makeCandle({ close: 15099 })];
     const ctx = makeContext({
-      zone: makeZone({ resistance: 15100, support: 14900, sourceBars: bars }),
+      zone: makeZone({ resistance: 15100, support: 14900, sourceBars: [] }),
+      allBars: bars,
     });
     expect(isChoppyZone(ctx)).toBe(true);
   });

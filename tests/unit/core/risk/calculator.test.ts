@@ -196,14 +196,14 @@ describe('roundR', () => {
 // determineStopLevel
 // ===========================================================================
 describe('determineStopLevel', () => {
-  it('LONG: returns zone.resistance', () => {
+  it('LONG: returns zone.support', () => {
     const zone = makeZone({ resistance: 15100, support: 14900 });
-    expect(determineStopLevel(zone, 'LONG')).toBe(15100);
+    expect(determineStopLevel(zone, 'LONG')).toBe(14900);
   });
 
-  it('SHORT: returns zone.support', () => {
+  it('SHORT: returns zone.resistance', () => {
     const zone = makeZone({ resistance: 15100, support: 14900 });
-    expect(determineStopLevel(zone, 'SHORT')).toBe(14900);
+    expect(determineStopLevel(zone, 'SHORT')).toBe(15100);
   });
 
   it('should handle zones with equal support and resistance', () => {

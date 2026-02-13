@@ -13,8 +13,8 @@
     "minZoneBars": 3,
     "targets": {
       "target1RMultiple": 1.0,
-      "target2RMultiple": 2.0,
-      "target3RMultiple": 3.0
+      "target2RMultiple": 2,
+      "target3RMultiple": 3
     },
     "trailingStopAt1R": true
   },

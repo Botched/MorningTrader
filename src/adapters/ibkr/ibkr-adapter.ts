@@ -281,8 +281,8 @@ export class IBKRAdapter implements MarketDataProvider {
       const ibkrBar = ibBarToIBKRBar(bar);
       const candle = normalizeBar(ibkrBar);
 
-      // Filter by requested time range
-      if (candle.timestamp < startUtc || candle.timestamp > endUtc) {
+      // Filter by requested time range (inclusive start, exclusive end)
+      if (candle.timestamp < startUtc || candle.timestamp >= endUtc) {
         continue;
       }
 

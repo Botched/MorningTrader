@@ -27,8 +27,8 @@ export function computeTargets(
 
 /**
  * Determine the initial stop level based on zone and direction.
- * LONG: stop at zone resistance (entry is above resistance, stop below it means loss)
- * SHORT: stop at zone support (entry is below support, stop above it means loss)
+ * LONG: stop at zone support (entry is above resistance, stop at support protects against loss)
+ * SHORT: stop at zone resistance (entry is below support, stop at resistance protects against loss)
  *
  * @param zone - The decision zone containing support and resistance levels
  * @param direction - Trade direction ('LONG' or 'SHORT')
@@ -38,7 +38,7 @@ export function determineStopLevel(
   zone: DecisionZone,
   direction: 'LONG' | 'SHORT',
 ): number {
-  return direction === 'LONG' ? zone.resistance : zone.support;
+  return direction === 'LONG' ? zone.support : zone.resistance;
 }
 
 /**

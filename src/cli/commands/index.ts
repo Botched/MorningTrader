@@ -6,3 +6,4 @@ export { registerBacktestCommand } from './backtest.js';
 export { registerReportCommand } from './report.js';
 export { registerExportCommand } from './export.js';
 export { registerConfigCommand } from './config.js';
+export { registerDashboardCommand } from './dashboard.js';
