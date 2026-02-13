@@ -1,4 +1,4 @@
-import type { SessionContext, Trade, TradeOutcome, Signal } from '../models/index.js';
+import type { SessionContext, Trade, TradeOutcome, Signal, Candle } from '../models/index.js';
 
 export interface StorageProvider {
   initialize(): void;
@@ -9,6 +9,8 @@ export interface StorageProvider {
   saveTradeOutcome(outcome: TradeOutcome): void;
   saveTradeWithOutcome(trade: Trade, outcome: TradeOutcome, sessionId: number): void;
   saveSignals(signals: readonly Signal[], sessionId: number): void;
+  saveBars(bars: readonly Candle[], sessionId: number): void;
+  getBarsBySessionId(sessionId: number): Candle[];
   getTradesByDateRange(from: string, to: string, symbol?: string): Trade[];
   getOutcomesByDateRange(from: string, to: string, symbol?: string): TradeOutcome[];
   getSessionsByDateRange(from: string, to: string, symbol?: string): SessionContext[];

@@ -13,6 +13,7 @@ import {
   registerReportCommand,
   registerExportCommand,
   registerConfigCommand,
+  registerDashboardCommand,
 } from './commands/index.js';
 
 // Re-export Dashboard for programmatic use
@@ -57,6 +58,7 @@ export function createProgram(): Command {
   registerReportCommand(program);
   registerExportCommand(program);
   registerConfigCommand(program);
+  registerDashboardCommand(program);
 
   // ── Error handling ────────────────────────────────────────────
   // Show suggestions for unknown commands (e.g., "did you mean 'live'?")

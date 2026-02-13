@@ -20,3 +20,13 @@ export type {
   PerSymbolStatsRow,
   DailyStatsRow,
 } from './aggregations.js';
+
+export {
+  createDashboardQueries,
+} from './dashboard.js';
+export type {
+  SessionListRow,
+  OverviewStatsRow,
+  EquityCurvePoint,
+  SymbolListRow,
+} from './dashboard.js';

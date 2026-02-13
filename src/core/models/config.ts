@@ -76,6 +76,17 @@ export const StorageConfigSchema = z.object({
 export type StorageConfig = z.infer<typeof StorageConfigSchema>;
 
 // -----------------------------------------------------------------------
+// Web Dashboard Configuration
+// -----------------------------------------------------------------------
+
+export const WebConfigSchema = z.object({
+  port: z.number().int().positive().default(3847),
+  host: z.string().default('127.0.0.1'),
+});
+
+export type WebConfig = z.infer<typeof WebConfigSchema>;
+
+// -----------------------------------------------------------------------
 // App Configuration (top-level)
 // -----------------------------------------------------------------------
 
@@ -85,6 +96,7 @@ export const AppConfigSchema = z.object({
   execution: ExecutionConfigSchema,
   logging: LoggingConfigSchema,
   storage: StorageConfigSchema,
+  web: WebConfigSchema.default({}),
 });
 
 export type AppConfig = z.infer<typeof AppConfigSchema>;

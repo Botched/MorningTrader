@@ -398,6 +398,10 @@ export class BacktestRunner {
         this.storage.saveSignals(session.signals, sessionId);
       }
 
+      if (session.allBars.length > 0) {
+        this.storage.saveBars(session.allBars, sessionId);
+      }
+
       this.log.debug(
         {
           date: session.date,
