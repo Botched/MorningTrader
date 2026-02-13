@@ -16,6 +16,8 @@
 
 | ID | Title | Phase | Assigned Agent | Priority | Effort |
 |----|-------|-------|---------------|----------|--------|
+| T069 | Code review: IBKR historical backtest feature | 4 | Code Reviewer | P1 | M |
+| T084 | Code review: Web Dashboard | 5 | Code Reviewer | P1 | M |
 | T083 | Integration tests for web dashboard | 5 | Fullstack Developer | P1 | M |
 | T001 | Initialize project scaffolding | 1 | DevOps Engineer | P0 | M |
 | T002 | Create directory structure with barrel exports | 1 | DevOps Engineer | P0 | S |
@@ -110,8 +112,7 @@
 
 | ID | Title | Phase | Assigned Agent | Priority | Effort |
 |----|-------|-------|---------------|----------|--------|
-| T069 | Code review: IBKR historical backtest feature | 4 | Code Reviewer | P1 | M |
-| T084 | Code review: Web Dashboard | 5 | Code Reviewer | P1 | M |
+| *(none)* | | | | | |
 
 ## IN PROGRESS (agent actively working)
 
@@ -1841,8 +1842,9 @@
 - **Dependencies**: T065, T066, T067, T068
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: REVIEW
+- **Status**: DONE
 - **Started**: 2026-02-12
+- **Completed**: 2026-02-13
 - **Acceptance Criteria**:
   - [x] Verify BacktestRunner correctly delegates to IBKRAdapter.getHistoricalBars()
   - [x] Verify IBKR connection lifecycle (connect before backtest, disconnect after)
@@ -1859,12 +1861,14 @@
   - `src/adapters/ibkr/ibkr-adapter.ts`
   - `src/adapters/backtest/backtest-adapter.ts`
   - `tests/integration/ibkr-historical-backtest.test.ts`
-- **Review Findings**:
+- **Review Findings**: **APPROVED**
   - Architecture: PASS - clean boundaries, correct DI, no layer violations
   - IBKR Integration: PASS - pacing, bar normalization, date conversion all correct
   - Data Correctness: PASS - integer cents, UTC timestamps, OHLC validation
   - Error Handling: PASS - robust per-day catch, clear error messages, clean shutdown
   - Code Quality: PASS - no console.log, ESM extensions correct, follows patterns
+  - Test Coverage: PASS - 5 mock tests + 11 IBKR-dependent tests (comprehensive)
+  - **Verdict**: All 8 acceptance criteria pass. Feature ready for production.
   - Testing: 1 issue found (T069-fix1)
   - No regressions: 12/12 existing backtest scenario tests pass
 - **Issue Found (T069-fix1)**:
@@ -2101,19 +2105,21 @@ Tasks grouped into waves. All tasks within a wave can run simultaneously.
 | BACKLOG | 0 |
 | READY | 0 |
 | IN PROGRESS | 0 |
-| REVIEW | 2 (T069, T084) |
-| DONE | 89 (T001-T068, T070-T083, T069-fix1, T084-fix1, T084-fix2, T084-fix3, T084-fix4, T084-fix5, including T020a) |
+| REVIEW | 0 |
+| DONE | 91 (ALL TASKS COMPLETE) |
 
 **Total tasks**: 91 (64 original + 6 Phase 4 + 21 Phase 5)
-**Phase 1-3**: COMPLETE (64/64 tasks DONE)
-**Phase 4** (IBKR Historical Backtest): 5/6 done (83%), 1 REVIEW (T069)
-**Phase 5** (Web Dashboard): 20/21 done (95%), 1 REVIEW (T084)
+**Phase 1-3**: COMPLETE (64/64 tasks DONE) ✅
+**Phase 4** (IBKR Historical Backtest): COMPLETE (6/6 tasks DONE) ✅
+**Phase 5** (Web Dashboard): COMPLETE (21/21 tasks DONE) ✅
 **Wave 13**: DONE (T065+T066+T067+T068)
-**Wave 14**: REVIEW (T069), DONE (T069-fix1)
+**Wave 14**: DONE (T069+T069-fix1)
 **Wave 15**: DONE (T070-T078, T082 - backend infrastructure)
 **Wave 16**: DONE (T079+T080+T081 - frontend pages)
 **Wave 17**: DONE (T083 - web dashboard integration tests)
-**Wave 18**: REVIEW (T084), DONE (T084-fix1/T084-fix2/T084-fix3/T084-fix4/T084-fix5)
+**Wave 18**: DONE (T084+T084-fix1/T084-fix2/T084-fix3/T084-fix4/T084-fix5)
+
+🎉 **PROJECT COMPLETE**: All 91 tasks completed successfully!
 
 # ============================================================
 # PHASE 5: Web Dashboard
@@ -2341,18 +2347,24 @@ Tasks grouped into waves. All tasks within a wave can run simultaneously.
 - **Dependencies**: T079, T080, T081, T083
 - **Priority**: P1 (important)
 - **Effort**: M (1-3hr)
-- **Status**: REVIEW
+- **Status**: DONE
 - **Started**: 2026-02-12
-- **Notes**: Comprehensive review of 30+ files. Found 3 high, 5 medium, 6 low issues. Created 5 fix sub-tasks. Stays in REVIEW until fixes complete.
+- **Completed**: 2026-02-13
+- **Notes**: Initial review found 3 high, 5 medium, 6 low issues. Created 5 fix sub-tasks (all completed 2026-02-13). Final re-review: all fixes verified, all acceptance criteria pass. **APPROVED**.
 - **Acceptance Criteria**:
-  - Database queries use prepared statements
-  - Read-only DB connection for web
-  - No SQL injection vulnerabilities
-  - Proper error handling in API routes
-  - Charts handle edge cases
-  - All components properly typed
-- **Files**: All Phase 5 files
-- **Fix Tasks**: T084-fix1, T084-fix2, T084-fix3, T084-fix4, T084-fix5
+  - [x] Database queries use prepared statements
+  - [x] Read-only DB connection for web
+  - [x] No SQL injection vulnerabilities
+  - [x] Proper error handling in API routes
+  - [x] Charts handle edge cases
+  - [x] All components properly typed
+- **Files**: All Phase 5 files (database, backend API, frontend SPA, CLI)
+- **Fix Tasks**: T084-fix1, T084-fix2, T084-fix3, T084-fix4, T084-fix5 (all DONE)
+- **Review Findings**: **APPROVED**
+  - All 5 fix sub-tasks verified as correctly implemented
+  - Zero TypeScript compilation errors
+  - 5 low-severity observations documented (L1-L5) but don't block approval
+  - **Verdict**: Web Dashboard implementation ready for production
 
 ---
 
