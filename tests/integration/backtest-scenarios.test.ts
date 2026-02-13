@@ -136,11 +136,11 @@ describe('Backtest Scenarios', () => {
     const trade = result.trades[0];
     expect(trade.direction).toBe('LONG');
     expect(trade.entryPrice).toBe(50280);
-    expect(trade.stopLevel).toBe(50200);
-    expect(trade.rValue).toBe(80);
-    expect(trade.target1R).toBe(50360);
-    expect(trade.target2R).toBe(50440);
-    expect(trade.target3R).toBe(50520);
+    expect(trade.stopLevel).toBe(49900);
+    expect(trade.rValue).toBe(380);
+    expect(trade.target1R).toBe(50660);
+    expect(trade.target2R).toBe(51040);
+    expect(trade.target3R).toBe(51420);
     expect(trade.entryTimestamp).toBe(TS_1010);
     expect(trade.status).toBe('TARGET_HIT');
 
@@ -197,11 +197,11 @@ describe('Backtest Scenarios', () => {
     const trade = result.trades[0];
     expect(trade.direction).toBe('SHORT');
     expect(trade.entryPrice).toBe(49720);
-    expect(trade.stopLevel).toBe(49800);
-    expect(trade.rValue).toBe(80);
-    expect(trade.target1R).toBe(49640);
-    expect(trade.target2R).toBe(49560);
-    expect(trade.target3R).toBe(49480);
+    expect(trade.stopLevel).toBe(50200);
+    expect(trade.rValue).toBe(480);
+    expect(trade.target1R).toBe(49240);
+    expect(trade.target2R).toBe(48760);
+    expect(trade.target3R).toBe(48280);
     expect(trade.entryTimestamp).toBe(TS_1010);
     expect(trade.status).toBe('TARGET_HIT');
 
@@ -291,8 +291,8 @@ describe('Backtest Scenarios', () => {
     const trade = result.trades[0];
     expect(trade.direction).toBe('LONG');
     expect(trade.entryPrice).toBe(50280);
-    expect(trade.stopLevel).toBe(50200);
-    expect(trade.rValue).toBe(80);
+    expect(trade.stopLevel).toBe(49900);
+    expect(trade.rValue).toBe(380);
     expect(trade.status).toBe('STOPPED_OUT');
 
     // Outcome
@@ -342,8 +342,8 @@ describe('Backtest Scenarios', () => {
     const trade = result.trades[0];
     expect(trade.direction).toBe('LONG');
     expect(trade.entryPrice).toBe(50280);
-    expect(trade.stopLevel).toBe(50200);
-    expect(trade.rValue).toBe(80);
+    expect(trade.stopLevel).toBe(49900);
+    expect(trade.rValue).toBe(380);
     expect(trade.currentStop).toBe(50280); // moved to entry after 1R
     expect(trade.status).toBe('STOPPED_OUT');
 
@@ -390,8 +390,8 @@ describe('Backtest Scenarios', () => {
     const trade = result.trades[0];
     expect(trade.direction).toBe('LONG');
     expect(trade.entryPrice).toBe(50280);
-    expect(trade.stopLevel).toBe(50200);
-    expect(trade.rValue).toBe(80);
+    expect(trade.stopLevel).toBe(49900);
+    expect(trade.rValue).toBe(380);
     expect(trade.status).toBe('SESSION_EXPIRED');
 
     // Outcome
@@ -440,11 +440,11 @@ describe('Backtest Scenarios', () => {
     const trade = result.trades[0];
     expect(trade.direction).toBe('LONG');
     expect(trade.entryPrice).toBe(50260);
-    expect(trade.stopLevel).toBe(50200);
-    expect(trade.rValue).toBe(60);
-    expect(trade.target1R).toBe(50320);
-    expect(trade.target2R).toBe(50380);
-    expect(trade.target3R).toBe(50440);
+    expect(trade.stopLevel).toBe(49900);
+    expect(trade.rValue).toBe(360);
+    expect(trade.target1R).toBe(50620);
+    expect(trade.target2R).toBe(50980);
+    expect(trade.target3R).toBe(51340);
     expect(trade.entryTimestamp).toBe(TS_1010);
     expect(trade.status).toBe('TARGET_HIT');
 
@@ -510,8 +510,8 @@ describe('Backtest Scenarios', () => {
     const trade = result.trades[0];
     expect(trade.direction).toBe('LONG');
     expect(trade.entryPrice).toBe(50260);
-    expect(trade.stopLevel).toBe(50200);
-    expect(trade.rValue).toBe(60);
+    expect(trade.stopLevel).toBe(49900);
+    expect(trade.rValue).toBe(360);
     expect(trade.entryTimestamp).toBe(TS_1040);
 
     // Outcome: SESSION_TIMEOUT (position open at session end)
