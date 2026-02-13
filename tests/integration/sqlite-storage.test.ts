@@ -139,11 +139,14 @@ describe('SQLiteAdapter – integration tests', () => {
       rawDb.pragma('foreign_keys = ON');
       runMigrations(rawDb, [migration001]);
 
-      const tables = rawDb
-        .prepare(
-          "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE '_%' ORDER BY name",
-        )
+      const allTables = rawDb
+        .prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
         .all() as { name: string }[];
+
+      // Filter out system tables (better-sqlite3 has issues with NOT LIKE in some contexts)
+      const tables = allTables.filter(
+        (t) => !t.name.startsWith('_') && !t.name.startsWith('sqlite_'),
+      );
 
       const tableNames = tables.map((t) => t.name);
       expect(tableNames).toContain('sessions');

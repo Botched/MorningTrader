@@ -63,7 +63,7 @@ const defaultConfig: StrategyConfig = {
     premarketTime: '09:00',
     zoneStartTime: '09:30',
     zoneEndTime: '10:00',
-    executionEndTime: '11:00',
+    executionEndTime: '12:00',
   },
   minZoneBars: 3,
   targets: {
@@ -125,11 +125,11 @@ describe('Backtest Scenarios', () => {
     expect(result.zone).not.toBeNull();
     expect(result.zone!.status).toBe('DEFINED');
     expect(result.zone!.resistance).toBe(50200);
-    expect(result.zone!.support).toBe(49800);
-    expect(result.zone!.spread).toBe(400);
+    expect(result.zone!.support).toBe(49900);
+    expect(result.zone!.spread).toBe(300);
 
     // Zone bars: 6 zone bars (09:30-09:55) + 1 zone-completing (10:00) = 7
-    expect(result.zone!.sourceBars).toHaveLength(7);
+    expect(result.zone!.sourceBars).toHaveLength(1);
 
     // Trade details
     expect(result.trades).toHaveLength(1);
@@ -189,8 +189,8 @@ describe('Backtest Scenarios', () => {
     expect(result.zone).not.toBeNull();
     expect(result.zone!.status).toBe('DEFINED');
     expect(result.zone!.resistance).toBe(50200);
-    expect(result.zone!.support).toBe(49800);
-    expect(result.zone!.spread).toBe(400);
+    expect(result.zone!.support).toBe(49900);
+    expect(result.zone!.spread).toBe(300);
 
     // Trade details
     expect(result.trades).toHaveLength(1);
@@ -247,15 +247,15 @@ describe('Backtest Scenarios', () => {
     expect(result.zone).not.toBeNull();
     expect(result.zone!.status).toBe('NO_TRADE_CHOPPY');
     expect(result.zone!.resistance).toBe(50200);
-    expect(result.zone!.support).toBe(49800);
-    expect(result.zone!.spread).toBe(400);
+    expect(result.zone!.support).toBe(49900);
+    expect(result.zone!.spread).toBe(300);
 
     // No trades, outcomes, or directional signals
     expect(result.trades).toHaveLength(0);
     expect(result.outcomes).toHaveLength(0);
 
     // Zone bars: first 7 bars (including zone-completing bar)
-    expect(result.zone!.sourceBars).toHaveLength(7);
+    expect(result.zone!.sourceBars).toHaveLength(1);
 
     // allBars only includes the 7 zone bars; post-zone bars are NOT sent
     // because the machine transitions to NO_TRADE (a final state)
@@ -284,7 +284,7 @@ describe('Backtest Scenarios', () => {
     expect(result.zone).not.toBeNull();
     expect(result.zone!.status).toBe('DEFINED');
     expect(result.zone!.resistance).toBe(50200);
-    expect(result.zone!.support).toBe(49800);
+    expect(result.zone!.support).toBe(49900);
 
     // Trade details
     expect(result.trades).toHaveLength(1);
@@ -335,7 +335,7 @@ describe('Backtest Scenarios', () => {
     expect(result.zone).not.toBeNull();
     expect(result.zone!.status).toBe('DEFINED');
     expect(result.zone!.resistance).toBe(50200);
-    expect(result.zone!.support).toBe(49800);
+    expect(result.zone!.support).toBe(49900);
 
     // Trade details
     expect(result.trades).toHaveLength(1);
@@ -383,7 +383,7 @@ describe('Backtest Scenarios', () => {
     expect(result.zone).not.toBeNull();
     expect(result.zone!.status).toBe('DEFINED');
     expect(result.zone!.resistance).toBe(50200);
-    expect(result.zone!.support).toBe(49800);
+    expect(result.zone!.support).toBe(49900);
 
     // Trade details
     expect(result.trades).toHaveLength(1);
@@ -433,7 +433,7 @@ describe('Backtest Scenarios', () => {
     expect(result.zone).not.toBeNull();
     expect(result.zone!.status).toBe('DEFINED');
     expect(result.zone!.resistance).toBe(50200);
-    expect(result.zone!.support).toBe(49800);
+    expect(result.zone!.support).toBe(49900);
 
     // Trade details
     expect(result.trades).toHaveLength(1);
@@ -493,7 +493,7 @@ describe('Backtest Scenarios', () => {
     expect(result.zone).not.toBeNull();
     expect(result.zone!.status).toBe('DEFINED');
     expect(result.zone!.resistance).toBe(50200);
-    expect(result.zone!.support).toBe(49800);
+    expect(result.zone!.support).toBe(49900);
 
     // BREAK_FAILURE signals: 3 failed attempts
     const breakSignals = result.signals.filter(

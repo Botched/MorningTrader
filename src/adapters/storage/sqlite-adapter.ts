@@ -297,6 +297,7 @@ export class SQLiteAdapter implements StorageProvider {
         SELECT t.* FROM trades t
         JOIN sessions s ON t.session_id = s.id
         WHERE s.date BETWEEN ? AND ? AND s.symbol = ?
+        ORDER BY t.entry_timestamp ASC
       `);
       return (stmt.all(from, to, symbol) as TradeRow[]).map(rowToTrade);
     }
@@ -304,6 +305,7 @@ export class SQLiteAdapter implements StorageProvider {
       SELECT t.* FROM trades t
       JOIN sessions s ON t.session_id = s.id
       WHERE s.date BETWEEN ? AND ?
+      ORDER BY t.entry_timestamp ASC
     `);
     return (stmt.all(from, to) as TradeRow[]).map(rowToTrade);
   }
