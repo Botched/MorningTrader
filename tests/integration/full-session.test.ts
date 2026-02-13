@@ -63,8 +63,8 @@ function makeBar(
 }
 
 /**
- * Standard zone bars: 7 bars from 09:30-10:00 ET (inclusive).
- * Zone: R=50200, S=49800, spread=400 cents.
+ * Standard zone bars: First bar (09:30) defines zone, remaining bars for price action.
+ * Zone (from first bar only): R=50200, S=49900, spread=300 cents.
  * Last bar (10:00) closes at resistance (50200) so the zone is NOT choppy.
  */
 function makeStandardZoneBars(): Candle[] {
@@ -82,8 +82,8 @@ function makeStandardZoneBars(): Candle[] {
 
 /**
  * Zone bars where the 10:00 close is strictly between S and R (choppy).
- * Zone: R=50200, S=49800, spread=400 cents.
- * Last bar closes at 50000 (between S=49800 and R=50200).
+ * Zone (from first bar only): R=50200, S=49900, spread=300 cents.
+ * Last bar closes at 50000 (between S=49900 and R=50200).
  */
 function makeChoppyZoneBars(): Candle[] {
   return [
@@ -158,15 +158,15 @@ describe('Full Session Integration', () => {
   // Test 1: Complete long breakout session to 3R
   // -------------------------------------------------------------------------
   it('runs a complete long breakout session to WIN_3R', async () => {
-    // Zone: R=50200, S=49800, spread=400
+    // Zone (first bar only): R=50200, S=49900, spread=300
     // After zone:
     //   10:05 - Break: high=50300 > R(50200)
     //   10:10 - Retest+Confirm: low=50180 <= R, close=50350 > R
-    //           Entry=50350, stop=50200, rValue=150
-    //           target1R=50500, target2R=50650, target3R=50800
-    //   10:15 - 1R hit: close=50520 >= 50500, trailing stop moves to entry
-    //   10:20 - 2R hit: close=50670 >= 50650
-    //   10:25 - 3R hit: close=50810 >= 50800 -> WIN_3R
+    //           Entry=50350, stop=49900, rValue=450
+    //           target1R=50800, target2R=51250, target3R=51700
+    //   10:15 - 1R hit: high >= 50800, trailing stop moves to entry
+    //   10:20 - 2R hit: high >= 51250
+    //   10:25 - 3R hit: high >= 51700 -> WIN_3R
 
     const zoneBars = makeStandardZoneBars();
     const executionBars: Candle[] = [
@@ -175,11 +175,11 @@ describe('Full Session Integration', () => {
       // Retest+Confirm: dips to R then closes above
       makeBar(TS_1010, 50250, 50400, 50180, 50350),
       // 1R hit
-      makeBar(TS_1015, 50350, 50550, 50300, 50520),
+      makeBar(TS_1015, 50350, 50850, 50300, 50750),
       // 2R hit
-      makeBar(TS_1020, 50520, 50700, 50480, 50670),
+      makeBar(TS_1020, 50750, 51300, 50700, 51200),
       // 3R hit
-      makeBar(TS_1025, 50670, 50850, 50600, 50810),
+      makeBar(TS_1025, 51200, 51750, 51150, 51700),
     ];
     const allBars = [...zoneBars, ...executionBars];
 
@@ -194,8 +194,8 @@ describe('Full Session Integration', () => {
     // Zone was properly computed
     expect(result.zone).not.toBeNull();
     expect(result.zone!.resistance).toBe(50200);
-    expect(result.zone!.support).toBe(49800);
-    expect(result.zone!.spread).toBe(400);
+    expect(result.zone!.support).toBe(49900);
+    expect(result.zone!.spread).toBe(300);
     expect(result.zone!.status).toBe('DEFINED');
 
     // One trade was taken
@@ -203,11 +203,11 @@ describe('Full Session Integration', () => {
     const trade = result.trades[0];
     expect(trade.direction).toBe('LONG');
     expect(trade.entryPrice).toBe(50350);
-    expect(trade.stopLevel).toBe(50200);
-    expect(trade.rValue).toBe(150);
-    expect(trade.target1R).toBe(50500);
-    expect(trade.target2R).toBe(50650);
-    expect(trade.target3R).toBe(50800);
+    expect(trade.stopLevel).toBe(49900);
+    expect(trade.rValue).toBe(450);
+    expect(trade.target1R).toBe(50800);
+    expect(trade.target2R).toBe(51250);
+    expect(trade.target3R).toBe(51700);
     expect(trade.status).toBe('TARGET_HIT');
 
     // One outcome: WIN_3R
@@ -215,7 +215,7 @@ describe('Full Session Integration', () => {
     const outcome = result.outcomes[0];
     expect(outcome.result).toBe('WIN_3R');
     expect(outcome.tradeId).toBe(trade.id);
-    expect(outcome.exitPrice).toBe(50800); // target3R
+    expect(outcome.exitPrice).toBe(51700); // target3R
     expect(outcome.realizedR).toBe(3);
     expect(outcome.firstThresholdReached).toBe(3);
     expect(outcome.timestamp3R).toBeGreaterThan(0);
@@ -235,19 +235,19 @@ describe('Full Session Integration', () => {
   // Test 2: Long breakout that gets stopped out (LOSS)
   // -------------------------------------------------------------------------
   it('runs a session where long position gets stopped out for LOSS', async () => {
-    // Zone: R=50200, S=49800, spread=400
+    // Zone: R=50200, S=49900, spread=300
     // After zone:
     //   10:05 - Break: high=50300 > R(50200)
     //   10:10 - Retest+Confirm: low=50180 <= R, close=50350 > R
-    //           Entry=50350, stop=50200, rValue=150
-    //   10:15 - Stop hit: close=50190 <= stop(50200) -> LOSS
+    //           Entry=50350, stop=49900, rValue=450
+    //   10:15 - Stop hit: close=49850 <= stop(49900) -> LOSS
 
     const zoneBars = makeStandardZoneBars();
     const executionBars: Candle[] = [
       makeBar(TS_1005, 50200, 50300, 50150, 50250),
       makeBar(TS_1010, 50250, 50400, 50180, 50350),
       // Price drops to stop
-      makeBar(TS_1015, 50300, 50320, 50100, 50190),
+      makeBar(TS_1015, 50300, 50320, 49800, 49850),
     ];
     const allBars = [...zoneBars, ...executionBars];
 
@@ -383,8 +383,8 @@ describe('Full Session Integration', () => {
   // Test 7: Short breakout to 3R
   // -------------------------------------------------------------------------
   it('runs a complete short breakout session to WIN_3R', async () => {
-    // Zone: R=50200, S=49800, spread=400
-    // Zone bars: last bar closes at support (49800) so NOT choppy
+    // Zone: R=50200, S=49900, spread=300 (first bar defines zone)
+    // Zone bars: 10:00 bar closes below support (49850 < 49900) so NOT choppy
     const zoneBars = [
       makeBar(TS_0930, 50000, 50200, 49900, 50100),
       makeBar(TS_0935, 50100, 50200, 49850, 49950),
@@ -392,27 +392,27 @@ describe('Full Session Integration', () => {
       makeBar(TS_0945, 50050, 50180, 49850, 49900),
       makeBar(TS_0950, 49900, 50150, 49800, 50000),
       makeBar(TS_0955, 50000, 50200, 49850, 49850),
-      // Zone-completing bar: close at support (49800) -> NOT choppy
-      makeBar(TS_1000, 49900, 50000, 49800, 49800),
+      // Zone-completing bar: close below support (49850 < 49900) -> NOT choppy
+      makeBar(TS_1000, 49900, 50000, 49800, 49850),
     ];
 
     // Short break -> retest+confirm -> 3R
-    // Break: bar.low < S (49800)
+    // Break: bar.low < S (49900)
     // Retest+Confirm: bar.high >= S AND bar.close < S
-    // Entry=close, stop=S(49800), rValue = |entry - stop|
-    // For entry at 49650: stop=49800, rValue=150
-    //   target1R=49500, target2R=49350, target3R=49200
+    // Entry=close, stop=R(50200), rValue = stop - entry
+    // For entry at 49720: stop=50200, rValue=480
+    //   target1R=49240, target2R=48760, target3R=48280
     const executionBars: Candle[] = [
-      // Break below support: low=49700 < S(49800)
-      makeBar(TS_1005, 49800, 49850, 49700, 49750),
-      // Retest+Confirm: high=49820 >= S(49800), close=49650 < S(49800)
-      makeBar(TS_1010, 49750, 49820, 49600, 49650),
-      // 1R hit: close=49480 <= target1R(49500)
-      makeBar(TS_1015, 49650, 49680, 49450, 49480),
-      // 2R hit: close=49330 <= target2R(49350)
-      makeBar(TS_1020, 49480, 49500, 49300, 49330),
-      // 3R hit: close=49180 <= target3R(49200)
-      makeBar(TS_1025, 49330, 49350, 49150, 49180),
+      // Break below support: low=49700 < S(49900)
+      makeBar(TS_1005, 49850, 49900, 49700, 49750),
+      // Retest+Confirm: high=49920 >= S(49900), close=49720 < S(49900)
+      makeBar(TS_1010, 49750, 49920, 49650, 49720),
+      // 1R hit: close=49200 <= target1R(49240)
+      makeBar(TS_1015, 49720, 49750, 49150, 49200),
+      // 2R hit: close=48700 <= target2R(48760)
+      makeBar(TS_1020, 49200, 49250, 48650, 48700),
+      // 3R hit: close=48250 <= target3R(48280)
+      makeBar(TS_1025, 48700, 48750, 48200, 48250),
     ];
     const allBars = [...zoneBars, ...executionBars];
 
@@ -424,9 +424,9 @@ describe('Full Session Integration', () => {
     expect(result.trades).toHaveLength(1);
     const trade = result.trades[0];
     expect(trade.direction).toBe('SHORT');
-    expect(trade.entryPrice).toBe(49650);
-    expect(trade.stopLevel).toBe(49800);
-    expect(trade.rValue).toBe(150);
+    expect(trade.entryPrice).toBe(49720);
+    expect(trade.stopLevel).toBe(50200);
+    expect(trade.rValue).toBe(480);
     expect(trade.status).toBe('TARGET_HIT');
 
     expect(result.outcomes).toHaveLength(1);
@@ -465,14 +465,14 @@ describe('Full Session Integration', () => {
   // Test 9: Break failure then successful entry
   // -------------------------------------------------------------------------
   it('handles break failure followed by a successful entry', async () => {
-    // Zone: R=50200, S=49800
+    // Zone: R=50200, S=49900, spread=300
     // 10:05 - Break above R: high=50300 > R
     // 10:10 - Break failure: close=50100 <= R (fails back)
     // 10:15 - Second break: high=50350 > R
     // 10:20 - Retest+Confirm: low=50180 <= R, close=50400 > R
-    //         Entry=50400, stop=R=50200, rValue=200
-    //         target1R=50600, target2R=50800, target3R=51000
-    // 10:25 - 3R: close=51010 >= 51000
+    //         Entry=50400, stop=S=49900, rValue=500
+    //         target1R=50900, target2R=51400, target3R=51900
+    // 10:25 - 3R: close=51950 >= 51900
 
     const zoneBars = makeStandardZoneBars();
     const executionBars: Candle[] = [
@@ -484,8 +484,8 @@ describe('Full Session Integration', () => {
       makeBar(TS_1015, 50100, 50350, 50050, 50300),
       // Retest+Confirm
       makeBar(TS_1020, 50300, 50450, 50180, 50400),
-      // Jump to 3R (target3R = 50400 + 600 = 51000)
-      makeBar(TS_1025, 50400, 51050, 50350, 51010),
+      // Jump to 3R (target3R = 50400 + 1500 = 51900)
+      makeBar(TS_1025, 50400, 52000, 50350, 51950),
     ];
     const allBars = [...zoneBars, ...executionBars];
 
@@ -496,7 +496,7 @@ describe('Full Session Integration', () => {
     expect(result.trades).toHaveLength(1);
     expect(result.trades[0].direction).toBe('LONG');
     expect(result.trades[0].entryPrice).toBe(50400);
-    expect(result.trades[0].rValue).toBe(200);
+    expect(result.trades[0].rValue).toBe(500);
 
     // Should have BREAK, BREAK_FAILURE, BREAK (2nd), RETEST, CONFIRMATION signals
     const signalTypes = result.signals.map(s => s.type);
@@ -535,9 +535,9 @@ describe('Full Session Integration', () => {
   // Test 11: Breakeven stop (1R reached, then stop hit at entry)
   // -------------------------------------------------------------------------
   it('records BREAKEVEN_STOP when stopped at entry after reaching 1R', async () => {
-    // Zone: R=50200, S=49800
-    // Entry: confirm at 50350, stop=50200, rValue=150
-    // target1R=50500
+    // Zone: R=50200, S=49900, spread=300
+    // Entry: confirm at 50350, stop=49900, rValue=450
+    // target1R=50800
     // 10:15: 1R hit -> stop moves to entryPrice (50350)
     // 10:20: close <= 50350 (currentStop) -> BREAKEVEN_STOP
 
@@ -545,10 +545,10 @@ describe('Full Session Integration', () => {
     const executionBars: Candle[] = [
       makeBar(TS_1005, 50200, 50300, 50150, 50250),
       makeBar(TS_1010, 50250, 50400, 50180, 50350),
-      // 1R hit: close=50520 >= 50500
-      makeBar(TS_1015, 50350, 50550, 50300, 50520),
+      // 1R hit: close=50850 >= 50800
+      makeBar(TS_1015, 50350, 50900, 50300, 50850),
       // Price reverses back to entry, stop hit at 50350
-      makeBar(TS_1020, 50500, 50520, 50280, 50340),
+      makeBar(TS_1020, 50800, 50850, 50280, 50340),
     ];
     const allBars = [...zoneBars, ...executionBars];
 
@@ -658,14 +658,16 @@ describe('Full Session with Storage', () => {
       return;
     }
 
-    // Run a full session with a trade
+    // Run a full session with a trade reaching 3R
+    // Entry=50350, stop=49900, rValue=450
+    // target1R=50800, target2R=51250, target3R=51700
     const zoneBars = makeStandardZoneBars();
     const executionBars: Candle[] = [
       makeBar(TS_1005, 50200, 50300, 50150, 50250),
       makeBar(TS_1010, 50250, 50400, 50180, 50350),
-      makeBar(TS_1015, 50350, 50550, 50300, 50520),
-      makeBar(TS_1020, 50520, 50700, 50480, 50670),
-      makeBar(TS_1025, 50670, 50850, 50600, 50810),
+      makeBar(TS_1015, 50350, 50850, 50300, 50750),  // 1R hit
+      makeBar(TS_1020, 50750, 51300, 50700, 51200),  // 2R hit
+      makeBar(TS_1025, 51200, 51750, 51150, 51700),  // 3R hit
     ];
     const allBars = [...zoneBars, ...executionBars];
 

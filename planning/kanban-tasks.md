@@ -2098,16 +2098,16 @@ Tasks grouped into waves. All tasks within a wave can run simultaneously.
 
 | Status | Count |
 |--------|-------|
-| BACKLOG | 1 (T084-fix4) |
+| BACKLOG | 0 |
 | READY | 0 |
 | IN PROGRESS | 0 |
 | REVIEW | 2 (T069, T084) |
-| DONE | 88 (T001-T068, T070-T083, T069-fix1, T084-fix1, T084-fix2, T084-fix3, T084-fix4, T084-fix5, including T020a) |
+| DONE | 89 (T001-T068, T070-T083, T069-fix1, T084-fix1, T084-fix2, T084-fix3, T084-fix4, T084-fix5, including T020a) |
 
 **Total tasks**: 91 (64 original + 6 Phase 4 + 21 Phase 5)
 **Phase 1-3**: COMPLETE (64/64 tasks DONE)
-**Phase 4** (IBKR Historical Backtest): 5/6 done, 1 REVIEW (T069)
-**Phase 5** (Web Dashboard): 19/21 done, 1 REVIEW (T084)
+**Phase 4** (IBKR Historical Backtest): 5/6 done (83%), 1 REVIEW (T069)
+**Phase 5** (Web Dashboard): 20/21 done (95%), 1 REVIEW (T084)
 **Wave 13**: DONE (T065+T066+T067+T068)
 **Wave 14**: REVIEW (T069), DONE (T069-fix1)
 **Wave 15**: DONE (T070-T078, T082 - backend infrastructure)
