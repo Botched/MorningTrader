@@ -10,6 +10,7 @@ export type {
 // Guards
 export {
   // Zone guards
+  isFirstBarComplete,
   isZoneComplete,
   isChoppyZone,
   isDegenerateZone,

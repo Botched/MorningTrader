@@ -69,4 +69,14 @@ export const api = {
   async getSymbols(): Promise<SymbolsResponse> {
     return fetchAPI('/api/symbols');
   },
+
+  async deleteAllBacktestSessions(): Promise<{ success: boolean; message: string }> {
+    const response = await fetch(`${API_BASE}/api/maintenance/backtest-sessions`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    return response.json();
+  },
 };

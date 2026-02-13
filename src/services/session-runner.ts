@@ -13,7 +13,7 @@
 
 import type { Subscription } from 'rxjs';
 import type { MarketDataProvider, Clock } from '../core/interfaces/index.js';
-import type { SessionContext, SessionStatus, StrategyConfig } from '../core/models/index.js';
+import type { SessionContext, SessionStatus, StrategyConfig, Candle } from '../core/models/index.js';
 import type { StrategyMachineContext } from '../core/strategy/events.js';
 import type { Logger } from './logger.js';
 import { createStrategyActor } from '../core/strategy/machine.js';
@@ -89,6 +89,9 @@ export class SessionRunner {
   /** Timestamp when runSession was called. */
   private startedAt = 0;
 
+  /** All bars received during the session (for persistence even if machine stops early). */
+  private allBarsReceived: Candle[] = [];
+
   constructor(
     marketData: MarketDataProvider,
     clock: Clock,
@@ -123,6 +126,7 @@ export class SessionRunner {
   async runSession(date: string, symbol: string): Promise<SessionContext> {
     this.stopped = false;
     this.startedAt = this.clock.now();
+    this.allBarsReceived = [];
 
     const windows = getSessionWindows(date);
 
@@ -179,7 +183,10 @@ export class SessionRunner {
             if (bar.timestamp < windows.zoneStartUtc) return;
             if (bar.timestamp >= windows.executionEndUtc) return;
 
-            // Do not feed bars after stop or after actor is done
+            // Always accumulate bars for persistence (even if actor stops early)
+            this.allBarsReceived.push(bar);
+
+            // Do not feed bars to actor after stop or after actor is done
             if (this.stopped) return;
             const snapshot = actor.getSnapshot();
             if (snapshot.status === 'done') return;
@@ -359,7 +366,7 @@ export class SessionRunner {
       signals: [...machineContext.signals],
       trades: [...machineContext.trades],
       outcomes: [...machineContext.outcomes],
-      allBars: [...machineContext.allBars],
+      allBars: [...this.allBarsReceived], // Use all bars received, not just what machine accumulated
       status,
       isBacktest: false,
       executionMode: 'LIVE',

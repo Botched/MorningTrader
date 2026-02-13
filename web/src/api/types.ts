@@ -9,6 +9,7 @@ export interface OverviewStats {
   breakevens: number;
   timeouts: number;
   winRate: number;
+  profitFactor: number;
   totalR: number;
   avgR: number;
   maxFavorableR: number;
@@ -116,6 +117,7 @@ export interface SessionDetailResponse {
   trades: Trade[];
   signals: Signal[];
   bars: Bar[];
+  outcomes: Outcome[];
 }
 
 export interface NarrativeKeyValue {

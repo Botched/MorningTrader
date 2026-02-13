@@ -200,10 +200,6 @@ export class SQLiteAdapter implements StorageProvider {
     }
   }
 
-  close(): void {
-    this.db.close();
-  }
-
   // ── Sessions ─────────────────────────────────────────────────────
 
   saveSession(session: SessionContext): number {
@@ -475,5 +471,33 @@ export class SQLiteAdapter implements StorageProvider {
     );
     const rows = stmt.all(sessionId) as BarRow[];
     return rows.map(rowToCandle);
+  }
+
+  // ── Maintenance ──────────────────────────────────────────────────
+
+  deleteAllBacktestSessions(): void {
+    // Delete only backtest data (is_backtest = 1), preserve real trades
+    // Get all backtest session IDs
+    const backtestSessionIds = this.db
+      .prepare('SELECT id FROM sessions WHERE is_backtest = 1')
+      .all() as { id: number }[];
+
+    if (backtestSessionIds.length === 0) {
+      return; // Nothing to delete
+    }
+
+    const ids = backtestSessionIds.map((row) => row.id);
+    const placeholders = ids.map(() => '?').join(',');
+
+    // Delete related data for backtest sessions only
+    this.db.prepare(`DELETE FROM signals WHERE session_id IN (${placeholders})`).run(...ids);
+    this.db.prepare(`DELETE FROM bars WHERE session_id IN (${placeholders})`).run(...ids);
+    this.db.prepare(`DELETE FROM trade_outcomes WHERE trade_id IN (SELECT id FROM trades WHERE session_id IN (${placeholders}))`).run(...ids);
+    this.db.prepare(`DELETE FROM trades WHERE session_id IN (${placeholders})`).run(...ids);
+    this.db.prepare(`DELETE FROM sessions WHERE is_backtest = 1`).run();
+  }
+
+  close(): void {
+    this.db.close();
   }
 }

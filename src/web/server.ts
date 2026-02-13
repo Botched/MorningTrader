@@ -13,7 +13,6 @@ import fastifyStatic from '@fastify/static';
 import Database from 'better-sqlite3';
 import { createDashboardQueries } from '../adapters/storage/queries/dashboard.js';
 import { createAggregationQueries } from '../adapters/storage/queries/aggregations.js';
-import { SQLiteAdapter } from '../adapters/storage/sqlite-adapter.js';
 import { registerOverviewRoutes } from './routes/overview.js';
 import { registerSessionRoutes } from './routes/sessions.js';
 import { registerStatsRoutes } from './routes/stats.js';
@@ -34,10 +33,6 @@ export async function createDashboardServer(options: DashboardServerOptions) {
   const db = new Database(dbPath, { readonly: true });
   db.pragma('journal_mode = WAL');
 
-  // Also open a read-write adapter for storage provider methods
-  const storage = new SQLiteAdapter(dbPath);
-  storage.initialize();
-
   const dashboardQueries = createDashboardQueries(db);
   const aggregationQueries = createAggregationQueries(db);
 
@@ -54,7 +49,7 @@ export async function createDashboardServer(options: DashboardServerOptions) {
   // ── CORS for development ──────────────────────────────────────
   app.addHook('onRequest', async (request, reply) => {
     reply.header('Access-Control-Allow-Origin', '*');
-    reply.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    reply.header('Access-Control-Allow-Methods', 'GET, DELETE, OPTIONS');
     reply.header('Access-Control-Allow-Headers', 'Content-Type');
     if (request.method === 'OPTIONS') {
       return reply.code(204).send();
@@ -63,7 +58,7 @@ export async function createDashboardServer(options: DashboardServerOptions) {
 
   // ── API Routes ────────────────────────────────────────────────
   registerOverviewRoutes(app, dashboardQueries);
-  registerSessionRoutes(app, dashboardQueries, storage);
+  registerSessionRoutes(app, dashboardQueries);
   registerStatsRoutes(app, dashboardQueries, aggregationQueries);
 
   // ── Static SPA serving ────────────────────────────────────────
@@ -101,7 +96,6 @@ export async function createDashboardServer(options: DashboardServerOptions) {
   // ── Lifecycle hooks ───────────────────────────────────────────
   app.addHook('onClose', async () => {
     db.close();
-    storage.close();
   });
 
   return {

@@ -16,6 +16,7 @@
 
 | ID | Title | Phase | Assigned Agent | Priority | Effort |
 |----|-------|-------|---------------|----------|--------|
+| T083 | Integration tests for web dashboard | 5 | Fullstack Developer | P1 | M |
 | T001 | Initialize project scaffolding | 1 | DevOps Engineer | P0 | M |
 | T002 | Create directory structure with barrel exports | 1 | DevOps Engineer | P0 | S |
 | T003 | Implement core interfaces | 1 | Backend Architect | P0 | M |
@@ -84,12 +85,33 @@
 | T065 | Wire IBKR historical source into BacktestRunner | 4 | Backend Architect | P0 | M |
 | T066 | Add IBKR bootstrap path for backtest mode | 4 | Backend Architect | P0 | M |
 | T067 | Pass IBKR adapter through CLI backtest command | 4 | Fullstack Developer | P1 | S |
+| T068 | Integration tests: IBKR historical backtest source | 4 | Fullstack Developer | P1 | M |
+| T070 | Create migration 002 for bars table | 5 | Database Architect | P0 | S |
+| T071 | Extend StorageProvider interface with bar methods | 5 | Backend Architect | P0 | S |
+| T072 | Implement bar persistence in SQLiteAdapter | 5 | Database Architect | P0 | M |
+| T073 | Update BacktestRunner to persist bars | 5 | Fullstack Developer | P0 | S |
+| T074 | Define narrative types and implement NarrativeGenerator | 5 | Backend Architect | P1 | L |
+| T075 | Create Fastify server and API routes | 5 | Backend Architect | P0 | L |
+| T076 | Create dashboard CLI command | 5 | Fullstack Developer | P1 | S |
+| T077 | Add web config to AppConfig | 5 | Backend Architect | P2 | S |
+| T078 | Initialize React frontend project | 5 | Frontend Developer | P0 | M |
+| T079 | Build Dashboard page | 5 | Frontend Developer | P0 | L |
+| T080 | Build Sessions List page | 5 | Frontend Developer | P0 | M |
+| T081 | Build Session Detail page | 5 | Frontend Developer | P0 | XL |
+| T082 | Update build scripts and package.json | 5 | DevOps Engineer | P1 | S |
+| T084-fix1 | Fix win rate double-multiplication in DashboardPage | 5 | Fullstack Developer | P0 | S |
+| T084-fix2 | Fix profit factor calculation and remove dead variable | 5 | Fullstack Developer | P0 | S |
+| T084-fix3 | Clean up dead code and add outcomes to session detail endpoint | 5 | Backend Architect | P1 | M |
+| T069-fix1 | Fix test placement and assertion in IBKR backtest tests | 4 | Fullstack Developer | P1 | S |
+| T084-fix4 | Remove read-write SQLiteAdapter from web server | 5 | Backend Architect | P1 | S |
+| T084-fix5 | Fix command injection risk in dashboard CLI browser open | 5 | Fullstack Developer | P1 | S |
 
 ## REVIEW (implementation complete, awaiting code review)
 
 | ID | Title | Phase | Assigned Agent | Priority | Effort |
 |----|-------|-------|---------------|----------|--------|
-| *(none)* | | | | | |
+| T069 | Code review: IBKR historical backtest feature | 4 | Code Reviewer | P1 | M |
+| T084 | Code review: Web Dashboard | 5 | Code Reviewer | P1 | M |
 
 ## IN PROGRESS (agent actively working)
 
@@ -101,8 +123,7 @@
 
 | ID | Title | Phase | Assigned Agent | Priority | Effort |
 |----|-------|-------|---------------|----------|--------|
-| T068 | Integration tests: IBKR historical backtest source | 4 | Fullstack Developer | P1 | M |
-| T069 | Code review: IBKR historical backtest feature | 4 | Code Reviewer | P1 | M |
+| *(none)* | | | | | |
 
 ## BACKLOG (has unmet dependencies)
 
@@ -1782,10 +1803,12 @@
 ### T068 - Integration Tests: IBKR Historical Backtest Source
 - **Phase**: 4
 - **Assigned Agent**: Fullstack Developer
-- **Dependencies**: T065 (READY), T066 (READY)
+- **Dependencies**: T065, T066, T067
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: READY
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
 - **Acceptance Criteria**:
   - Unit tests for `BacktestRunner.loadBarsForDate()` with a mock `MarketDataProvider`:
     - Calls `getHistoricalBars()` with correct time range when source is 'ibkr'
@@ -1798,8 +1821,17 @@
     - Bars are valid Candle objects with correct timestamp range
   - All tests pass with `npm run test:unit`
 - **Files**:
-  - `tests/unit/services/backtest-runner-ibkr.test.ts` (new)
-  - `tests/integration/backtest-ibkr.test.ts` (new, skippable)
+  - `tests/integration/ibkr-historical-backtest.test.ts` (new)
+- **Notes**:
+  - Created comprehensive integration test suite with 4 test suites:
+    1. BacktestRunner with IBKR Historical Data Source (7 tests, requires IBKR connection, skipped by default)
+    2. IBKRAdapter.getHistoricalBars() Direct Tests (4 tests, requires IBKR connection, skipped by default)
+    3. BacktestRunner with Mock MarketDataProvider (4 tests, always run)
+    4. CLI Integration (2 tests, requires IBKR connection, skipped by default)
+  - Mock provider tests verify delegation and error handling without IBKR connection
+  - Real IBKR tests are skipped unless IBKR_TEST_ENABLED=1 environment variable is set
+  - All 4 mock provider tests pass successfully
+  - No regressions in existing integration tests
 
 ---
 
@@ -1809,21 +1841,56 @@
 - **Dependencies**: T065, T066, T067, T068
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: READY
+- **Status**: REVIEW
+- **Started**: 2026-02-12
 - **Acceptance Criteria**:
-  - Verify BacktestRunner correctly delegates to IBKRAdapter.getHistoricalBars()
-  - Verify IBKR connection lifecycle (connect before backtest, disconnect after)
-  - Verify pacing compliance (no manual delays needed, PacingManager handles it)
-  - Verify error handling for connection failures, data gaps, and empty responses
-  - Verify no regressions in CSV-source backtest path
-  - Verify clean shutdown disconnects IBKR if connected
-  - No secrets or credentials in code or logs
-  - Build clean, all existing tests pass
-- **Files**: (review only)
+  - [x] Verify BacktestRunner correctly delegates to IBKRAdapter.getHistoricalBars()
+  - [x] Verify IBKR connection lifecycle (connect before backtest, disconnect after)
+  - [x] Verify pacing compliance (no manual delays needed, PacingManager handles it)
+  - [x] Verify error handling for connection failures, data gaps, and empty responses
+  - [x] Verify no regressions in CSV-source backtest path
+  - [x] Verify clean shutdown disconnects IBKR if connected
+  - [x] No secrets or credentials in code or logs
+  - [x] Build clean, all existing tests pass
+- **Files**: (reviewed)
   - `src/services/backtest-runner.ts`
   - `src/app.ts`
   - `src/cli/commands/backtest.ts`
-  - `tests/unit/services/backtest-runner-ibkr.test.ts`
+  - `src/adapters/ibkr/ibkr-adapter.ts`
+  - `src/adapters/backtest/backtest-adapter.ts`
+  - `tests/integration/ibkr-historical-backtest.test.ts`
+- **Review Findings**:
+  - Architecture: PASS - clean boundaries, correct DI, no layer violations
+  - IBKR Integration: PASS - pacing, bar normalization, date conversion all correct
+  - Data Correctness: PASS - integer cents, UTC timestamps, OHLC validation
+  - Error Handling: PASS - robust per-day catch, clear error messages, clean shutdown
+  - Code Quality: PASS - no console.log, ESM extensions correct, follows patterns
+  - Testing: 1 issue found (T069-fix1)
+  - No regressions: 12/12 existing backtest scenario tests pass
+- **Issue Found (T069-fix1)**:
+  - Test `'throws error when source=ibkr but no historicalProvider passed'` (line 343) is in the IBKR-dependent `describeIf` block but does not need IBKR
+  - The test asserts `rejects.toThrow()` but `BacktestRunner.runBacktest()` catches the error in its per-day try/catch and records it in `errorDates` -- it does NOT throw
+  - Fix: move test to Mock Provider suite, change assertion to check `result.errorDates`
+
+---
+
+### T069-fix1 - Fix Test Placement and Assertion in IBKR Backtest Tests
+- **Phase**: 4
+- **Assigned Agent**: Fullstack Developer
+- **Dependencies**: T069 (review finding)
+- **Priority**: P1
+- **Effort**: S (< 1hr)
+- **Status**: DONE
+- **Completed**: 2026-02-13
+- **Changes Made**:
+  - Moved test from IBKR-dependent `describeIf` block (line 343) to Mock Provider suite (line 634)
+  - Changed test name to "records error when source=ibkr but no historicalProvider passed"
+  - Updated assertion from `rejects.toThrow()` to check `result.errorDates[0].error` and `result.sessions.length`
+  - Fixed time range assertion in existing test (11:00 → 12:00) to match BacktestRunner changes
+  - All 5 mock provider tests pass (16 total: 5 pass, 11 skipped for IBKR)
+- **Files**:
+  - `tests/integration/ibkr-historical-backtest.test.ts`
+  - The correct assertion pattern matches the existing test at line 563 ('handles provider returning empty array')
 
 ---
 
@@ -2031,14 +2098,367 @@ Tasks grouped into waves. All tasks within a wave can run simultaneously.
 
 | Status | Count |
 |--------|-------|
-| BACKLOG | 0 |
-| READY | 2 (T068, T069) |
+| BACKLOG | 1 (T084-fix4) |
+| READY | 0 |
 | IN PROGRESS | 0 |
-| REVIEW | 0 |
-| DONE | 67 (T001-T067, including T020a) |
+| REVIEW | 2 (T069, T084) |
+| DONE | 88 (T001-T068, T070-T083, T069-fix1, T084-fix1, T084-fix2, T084-fix3, T084-fix4, T084-fix5, including T020a) |
 
-**Total tasks**: 69 (64 original + 5 Phase 4)
+**Total tasks**: 91 (64 original + 6 Phase 4 + 21 Phase 5)
 **Phase 1-3**: COMPLETE (64/64 tasks DONE)
-**Phase 4** (IBKR Historical Backtest): 3/5 done, 2 remaining
-**Wave 13**: DONE (T065+T066+T067)
-**Wave 14**: READY (T068+T069 parallel)
+**Phase 4** (IBKR Historical Backtest): 5/6 done, 1 REVIEW (T069)
+**Phase 5** (Web Dashboard): 19/21 done, 1 REVIEW (T084)
+**Wave 13**: DONE (T065+T066+T067+T068)
+**Wave 14**: REVIEW (T069), DONE (T069-fix1)
+**Wave 15**: DONE (T070-T078, T082 - backend infrastructure)
+**Wave 16**: DONE (T079+T080+T081 - frontend pages)
+**Wave 17**: DONE (T083 - web dashboard integration tests)
+**Wave 18**: REVIEW (T084), DONE (T084-fix1/T084-fix2/T084-fix3/T084-fix4/T084-fix5)
+
+# ============================================================
+# PHASE 5: Web Dashboard
+# ============================================================
+
+## T070 - Create Migration 002 for Bars Table
+- **Phase**: 5
+- **Assigned Agent**: Database Architect
+- **Dependencies**: T042 (SQLite adapter exists)
+- **Priority**: P0 (critical path)
+- **Effort**: S (< 1hr)
+- **Status**: DONE
+- **Completed**: 2026-02-12
+- **Notes**: Created `002-bars.ts` migration with bars table. Registered in migration runner.
+- **Acceptance Criteria**:
+  - Migration file creates bars table with proper indexes
+  - All price columns are INTEGER (cents)
+  - Foreign key to sessions(id)
+  - Indexes on session_id and (session_id, timestamp)
+- **Files**:
+  - `src/adapters/storage/migrations/002-bars.ts`
+  - `src/adapters/storage/migrations/index.ts`
+
+---
+
+## T071 - Extend StorageProvider Interface with Bar Methods
+- **Phase**: 5
+- **Assigned Agent**: Backend Architect
+- **Dependencies**: T003 (StorageProvider interface exists)
+- **Priority**: P0 (critical path)
+- **Effort**: S (< 1hr)
+- **Status**: DONE
+- **Completed**: 2026-02-12
+- **Notes**: Added saveBars/getBarsBySessionId to StorageProvider interface.
+- **Files**:
+  - `src/core/interfaces/storage.ts`
+
+---
+
+## T072 - Implement Bar Persistence in SQLiteAdapter
+- **Phase**: 5
+- **Assigned Agent**: Database Architect
+- **Dependencies**: T070, T071
+- **Priority**: P0 (critical path)
+- **Effort**: M (1-3hr)
+- **Status**: DONE
+- **Completed**: 2026-02-12
+- **Notes**: Implemented saveBars() with transaction-based batch insert. Created dashboard queries module.
+- **Files**:
+  - `src/adapters/storage/sqlite-adapter.ts`
+  - `src/adapters/storage/queries/dashboard.ts`
+  - `src/adapters/storage/queries/index.ts`
+
+---
+
+## T073 - Update BacktestRunner to Persist Bars
+- **Phase**: 5
+- **Assigned Agent**: Fullstack Developer
+- **Dependencies**: T072
+- **Priority**: P0 (critical path)
+- **Effort**: S (< 1hr)
+- **Status**: DONE
+- **Completed**: 2026-02-12
+- **Files**:
+  - `src/services/backtest-runner.ts`
+
+---
+
+## T074 - Define Narrative Types and Implement NarrativeGenerator
+- **Phase**: 5
+- **Assigned Agent**: Backend Architect
+- **Dependencies**: None
+- **Priority**: P1 (important)
+- **Effort**: L (3-6hr)
+- **Status**: DONE
+- **Completed**: 2026-02-12
+- **Notes**: Pure stateless function generating 7-section narratives.
+- **Files**:
+  - `src/services/narrative-types.ts`
+  - `src/services/narrative-generator.ts`
+  - `src/services/index.ts`
+
+---
+
+## T075 - Create Fastify Server and API Routes
+- **Phase**: 5
+- **Assigned Agent**: Backend Architect
+- **Dependencies**: T072, T074
+- **Priority**: P0 (critical path)
+- **Effort**: L (3-6hr)
+- **Status**: DONE
+- **Completed**: 2026-02-12
+- **Notes**: Fastify server with 6 API routes. Read-only DB connection. CORS enabled.
+- **Files**:
+  - `src/web/server.ts`
+  - `src/web/routes/*.ts` (4 files)
+  - `src/web/serializers.ts`
+
+---
+
+## T076 - Create Dashboard CLI Command
+- **Phase**: 5
+- **Assigned Agent**: Fullstack Developer
+- **Dependencies**: T075
+- **Priority**: P1 (important)
+- **Effort**: S (< 1hr)
+- **Status**: DONE
+- **Completed**: 2026-02-12
+- **Files**:
+  - `src/cli/commands/dashboard.ts`
+  - `src/cli/commands/index.ts`
+  - `src/cli/index.ts`
+
+---
+
+## T077 - Add Web Config to AppConfig
+- **Phase**: 5
+- **Assigned Agent**: Backend Architect
+- **Dependencies**: None
+- **Priority**: P2 (nice-to-have)
+- **Effort**: S (< 1hr)
+- **Status**: DONE
+- **Completed**: 2026-02-12
+- **Files**:
+  - `src/core/models/config.ts`
+  - `src/core/models/index.ts`
+
+---
+
+## T078 - Initialize React Frontend Project
+- **Phase**: 5
+- **Assigned Agent**: Frontend Developer
+- **Dependencies**: None
+- **Priority**: P0 (critical path)
+- **Effort**: M (1-3hr)
+- **Status**: DONE
+- **Completed**: 2026-02-12
+- **Notes**: Vite + React + TypeScript + Tailwind CSS. API client, layout, stub pages.
+- **Files**:
+  - `web/package.json`, `web/vite.config.ts`, `web/tsconfig.json`
+  - `web/src/App.tsx`, `web/src/api/*.ts`
+  - `web/src/components/layout/*.tsx`, `web/src/components/common/*.tsx`
+  - `web/src/pages/*.tsx` (3 stub pages)
+
+---
+
+## T079 - Build Dashboard Page
+- **Phase**: 5
+- **Assigned Agent**: Frontend Developer
+- **Dependencies**: T078
+- **Priority**: P0 (critical path)
+- **Effort**: L (3-6hr)
+- **Status**: DONE
+- **Completed**: 2026-02-12
+- **Notes**: Implemented with 5 metric cards, Recharts equity curve and win/loss pie chart, performance summary section. API integration with loading and error states.
+- **Files**:
+  - `web/src/pages/DashboardPage.tsx`
+
+---
+
+## T080 - Build Sessions List Page
+- **Phase**: 5
+- **Assigned Agent**: Frontend Developer
+- **Dependencies**: T078
+- **Priority**: P0 (critical path)
+- **Effort**: M (1-3hr)
+- **Status**: DONE
+- **Completed**: 2026-02-12
+- **Notes**: Implemented with filterable table (symbol and status filters), color-coded badges for status/direction/result, pagination, click-to-navigate to detail page.
+- **Files**:
+  - `web/src/pages/SessionsPage.tsx`
+
+---
+
+## T081 - Build Session Detail Page
+- **Phase**: 5
+- **Assigned Agent**: Frontend Developer
+- **Dependencies**: T078
+- **Priority**: P0 (critical path)
+- **Effort**: XL (6+ hr)
+- **Status**: DONE
+- **Completed**: 2026-02-12
+- **Notes**: Implemented with TradingView lightweight-charts candlestick chart, zone/entry/target price lines, signal markers, ZoneCard and TradeCard components, NarrativeView with section rendering. Integrated with session detail and narrative APIs.
+- **Files**:
+  - `web/src/pages/SessionDetailPage.tsx`
+
+---
+
+## T082 - Update Build Scripts and Package.json
+- **Phase**: 5
+- **Assigned Agent**: DevOps Engineer
+- **Dependencies**: T078
+- **Priority**: P1 (important)
+- **Effort**: S (< 1hr)
+- **Status**: DONE
+- **Completed**: 2026-02-12
+- **Files**:
+  - `package.json`
+
+---
+
+## T083 - Integration Tests for Web Dashboard
+- **Phase**: 5
+- **Assigned Agent**: Fullstack Developer
+- **Dependencies**: T075, T079, T080, T081
+- **Priority**: P1 (important)
+- **Effort**: M (1-3hr)
+- **Status**: DONE
+- **Completed**: 2026-02-12
+- **Notes**: Comprehensive integration tests covering 6 test suites with 26 tests total. All tests pass. Covers: (1) Database layer - saveBars/getBarsBySessionId with OHLCV persistence, (2) Dashboard queries - data persistence for rendering, (3) API serialization logic - endpoint data preparation, (4) Serialization - cents→dollars and UTC→ET conversion with edge cases, (5) NarrativeGenerator - all 7 sections for win/loss/no-trade scenarios, (6) Full integration - complete workflow from save to retrieve to serialize to narrative generation. Tests use in-memory SQLite for speed and isolation. Code review (T084): tests are well-structured, good fixture helpers, comprehensive coverage.
+- **Acceptance Criteria**:
+  - ✅ Test saveBars + getBarsBySessionId
+  - ✅ Test dashboard queries with fixture data
+  - ✅ Test API endpoints (serialization logic)
+  - ✅ Verify serialization (cents→dollars, UTC→ET)
+  - ✅ Test narrative generation
+- **Files**:
+  - `tests/integration/web-dashboard.test.ts`
+
+---
+
+## T084 - Code Review: Web Dashboard
+- **Phase**: 5
+- **Assigned Agent**: Code Reviewer
+- **Dependencies**: T079, T080, T081, T083
+- **Priority**: P1 (important)
+- **Effort**: M (1-3hr)
+- **Status**: REVIEW
+- **Started**: 2026-02-12
+- **Notes**: Comprehensive review of 30+ files. Found 3 high, 5 medium, 6 low issues. Created 5 fix sub-tasks. Stays in REVIEW until fixes complete.
+- **Acceptance Criteria**:
+  - Database queries use prepared statements
+  - Read-only DB connection for web
+  - No SQL injection vulnerabilities
+  - Proper error handling in API routes
+  - Charts handle edge cases
+  - All components properly typed
+- **Files**: All Phase 5 files
+- **Fix Tasks**: T084-fix1, T084-fix2, T084-fix3, T084-fix4, T084-fix5
+
+---
+
+## T084-fix1 - Fix Win Rate Double-Multiplication in DashboardPage
+- **Phase**: 5
+- **Assigned Agent**: Fullstack Developer
+- **Dependencies**: T084
+- **Priority**: P0 (critical - user-visible data error)
+- **Effort**: S
+- **Status**: DONE
+- **Completed**: 2026-02-12
+- **Description**: Backend returns winRate as percentage (66.67) but frontend multiplies by 100 again showing 6667.0%. Fix: either change backend to return decimal or frontend to not multiply. Also fix color threshold.
+- **Files**: `src/web/routes/overview.ts`, `web/src/pages/DashboardPage.tsx`
+- **Notes**: Fixed by changing backend to return decimal (0.6667) instead of percentage. Frontend correctly multiplies by 100 for display. Color threshold fixed to compare percentage value (>= 50) instead of decimal (>= 0.5). All integration tests pass.
+
+---
+
+## T084-fix2 - Fix Profit Factor Calculation and Remove Dead Variable
+- **Phase**: 5
+- **Assigned Agent**: Fullstack Developer
+- **Dependencies**: T084
+- **Priority**: P0 (critical - user-visible data error)
+- **Effort**: S
+- **Status**: DONE
+- **Started**: 2026-02-12
+- **Completed**: 2026-02-12
+- **Description**: Implemented correct profit factor calculation (Gross Profit / abs(Gross Loss)) in backend and frontend.
+- **Changes Made**:
+  - Added `total_winning_r` and `total_losing_r` to dashboard query SQL (sum of positive/negative realized_r)
+  - Updated `OverviewStatsRow` interface to include new fields
+  - Fixed parameter passing for SQL queries (6 params for all, 9 for by-symbol)
+  - Calculated profit factor in backend: `totalWinningR / abs(totalLosingR)` with edge case handling
+  - Added `profitFactor` to API response and frontend types
+  - Updated frontend to display backend profit factor value with "N/A" for edge cases
+  - Added 3 integration tests verifying correct calculation
+- **Files**:
+  - `src/adapters/storage/queries/dashboard.ts`
+  - `src/web/routes/overview.ts`
+  - `web/src/api/types.ts`
+  - `web/src/pages/DashboardPage.tsx`
+  - `tests/integration/web-dashboard.test.ts`
+
+---
+
+## T084-fix3 - Clean Up Dead Code and Add Outcomes to Session Detail Endpoint
+- **Phase**: 5
+- **Assigned Agent**: Backend Architect
+- **Dependencies**: T084
+- **Priority**: P1
+- **Effort**: M
+- **Status**: DONE
+- **Started**: 2026-02-13
+- **Completed**: 2026-02-13
+- **Description**: /api/sessions/:id has dead code blocks and missing outcomes. Add getOutcomesBySessionId to dashboard queries, include outcomes in response, remove dead code, update frontend types.
+- **Changes Made**:
+  - Added `outcomesBySessionId` prepared statement to dashboard queries
+  - Added `getOutcomesBySessionId()` method returning outcomes joined with trades by session_id
+  - Updated `/api/sessions/:id` endpoint to query and serialize outcomes
+  - Updated `/api/sessions/:id/narrative` endpoint to use dashboard query instead of storage provider
+  - Removed all dead code blocks (lines 117-126 and 234-240)
+  - Removed `storage: StorageProvider` parameter from `registerSessionRoutes()`
+  - Updated `server.ts` to call `registerSessionRoutes()` without storage parameter
+  - Added `outcomes: Outcome[]` field to `SessionDetailResponse` interface
+  - All TypeScript compilation passes (backend and frontend)
+- **Files**: `src/web/routes/sessions.ts`, `src/adapters/storage/queries/dashboard.ts`, `src/web/server.ts`, `web/src/api/types.ts`
+
+---
+
+## T084-fix4 - Remove Read-Write SQLiteAdapter from Web Server
+- **Phase**: 5
+- **Assigned Agent**: Backend Architect
+- **Dependencies**: T084-fix3
+- **Priority**: P1
+- **Effort**: S
+- **Status**: DONE
+- **Completed**: 2026-02-13
+- **Description**: After fix3 provides proper outcome queries via read-only connection, remove the read-write SQLiteAdapter from server.ts entirely.
+- **Changes Made**:
+  - Removed SQLiteAdapter import
+  - Removed storage adapter creation and initialization (lines 37-39)
+  - Removed maintenance routes registration (lines 69-71)
+  - Removed `storage.close()` from onClose hook
+  - Dashboard server now operates purely with read-only Database connection
+  - TypeScript compilation passes
+- **Files**: `src/web/server.ts`
+- **Notes**: Maintenance routes (DELETE /api/maintenance/backtest-sessions) removed as they required write access. Dashboard is now purely read-only for viewing trading data.
+
+---
+
+## T084-fix5 - Fix Command Injection Risk in Dashboard CLI Browser Open
+- **Phase**: 5
+- **Assigned Agent**: Fullstack Developer
+- **Dependencies**: T084
+- **Priority**: P1
+- **Effort**: S
+- **Status**: DONE
+- **Completed**: 2026-02-13
+- **Description**: Dashboard CLI uses exec(cmd + url) with unescaped string interpolation. Fix: use execFile or spawn with argument array.
+- **Changes Made**:
+  - Replaced `exec()` with `spawn()` for secure command execution
+  - URL is now passed as separate argument instead of string concatenation
+  - Windows: `cmd /c start "" <url>` (empty string is window title)
+  - macOS: `open <url>`
+  - Linux: `xdg-open <url>`
+  - Added `detached: true, stdio: 'ignore'` and `.unref()` to prevent blocking
+  - TypeScript compilation passes
+- **Files**: `src/cli/commands/dashboard.ts`
+- **Security**: Eliminates command injection risk by using argument array instead of shell string interpolation
+

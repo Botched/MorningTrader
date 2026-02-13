@@ -114,6 +114,8 @@ export const strategyMachine = setup({
   // -----------------------------------------------------------------------
   guards: {
     // Zone guards
+    isFirstBarComplete: ({ context, event }: GuardArgs) =>
+      guardFns.isFirstBarComplete(context, event),
     isZoneComplete: ({ context, event }: GuardArgs) =>
       guardFns.isZoneComplete(context, event),
     isChoppyZone: ({ context }: ContextOnlyArgs) =>
@@ -226,18 +228,38 @@ export const strategyMachine = setup({
     },
 
     // =======================================================================
-    // BUILDING_ZONE -- accumulating 5-min bars from 09:30 to 10:00 ET
+    // BUILDING_ZONE -- capturing first 5-min bar (09:30-09:35 ET) to define zone
+    // Then observing until 10:00 ET before evaluating for entries
     // =======================================================================
     BUILDING_ZONE: {
       on: {
         NEW_BAR: [
           {
-            guard: 'isZoneComplete',
+            guard: 'isFirstBarComplete',
             actions: ['accumulateBar', 'accumulateZoneBar', 'computeZone'],
-            target: 'EVALUATING_ZONE',
+            target: 'OBSERVING_ZONE',
           },
           {
             actions: ['accumulateBar', 'accumulateZoneBar'],
+          },
+        ],
+        ERROR: { target: 'ERROR', actions: 'setError' },
+      },
+    },
+
+    // =======================================================================
+    // OBSERVING_ZONE -- zone defined, observing price action until 10:00 ET
+    // =======================================================================
+    OBSERVING_ZONE: {
+      on: {
+        NEW_BAR: [
+          {
+            guard: 'isZoneComplete',
+            actions: 'accumulateBar',
+            target: 'EVALUATING_ZONE',
+          },
+          {
+            actions: 'accumulateBar',
           },
         ],
         ERROR: { target: 'ERROR', actions: 'setError' },

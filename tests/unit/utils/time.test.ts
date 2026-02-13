@@ -79,8 +79,8 @@ describe('getSessionWindows', () => {
     expect(windows.zoneStartUtc).toBe(Date.UTC(2024, 5, 15, 13, 30, 0, 0));
     // 10:00 ET (EDT) = 14:00 UTC
     expect(windows.zoneEndUtc).toBe(Date.UTC(2024, 5, 15, 14, 0, 0, 0));
-    // 11:00 ET (EDT) = 15:00 UTC
-    expect(windows.executionEndUtc).toBe(Date.UTC(2024, 5, 15, 15, 0, 0, 0));
+    // 12:00 ET (EDT) = 16:00 UTC
+    expect(windows.executionEndUtc).toBe(Date.UTC(2024, 5, 15, 16, 0, 0, 0));
   });
 
   it('returns correct session windows for a winter day (EST, UTC-5)', () => {
@@ -92,29 +92,29 @@ describe('getSessionWindows', () => {
     expect(windows.zoneStartUtc).toBe(Date.UTC(2024, 0, 15, 14, 30, 0, 0));
     // 10:00 ET (EST) = 15:00 UTC
     expect(windows.zoneEndUtc).toBe(Date.UTC(2024, 0, 15, 15, 0, 0, 0));
-    // 11:00 ET (EST) = 16:00 UTC
-    expect(windows.executionEndUtc).toBe(Date.UTC(2024, 0, 15, 16, 0, 0, 0));
+    // 12:00 ET (EST) = 17:00 UTC
+    expect(windows.executionEndUtc).toBe(Date.UTC(2024, 0, 15, 17, 0, 0, 0));
   });
 
   it('handles DST spring forward correctly (2024-03-10)', () => {
     const windows = getSessionWindows('2024-03-10');
-    // After spring forward, 09:30 ET is EDT = UTC-4
+    // After spring forward, 09:30 ET is EDT = UTC-4, so 12:00 ET = 16:00 UTC
     expect(windows.zoneStartUtc).toBe(Date.UTC(2024, 2, 10, 13, 30, 0, 0));
-    expect(windows.executionEndUtc).toBe(Date.UTC(2024, 2, 10, 15, 0, 0, 0));
+    expect(windows.executionEndUtc).toBe(Date.UTC(2024, 2, 10, 16, 0, 0, 0));
   });
 
   it('handles DST fall back correctly (2024-11-03)', () => {
     const windows = getSessionWindows('2024-11-03');
-    // After fall back, 09:30 ET is EST = UTC-5
+    // After fall back, 09:30 ET is EST = UTC-5, so 12:00 ET = 17:00 UTC
     expect(windows.zoneStartUtc).toBe(Date.UTC(2024, 10, 3, 14, 30, 0, 0));
-    expect(windows.executionEndUtc).toBe(Date.UTC(2024, 10, 3, 16, 0, 0, 0));
+    expect(windows.executionEndUtc).toBe(Date.UTC(2024, 10, 3, 17, 0, 0, 0));
   });
 
-  it('session window spans are always 30min zone and 2h total execution', () => {
+  it('session window spans: 30min zone, 2.5h total execution (09:30-12:00)', () => {
     const windows = getSessionWindows('2024-06-15');
     expect(windows.zoneEndUtc - windows.zoneStartUtc).toBe(30 * 60 * 1000);
     expect(windows.executionEndUtc - windows.zoneStartUtc).toBe(
-      90 * 60 * 1000,
+      150 * 60 * 1000, // 09:30-12:00 = 2.5 hours = 150 minutes
     );
     expect(windows.zoneStartUtc - windows.premarketUtc).toBe(30 * 60 * 1000);
   });

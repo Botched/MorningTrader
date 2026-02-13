@@ -1,6 +1,5 @@
 import type { FastifyInstance } from 'fastify';
 import type { createDashboardQueries } from '../../adapters/storage/queries/dashboard.js';
-import type { StorageProvider } from '../../core/interfaces/storage.js';
 import {
   centsToDollars,
   serializeBar,
@@ -26,7 +25,6 @@ type DashboardQueries = ReturnType<typeof createDashboardQueries>;
 export function registerSessionRoutes(
   app: FastifyInstance,
   queries: DashboardQueries,
-  storage: StorageProvider,
 ) {
   // ── Session list ──────────────────────────────────────────────
 
@@ -113,17 +111,7 @@ export function registerSessionRoutes(
     const trades = queries.getTradesBySessionId(sessionId) as Array<Record<string, unknown>>;
     const signals = queries.getSignalsBySessionId(sessionId) as Array<Record<string, unknown>>;
     const bars = queries.getBarsBySessionId(sessionId) as Array<Record<string, unknown>>;
-
-    // Get outcomes for each trade
-    const outcomes: Array<Record<string, unknown>> = [];
-    for (const trade of trades) {
-      const tradeId = trade.id as string;
-      const outcomeRows = (queries as unknown as {
-        getTradesBySessionId: (id: number) => unknown[];
-      }); // outcomes are in trade_outcomes table, query separately
-      // Actually use the storage provider for outcomes
-      void outcomeRows;
-    }
+    const outcomes = queries.getOutcomesBySessionId(sessionId) as Array<Record<string, unknown>>;
 
     return {
       session: {
@@ -141,6 +129,7 @@ export function registerSessionRoutes(
       trades: trades.map((t) => serializeTrade(t as Parameters<typeof serializeTrade>[0])),
       signals: signals.map((s) => serializeSignal(s as Parameters<typeof serializeSignal>[0])),
       bars: bars.map((b) => serializeBar(b as Parameters<typeof serializeBar>[0])),
+      outcomes: outcomes.map((o) => serializeOutcome(o as Parameters<typeof serializeOutcome>[0])),
     };
   });
 
@@ -158,6 +147,7 @@ export function registerSessionRoutes(
     const trades = queries.getTradesBySessionId(sessionId) as Array<Record<string, unknown>>;
     const signals = queries.getSignalsBySessionId(sessionId) as Array<Record<string, unknown>>;
     const bars = queries.getBarsBySessionId(sessionId) as Array<Record<string, unknown>>;
+    const outcomes = queries.getOutcomesBySessionId(sessionId) as Array<Record<string, unknown>>;
 
     // Build FullSessionData for the narrative generator
     const fullData: FullSessionData = {
@@ -217,7 +207,21 @@ export function registerSessionRoutes(
           attemptNumber: 1,
         },
       })),
-      outcomes: [],  // Will be populated below
+      outcomes: outcomes.map((o) => ({
+        tradeId: o.trade_id as string,
+        result: (o.result as string) as TradeResult,
+        exitPrice: o.exit_price as number,
+        exitTimestamp: o.exit_timestamp as number,
+        realizedR: o.realized_r as number,
+        maxFavorableR: o.max_favorable_r as number,
+        maxAdverseR: o.max_adverse_r as number,
+        barsHeld: o.bars_held as number,
+        firstThresholdReached: (o.first_threshold_reached as number) as 0 | 1 | 2 | 3,
+        timestamp1R: o.timestamp_1r as number,
+        timestamp2R: o.timestamp_2r as number,
+        timestamp3R: o.timestamp_3r as number,
+        timestampStop: o.timestamp_stop as number,
+      })),
       bars: bars.map((b) => ({
         timestamp: b.timestamp as number,
         open: b.open as number,
@@ -230,23 +234,7 @@ export function registerSessionRoutes(
       })),
     };
 
-    // Get outcomes from the database via raw query on the dashboard queries
-    const outcomesData = trades.map((t) => {
-      const tradeId = t.id as string;
-      // Query outcome for this trade
-      const outcomeStmt = (queries as unknown as { getBarsBySessionId: Function });
-      void outcomeStmt;
-      return null;
-    }).filter(Boolean);
-
-    // Use storage provider to get outcomes by date range
-    const outcomes = storage.getOutcomesByDateRange(session.date, session.date, session.symbol);
-    const fullDataWithOutcomes: FullSessionData = {
-      ...fullData,
-      outcomes,
-    };
-
-    const narrative = generateNarrative(fullDataWithOutcomes);
+    const narrative = generateNarrative(fullData);
     return narrative;
   });
 }

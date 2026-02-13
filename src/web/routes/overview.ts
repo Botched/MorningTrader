@@ -19,10 +19,14 @@ export function registerOverviewRoutes(
     const wins = stats.wins || 0;
     const losses = stats.losses || 0;
 
-    const winRate = totalTrades > 0 ? Math.round((wins / totalTrades) * 10000) / 100 : 0;
-    const profitFactor = losses > 0
-      ? Math.round(((stats.total_realized_r + Math.abs(stats.total_realized_r)) / 2) / Math.abs(losses) * 100) / 100
-      : wins > 0 ? Infinity : 0;
+    const winRate = totalTrades > 0 ? wins / totalTrades : 0;
+
+    // Profit Factor = Gross Profit / abs(Gross Loss)
+    const totalWinningR = stats.total_winning_r || 0;
+    const totalLosingR = stats.total_losing_r || 0;
+    const profitFactor = totalLosingR < 0
+      ? Math.round((totalWinningR / Math.abs(totalLosingR)) * 100) / 100
+      : totalWinningR > 0 ? Infinity : 0;
 
     return {
       stats: {
@@ -34,6 +38,7 @@ export function registerOverviewRoutes(
         breakevens: stats.breakevens || 0,
         timeouts: stats.timeouts || 0,
         winRate,
+        profitFactor,
         totalR: Math.round((stats.total_realized_r || 0) * 100) / 100,
         avgR: Math.round((stats.avg_realized_r || 0) * 100) / 100,
         maxFavorableR: Math.round((stats.max_favorable_r || 0) * 100) / 100,

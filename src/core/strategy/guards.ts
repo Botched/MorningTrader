@@ -27,8 +27,25 @@ function getActiveTrade(
 // ---------------------------------------------------------------------------
 
 /**
- * The first completed bar whose timestamp >= 10:00 ET triggers zone
- * evaluation.  We derive zoneEndUtc from the session date stored in context.
+ * First bar is complete when the first 5-minute bar (09:30-09:35 ET) is done.
+ * This defines the zone's support and resistance levels.
+ */
+export function isFirstBarComplete(
+  context: StrategyMachineContext,
+  event: StrategyEvent,
+): boolean {
+  if (event.type !== 'NEW_BAR') return false;
+  const bar = event.candle;
+  if (!bar.completed) return false;
+  // First bar timestamp should be 09:30 ET (start time)
+  const firstBarUtc = etToUtc(context.date, '09:30');
+  return bar.timestamp === firstBarUtc;
+}
+
+/**
+ * Zone observation period is complete at 10:00 ET.
+ * After the zone is defined by the first bar, we observe price action
+ * until 10:00 ET before evaluating for trade entries.
  */
 export function isZoneComplete(
   context: StrategyMachineContext,
@@ -42,16 +59,19 @@ export function isZoneComplete(
 }
 
 /**
- * Choppy zone: the last source bar's CLOSE falls strictly between support
- * and resistance, meaning price never decisively closed outside the range
- * during the formation window.
+ * Choppy zone: the last bar of the zone observation period (10:00 ET) has
+ * its close inside the zone bounds, suggesting indecision.
+ *
+ * Since the zone is now defined by the first bar only (09:30), we check the
+ * last bar in allBars (the 10:00 observation bar) instead of sourceBars.
  */
 export function isChoppyZone(context: StrategyMachineContext): boolean {
   if (!context.zone) return false;
-  const bars = context.zone.sourceBars;
-  if (bars.length === 0) return false;
-  const lastClose = bars[bars.length - 1].close;
-  return lastClose > context.zone.support && lastClose < context.zone.resistance;
+  if (context.allBars.length === 0) return false;
+
+  // Check the last bar collected (should be the 10:00 ET observation bar)
+  const lastBar = context.allBars[context.allBars.length - 1];
+  return lastBar.close > context.zone.support && lastBar.close < context.zone.resistance;
 }
 
 /**

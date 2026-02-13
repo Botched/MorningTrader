@@ -33,12 +33,18 @@ export function registerDashboardCommand(program: Command): void {
         console.log(`\n  Dashboard running at ${info.url}\n`);
 
         if (opts.open) {
-          // Try to open browser
-          const { exec } = await import('node:child_process');
-          const cmd = process.platform === 'win32' ? 'start'
+          // Try to open browser (using spawn for safe command execution)
+          const { spawn } = await import('node:child_process');
+          const cmd = process.platform === 'win32' ? 'cmd'
             : process.platform === 'darwin' ? 'open'
             : 'xdg-open';
-          exec(`${cmd} ${info.url}`);
+
+          // Windows requires special handling: cmd /c start URL
+          const args = process.platform === 'win32'
+            ? ['/c', 'start', '', info.url] // Empty string after start is the window title
+            : [info.url];
+
+          spawn(cmd, args, { detached: true, stdio: 'ignore' }).unref();
         }
 
         // Keep running until SIGINT/SIGTERM

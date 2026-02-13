@@ -295,7 +295,7 @@ export class BacktestRunner {
     }
 
     const startUtc = etToUtc(date, '09:30');
-    const endUtc = etToUtc(date, '11:00');
+    const endUtc = etToUtc(date, '12:00');  // Extended to 12:00 for 90-min evaluation period
 
     this.log.debug(
       { symbol, date, startUtc, endUtc },

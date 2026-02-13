@@ -14,5 +14,6 @@ export interface StorageProvider {
   getTradesByDateRange(from: string, to: string, symbol?: string): Trade[];
   getOutcomesByDateRange(from: string, to: string, symbol?: string): TradeOutcome[];
   getSessionsByDateRange(from: string, to: string, symbol?: string): SessionContext[];
+  deleteAllBacktestSessions(): void;
   close(): void;
 }

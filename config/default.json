@@ -13,13 +13,13 @@
     "minZoneBars": 3,
     "targets": {
       "target1RMultiple": 1.0,
-      "target2RMultiple": 2.0,
-      "target3RMultiple": 3.0
+      "target2RMultiple": 2,
+      "target3RMultiple": 3
     },
     "trailingStopAt1R": true
   },
   "ibkr": {
-    "host": "127.0.0.1",
+    "host": "127.0.0.1",x
     "port": 4002,
     "clientId": 1,
     "marketDataType": 1

@@ -10,7 +10,7 @@ export interface SessionWindows {
   readonly premarketUtc: number;      // 09:00 ET -> UTC ms
   readonly zoneStartUtc: number;      // 09:30 ET -> UTC ms
   readonly zoneEndUtc: number;        // 10:00 ET -> UTC ms
-  readonly executionEndUtc: number;   // 11:00 ET -> UTC ms
+  readonly executionEndUtc: number;   // 12:00 ET -> UTC ms (90 min evaluation period)
 }
 
 /**
@@ -51,7 +51,7 @@ export function getSessionWindows(dateStr: string): SessionWindows {
     premarketUtc: etToUtc(dateStr, '09:00'),
     zoneStartUtc: etToUtc(dateStr, '09:30'),
     zoneEndUtc: etToUtc(dateStr, '10:00'),
-    executionEndUtc: etToUtc(dateStr, '11:00'),
+    executionEndUtc: etToUtc(dateStr, '12:00'),  // Extended to 12:00 for 90 min evaluation
   };
 }
 

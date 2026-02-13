@@ -34,6 +34,8 @@ export interface OverviewStatsRow {
   avg_realized_r: number;
   max_favorable_r: number;
   max_adverse_r: number;
+  total_winning_r: number;
+  total_losing_r: number;
 }
 
 export interface EquityCurvePoint {
@@ -84,10 +86,10 @@ export function createDashboardQueries(db: Database.Database) {
 
   const overviewAll = db.prepare(`
     SELECT
-      (SELECT COUNT(*) FROM sessions WHERE date BETWEEN ?1 AND ?2) AS total_sessions,
+      (SELECT COUNT(*) FROM sessions WHERE date BETWEEN ? AND ?) AS total_sessions,
       (SELECT COUNT(DISTINCT s.id) FROM sessions s
         JOIN trades t ON t.session_id = s.id
-        WHERE s.date BETWEEN ?1 AND ?2) AS sessions_with_trades,
+        WHERE s.date BETWEEN ? AND ?) AS sessions_with_trades,
       COUNT(t.id) AS total_trades,
       SUM(CASE WHEN o.result IN ('WIN_2R', 'WIN_3R') THEN 1 ELSE 0 END) AS wins,
       SUM(CASE WHEN o.result = 'LOSS' THEN 1 ELSE 0 END) AS losses,
@@ -96,19 +98,21 @@ export function createDashboardQueries(db: Database.Database) {
       COALESCE(SUM(o.realized_r), 0) AS total_realized_r,
       COALESCE(AVG(o.realized_r), 0) AS avg_realized_r,
       COALESCE(MAX(o.max_favorable_r), 0) AS max_favorable_r,
-      COALESCE(MAX(o.max_adverse_r), 0) AS max_adverse_r
+      COALESCE(MAX(o.max_adverse_r), 0) AS max_adverse_r,
+      COALESCE(SUM(CASE WHEN o.realized_r > 0 THEN o.realized_r ELSE 0 END), 0) AS total_winning_r,
+      COALESCE(SUM(CASE WHEN o.realized_r < 0 THEN o.realized_r ELSE 0 END), 0) AS total_losing_r
     FROM trades t
     JOIN sessions s ON t.session_id = s.id
     LEFT JOIN trade_outcomes o ON o.trade_id = t.id
-    WHERE s.date BETWEEN ?1 AND ?2
+    WHERE s.date BETWEEN ? AND ?
   `);
 
   const overviewBySymbol = db.prepare(`
     SELECT
-      (SELECT COUNT(*) FROM sessions WHERE date BETWEEN ?1 AND ?2 AND symbol = ?3) AS total_sessions,
+      (SELECT COUNT(*) FROM sessions WHERE date BETWEEN ? AND ? AND symbol = ?) AS total_sessions,
       (SELECT COUNT(DISTINCT s.id) FROM sessions s
         JOIN trades t ON t.session_id = s.id
-        WHERE s.date BETWEEN ?1 AND ?2 AND s.symbol = ?3) AS sessions_with_trades,
+        WHERE s.date BETWEEN ? AND ? AND s.symbol = ?) AS sessions_with_trades,
       COUNT(t.id) AS total_trades,
       SUM(CASE WHEN o.result IN ('WIN_2R', 'WIN_3R') THEN 1 ELSE 0 END) AS wins,
       SUM(CASE WHEN o.result = 'LOSS' THEN 1 ELSE 0 END) AS losses,
@@ -117,11 +121,13 @@ export function createDashboardQueries(db: Database.Database) {
       COALESCE(SUM(o.realized_r), 0) AS total_realized_r,
       COALESCE(AVG(o.realized_r), 0) AS avg_realized_r,
       COALESCE(MAX(o.max_favorable_r), 0) AS max_favorable_r,
-      COALESCE(MAX(o.max_adverse_r), 0) AS max_adverse_r
+      COALESCE(MAX(o.max_adverse_r), 0) AS max_adverse_r,
+      COALESCE(SUM(CASE WHEN o.realized_r > 0 THEN o.realized_r ELSE 0 END), 0) AS total_winning_r,
+      COALESCE(SUM(CASE WHEN o.realized_r < 0 THEN o.realized_r ELSE 0 END), 0) AS total_losing_r
     FROM trades t
     JOIN sessions s ON t.session_id = s.id
     LEFT JOIN trade_outcomes o ON o.trade_id = t.id
-    WHERE s.date BETWEEN ?1 AND ?2 AND s.symbol = ?3
+    WHERE s.date BETWEEN ? AND ? AND s.symbol = ?
   `);
 
   // ── Equity curve ──
@@ -166,6 +172,14 @@ export function createDashboardQueries(db: Database.Database) {
     'SELECT * FROM bars WHERE session_id = ? ORDER BY timestamp ASC',
   );
 
+  const outcomesBySessionId = db.prepare(`
+    SELECT o.*
+    FROM trade_outcomes o
+    JOIN trades t ON o.trade_id = t.id
+    WHERE t.session_id = ?
+    ORDER BY o.exit_timestamp ASC
+  `);
+
   // ── Distinct symbols ──
 
   const distinctSymbols = db.prepare(
@@ -190,9 +204,9 @@ export function createDashboardQueries(db: Database.Database) {
       symbol?: string,
     ): OverviewStatsRow {
       if (symbol) {
-        return overviewBySymbol.get(from, to, symbol) as OverviewStatsRow;
+        return overviewBySymbol.get(from, to, symbol, from, to, symbol, from, to, symbol) as OverviewStatsRow;
       }
-      return overviewAll.get(from, to) as OverviewStatsRow;
+      return overviewAll.get(from, to, from, to, from, to) as OverviewStatsRow;
     },
 
     getEquityCurve(
@@ -228,6 +242,10 @@ export function createDashboardQueries(db: Database.Database) {
 
     getBarsBySessionId(sessionId: number) {
       return barsBySessionId.all(sessionId);
+    },
+
+    getOutcomesBySessionId(sessionId: number) {
+      return outcomesBySessionId.all(sessionId);
     },
 
     getDistinctSymbols(): string[] {
