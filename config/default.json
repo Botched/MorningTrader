@@ -19,7 +19,7 @@
     "trailingStopAt1R": true
   },
   "ibkr": {
-    "host": "127.0.0.1",x
+    "host": "127.0.0.1",
     "port": 4002,
     "clientId": 1,
     "marketDataType": 1
