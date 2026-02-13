@@ -299,9 +299,9 @@ describe('Backtest Scenarios', () => {
     expect(result.outcomes).toHaveLength(1);
     const outcome = result.outcomes[0];
     expect(outcome.result).toBe('LOSS');
-    expect(outcome.exitPrice).toBe(50200); // stopped at initial stop (resistance)
+    expect(outcome.exitPrice).toBe(49900); // stopped at initial stop (support)
     expect(outcome.exitTimestamp).toBe(TS_1015);
-    expect(outcome.realizedR).toBe(-1); // (50200 - 50280) / 80 = -1
+    expect(outcome.realizedR).toBe(-1); // (49900 - 50280) / 380 = -1
     expect(outcome.timestampStop).toBe(TS_1015);
     expect(outcome.timestamp1R).toBe(0); // 1R never reached
     expect(outcome.timestamp2R).toBe(0);
