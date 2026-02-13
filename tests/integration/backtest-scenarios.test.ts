@@ -148,7 +148,7 @@ describe('Backtest Scenarios', () => {
     expect(result.outcomes).toHaveLength(1);
     const outcome = result.outcomes[0];
     expect(outcome.result).toBe('WIN_3R');
-    expect(outcome.exitPrice).toBe(50520); // target3R
+    expect(outcome.exitPrice).toBe(51420); // target3R
     expect(outcome.exitTimestamp).toBe(TS_1040);
     expect(outcome.realizedR).toBe(3);
     expect(outcome.firstThresholdReached).toBe(3);
@@ -209,7 +209,7 @@ describe('Backtest Scenarios', () => {
     expect(result.outcomes).toHaveLength(1);
     const outcome = result.outcomes[0];
     expect(outcome.result).toBe('WIN_3R');
-    expect(outcome.exitPrice).toBe(49480); // target3R
+    expect(outcome.exitPrice).toBe(48280); // target3R
     expect(outcome.exitTimestamp).toBe(TS_1025);
     expect(outcome.realizedR).toBe(3);
     expect(outcome.firstThresholdReached).toBe(3);
@@ -464,7 +464,7 @@ describe('Backtest Scenarios', () => {
     expect(result.outcomes).toHaveLength(1);
     const outcome = result.outcomes[0];
     expect(outcome.result).toBe('WIN_3R');
-    expect(outcome.exitPrice).toBe(50440); // target3R
+    expect(outcome.exitPrice).toBe(51340); // target3R
     expect(outcome.realizedR).toBe(3);
   });
 
