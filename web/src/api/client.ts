@@ -13,6 +13,8 @@ import type {
   WatchlistItem,
   CreateWatchlistItemRequest,
   UpdateWatchlistItemRequest,
+  SessionSummary,
+  StockSummary,
 } from './types';
 
 const API_BASE = import.meta.env.VITE_API_BASE || 'http://127.0.0.1:3847';
@@ -231,5 +233,22 @@ export const api = {
       const error = await response.json().catch(() => ({ error: response.statusText }));
       throw new Error(error.error || `HTTP ${response.status}`);
     }
+  },
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Summary API
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  async getTopSessions(limit: number, include: string): Promise<SessionSummary[]> {
+    const query = new URLSearchParams();
+    query.set('limit', String(limit));
+    query.set('include', include);
+    return fetchAPI(`/api/summary/top-sessions?${query}`);
+  },
+
+  async getSessionsByStock(include: string): Promise<StockSummary[]> {
+    const query = new URLSearchParams();
+    query.set('include', include);
+    return fetchAPI(`/api/summary/by-stock?${query}`);
   },
 };

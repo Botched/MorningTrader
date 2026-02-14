@@ -276,3 +276,29 @@ export interface UpdateWatchlistItemRequest {
   isMock?: boolean;
   scheduleEnabled?: boolean;
 }
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Summary
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+export interface SessionSummary {
+  sessionId: number;
+  date: string;
+  symbol: string;
+  zoneResistance: number | null;
+  zoneSupport: number | null;
+  totalR: number;
+  tradeCount: number;
+  result: string | null;
+}
+
+export interface StockSummary {
+  symbol: string;
+  sessionCount: number;
+  tradeCount: number;
+  wins: number;
+  losses: number;
+  winRate: number;
+  totalR: number;
+  avgR: number;
+}

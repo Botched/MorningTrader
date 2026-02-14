@@ -10,6 +10,7 @@ export function Sidebar() {
     { path: '/sessions', label: 'Sessions', icon: '📋' },
     { path: '/watchlist', label: 'Watchlist', icon: '⭐' },
     { path: '/backtest', label: 'Backtest', icon: '🔬' },
+    { path: '/summary', label: 'Summary', icon: '🏆' },
     { path: '/config', label: 'Config Presets', icon: '⚙️' },
   ];
 
