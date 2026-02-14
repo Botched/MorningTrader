@@ -13,6 +13,15 @@ export type { Trade, TradeOutcome, TradeResult, TradeDirection, TradeStatus } fr
 // Session
 export type { SessionContext, SessionStatus, ExecutionMode } from './session.js';
 
+// Watchlist
+export type { WatchlistItem, WatchlistItemInput, WatchlistItemUpdate } from './watchlist.js';
+
+// Backtest Job
+export type { BacktestJob, BacktestJobRequest, BacktestJobResult, BacktestJobStatus } from './backtest-job.js';
+
+// Config Preset
+export type { ConfigPreset, ConfigPresetInput, ConfigPresetUpdate } from './config-preset.js';
+
 // Config (both types and runtime schemas)
 export {
   StrategyConfigSchema,
