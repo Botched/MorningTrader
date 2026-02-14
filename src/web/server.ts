@@ -112,7 +112,9 @@ export async function createDashboardServer(options: DashboardServerOptions) {
     app,
     async start() {
       await app.listen({ port, host });
-      return { port, host, url: `http://${host}:${port}` };
+      const address = app.server.address();
+      const actualPort = typeof address === 'object' && address !== null ? address.port : port;
+      return { port: actualPort, host, url: `http://${host}:${actualPort}` };
     },
     async stop() {
       await app.close();
