@@ -28,6 +28,8 @@
 | T104 | Extend SQLiteAdapter with backtest job CRUD | 1 | Database Architect | P0 | M |
 | T105 | Extend SQLiteAdapter with config preset CRUD | 1 | Database Architect | P0 | M |
 | T106 | Create config-adapter preset converter | 1 | Backend Architect | P0 | M |
+| T107 | Unit tests for config-adapter | 1 | Fullstack Developer | P1 | S |
+| T108 | Integration tests for new SQLite methods | 1 | Fullstack Developer | P1 | M |
 
 ## IN PROGRESS (agent actively working)
 
@@ -39,13 +41,13 @@
 
 | ID | Title | Phase | Assigned Agent | Priority | Effort |
 |----|-------|-------|---------------|----------|--------|
-| T107 | Unit tests for config-adapter | 1 | Fullstack Developer | P1 | S |
-| T108 | Integration tests for new SQLite methods | 1 | Fullstack Developer | P1 | M |
+| T109 | Code review: Database foundation | 1 | Code Reviewer | P1 | M |
 
 ## BACKLOG (has unmet dependencies)
 
 | ID | Title | Phase | Assigned Agent | Priority | Effort |
 |----|-------|-------|---------------|----------|--------|
+| T110 | Create config-presets route module | 2 | Backend Architect | P0 | M |
 | T107 | Unit tests for config-adapter | 1 | Fullstack Developer | P1 | S |
 | T108 | Integration tests for new SQLite methods | 1 | Fullstack Developer | P1 | M |
 | T109 | Code review: Database foundation | 1 | Code Reviewer | P1 | M |
@@ -107,10 +109,12 @@
 
 - **Total Tasks**: 58
 - **Done**: 0
-- **In Review**: 6 (T101-T106)
+- **In Review**: 8 (T101-T108)
 - **In Progress**: 0
-- **Ready**: 2 (T107, T108)
-- **Backlog**: 50
+- **Ready**: 1 (T109)
+- **Backlog**: 49
+
+**Phase 1 Status**: 8/9 complete (awaiting final code review T109)
 
 **By Phase**:
 - Phase 1 (Database & Config Foundation): 9 tasks
@@ -296,7 +300,9 @@
 - **Dependencies**: T106 (config-adapter created)
 - **Priority**: P1
 - **Effort**: S (< 1hr)
-- **Status**: READY
+- **Status**: REVIEW
+- **Completed**: 2026-02-13
+- **Notes**: Created 7 unit tests for config-adapter (presetToStrategyConfig, strategyConfigToPreset, getFactoryDefaults). Tests round-trip conversion, boolean handling, custom values. All tests passing. Committed in 99b07ab.
 - **Acceptance Criteria**:
   - Create `tests/unit/adapters/storage/config-adapter.test.ts`
   - Test `presetToStrategyConfig()`:
@@ -319,7 +325,9 @@
 - **Dependencies**: T103, T104, T105 (all CRUD methods implemented)
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: READY
+- **Status**: REVIEW
+- **Completed**: 2026-02-13
+- **Notes**: Created 26 integration tests (9 watchlist, 11 backtest jobs, 6 config presets). Tests CRUD operations, constraints, ordering, defaults. Uses temporary databases with cleanup. All 26 tests passing. Committed in f6ed3b2.
 - **Acceptance Criteria**:
   - Create `tests/integration/storage/sqlite-v2.test.ts`
   - Test watchlist CRUD:
