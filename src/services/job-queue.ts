@@ -91,6 +91,13 @@ export class JobQueue extends EventEmitter {
   }
 
   /**
+   * List all jobs, optionally filtered by status
+   */
+  listJobs(status?: 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED'): BacktestJob[] {
+    return this.storage.getBacktestJobs(status);
+  }
+
+  /**
    * Cancel a pending job
    * Only PENDING jobs can be cancelled (not RUNNING/COMPLETED/FAILED)
    */
