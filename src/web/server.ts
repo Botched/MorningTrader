@@ -18,6 +18,7 @@ import { registerOverviewRoutes } from './routes/overview.js';
 import { registerSessionRoutes } from './routes/sessions.js';
 import { registerStatsRoutes } from './routes/stats.js';
 import { maintenanceRoutes } from './routes/maintenance.js';
+import { registerConfigPresetRoutes } from './routes/config-presets.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -67,6 +68,7 @@ export async function createDashboardServer(options: DashboardServerOptions) {
   registerSessionRoutes(app, dashboardQueries);
   registerStatsRoutes(app, dashboardQueries, aggregationQueries);
   await maintenanceRoutes(app, maintenanceStorage);
+  await registerConfigPresetRoutes(app, maintenanceStorage);
 
   // ── Static SPA serving ────────────────────────────────────────
   // Serve built frontend assets from web/dist
