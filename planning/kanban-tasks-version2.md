@@ -375,7 +375,9 @@
 - **Dependencies**: T109 (Phase 1 code review approved)
 - **Priority**: P0 (critical path)
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: REVIEW
+- **Completed**: 2026-02-13
+- **Notes**: Created complete API route module with 6 endpoints (GET list/single, POST create, PUT update, DELETE, POST set-default). Proper error handling (400/403/404/409/500), prepared statements, validation. Zero TypeScript errors.
 - **Acceptance Criteria**:
   - Create `src/web/routes/config-presets.ts`
   - Implement 6 API endpoints:
@@ -400,7 +402,9 @@
 - **Dependencies**: T110 (API routes exist)
 - **Priority**: P0 (critical path)
 - **Effort**: L (3-6hr)
-- **Status**: BACKLOG
+- **Status**: REVIEW
+- **Completed**: 2026-02-13
+- **Notes**: Created full ConfigPresetsPage with table view, modal form for create/edit, delete with confirmation, set-default functionality, error handling, and loading states. Follows existing page patterns. Zero build errors.
 - **Acceptance Criteria**:
   - Create `web/src/pages/ConfigPresetsPage.tsx`
   - Layout:
@@ -428,7 +432,9 @@
 - **Dependencies**: T110 (API routes exist)
 - **Priority**: P0 (critical path)
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: REVIEW
+- **Completed**: 2026-02-13
+- **Notes**: Created comprehensive form modal with 13 strategy parameters (name, break attempts, zone spread, time windows, targets, trailing stop). Includes validation, "Reset to Defaults" button, proper error handling. Zero build errors.
 - **Acceptance Criteria**:
   - Create `web/src/components/config/ConfigPresetForm.tsx`
   - Form inputs for all strategy parameters:
@@ -460,7 +466,9 @@
 - **Dependencies**: T110 (API routes exist)
 - **Priority**: P1
 - **Effort**: S (< 1hr)
-- **Status**: BACKLOG
+- **Status**: REVIEW
+- **Completed**: 2026-02-13
+- **Notes**: Added 6 API client methods (getConfigPresets, getConfigPreset, createConfigPreset, updateConfigPreset, deleteConfigPreset, setDefaultConfigPreset). Updated types.ts with ConfigPreset and request types. Zero build errors.
 - **Acceptance Criteria**:
   - Update `web/src/api/client.ts` with 6 new methods:
     - `getConfigPresets(): Promise<ConfigPreset[]>`
@@ -484,7 +492,9 @@
 - **Dependencies**: T111 (ConfigPresetsPage exists)
 - **Priority**: P1
 - **Effort**: S (< 1hr)
-- **Status**: BACKLOG
+- **Status**: REVIEW
+- **Completed**: 2026-02-13
+- **Notes**: Updated App.tsx with /config route, added Config Presets nav item to Sidebar.tsx with settings icon, registered config-presets routes in server.ts. CORS headers already support PUT/POST. Zero build errors.
 - **Acceptance Criteria**:
   - Update `web/src/App.tsx`:
     - Add route: `<Route path="/config" element={<ConfigPresetsPage />} />`
