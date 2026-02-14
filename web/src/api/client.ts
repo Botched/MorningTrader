@@ -5,6 +5,9 @@ import type {
   SessionNarrative,
   DailyStatsResponse,
   SymbolsResponse,
+  ConfigPreset,
+  CreateConfigPresetRequest,
+  UpdateConfigPresetRequest,
 } from './types';
 
 const API_BASE = import.meta.env.VITE_API_BASE || 'http://127.0.0.1:3847';
@@ -76,6 +79,68 @@ export const api = {
     });
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    return response.json();
+  },
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Config Presets
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  async getConfigPresets(): Promise<ConfigPreset[]> {
+    return fetchAPI('/api/config-presets');
+  },
+
+  async getConfigPreset(id: number): Promise<ConfigPreset> {
+    return fetchAPI(`/api/config-presets/${id}`);
+  },
+
+  async createConfigPreset(data: CreateConfigPresetRequest): Promise<ConfigPreset> {
+    const response = await fetch(`${API_BASE}/api/config-presets`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: response.statusText }));
+      throw new Error(error.error || `HTTP ${response.status}`);
+    }
+    return response.json();
+  },
+
+  async updateConfigPreset(
+    id: number,
+    data: UpdateConfigPresetRequest,
+  ): Promise<ConfigPreset> {
+    const response = await fetch(`${API_BASE}/api/config-presets/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: response.statusText }));
+      throw new Error(error.error || `HTTP ${response.status}`);
+    }
+    return response.json();
+  },
+
+  async deleteConfigPreset(id: number): Promise<void> {
+    const response = await fetch(`${API_BASE}/api/config-presets/${id}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: response.statusText }));
+      throw new Error(error.error || `HTTP ${response.status}`);
+    }
+  },
+
+  async setDefaultConfigPreset(id: number): Promise<ConfigPreset> {
+    const response = await fetch(`${API_BASE}/api/config-presets/${id}/default`, {
+      method: 'POST',
+    });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: response.statusText }));
+      throw new Error(error.error || `HTTP ${response.status}`);
     }
     return response.json();
   },

@@ -156,3 +156,59 @@ export interface DailyStatsResponse {
 export interface SymbolsResponse {
   symbols: string[];
 }
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Config Presets
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+export interface ConfigPreset {
+  id: number;
+  name: string;
+  isDefault: boolean;
+  maxBreakAttempts: number;
+  minZoneSpreadCents: number;
+  maxZoneSpreadPercent: number;
+  minZoneBars: number;
+  premarketTime: string;
+  zoneStartTime: string;
+  zoneEndTime: string;
+  executionEndTime: string;
+  target1RMultiple: number;
+  target2RMultiple: number;
+  target3RMultiple: number;
+  trailingStopAt1R: boolean;
+  createdAt: number;
+  updatedAt: number;
+}
+
+export interface CreateConfigPresetRequest {
+  name: string;
+  maxBreakAttempts?: number;
+  minZoneSpreadCents?: number;
+  maxZoneSpreadPercent?: number;
+  minZoneBars?: number;
+  premarketTime?: string;
+  zoneStartTime?: string;
+  zoneEndTime?: string;
+  executionEndTime?: string;
+  target1RMultiple?: number;
+  target2RMultiple?: number;
+  target3RMultiple?: number;
+  trailingStopAt1R?: boolean;
+}
+
+export interface UpdateConfigPresetRequest {
+  name?: string;
+  maxBreakAttempts?: number;
+  minZoneSpreadCents?: number;
+  maxZoneSpreadPercent?: number;
+  minZoneBars?: number;
+  premarketTime?: string;
+  zoneStartTime?: string;
+  zoneEndTime?: string;
+  executionEndTime?: string;
+  target1RMultiple?: number;
+  target2RMultiple?: number;
+  target3RMultiple?: number;
+  trailingStopAt1R?: boolean;
+}
