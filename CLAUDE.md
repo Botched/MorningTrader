@@ -31,7 +31,35 @@ morningtrader live AAPL --dry-run    # Live data, no storage, no orders
 morningtrader backtest AAPL --from 2024-01-02 --to 2024-01-31 --source csv
 morningtrader report --period weekly
 morningtrader export --format csv --output trades.csv
+morningtrader dashboard --port 3847  # Start web dashboard server
 ```
+
+### Web Dashboard (v2)
+
+The web dashboard provides a React SPA for managing and visualizing trading sessions:
+
+**Pages**:
+- `/` - Dashboard with metrics cards, equity curve, win/loss distribution
+- `/sessions` - Session list with filters, pagination, status badges
+- `/sessions/:id` - Session detail with TradingView charts, trade cards, narrative
+- `/watchlist` - Manage stock watchlist (add/remove, toggle mock/schedule)
+- `/backtest` - Submit async backtest jobs, view progress and results
+- `/summary` - Leaderboards (top sessions, by-stock aggregates)
+- `/config` - Manage strategy configuration presets
+
+**Key API Endpoints**:
+- `GET /api/overview` - Dashboard metrics + equity curve
+- `GET /api/sessions` - Session list with pagination
+- `GET /api/sessions/:id` - Full session data (bars, signals, trades, outcomes)
+- `GET /api/watchlist` - List watchlist items
+- `POST /api/backtest-jobs` - Submit async backtest job
+- `GET /api/summary/top-sessions` - Top N sessions by total R
+- `GET /api/config-presets` - List configuration presets
+
+**Database Schema (v2 - Migration 003)**:
+- `watchlist_items` - Stock symbols with is_active, is_mock, schedule_enabled flags
+- `strategy_presets` - Strategy configuration presets with is_default flag
+- `backtest_jobs` - Async job queue with status, progress, result_summary (JSON)
 
 ## Architecture
 
