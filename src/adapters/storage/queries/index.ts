@@ -30,3 +30,11 @@ export type {
   EquityCurvePoint,
   SymbolListRow,
 } from './dashboard.js';
+
+export {
+  createSummaryQueries,
+} from './summary.js';
+export type {
+  SessionSummaryRow,
+  StockSummaryRow,
+} from './summary.js';

@@ -2,7 +2,15 @@
 export type { Migration } from './migrations/index.js';
 export { migration001, runMigrations } from './migrations/index.js';
 export { migration002 } from './migrations/index.js';
+export { migration003 } from './migrations/index.js';
 export { SQLiteAdapter } from './sqlite-adapter.js';
+
+// Config adapter (preset ↔ StrategyConfig conversion)
+export {
+  presetToStrategyConfig,
+  strategyConfigToPreset,
+  getFactoryDefaults,
+} from './config-adapter.js';
 
 // Query modules
 export {

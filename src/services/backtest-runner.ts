@@ -46,6 +46,8 @@ export interface BacktestOptions {
   readonly csvDir?: string;    // directory containing CSV files per date
   readonly persist?: boolean;  // save results to storage (default: true)
   readonly force?: boolean;    // re-run even if session already completed (default: false)
+  readonly presetId?: number;  // config preset ID (uses default if not specified)
+  readonly onProgress?: (current: number, total: number) => void; // progress callback
 }
 
 export interface BacktestResult {
@@ -106,7 +108,25 @@ export class BacktestRunner {
       csvDir,
       persist = true,
       force = false,
+      presetId,
+      onProgress,
     } = options;
+
+    // Load config from preset if specified
+    let config = this.config;
+    if (presetId !== undefined && this.storage !== null) {
+      // Cast to SQLiteAdapter to access v2 methods (config presets)
+      const { SQLiteAdapter } = await import('../adapters/storage/sqlite-adapter.js');
+      if (this.storage instanceof SQLiteAdapter) {
+        const preset = this.storage.getConfigPreset(presetId);
+        if (!preset) {
+          throw new Error(`Config preset ${presetId} not found`);
+        }
+        // Convert preset to StrategyConfig
+        const { presetToStrategyConfig } = await import('../adapters/storage/config-adapter.js');
+        config = presetToStrategyConfig(preset);
+      }
+    }
 
     this.log.info(
       { symbol, fromDate, toDate, source, persist, force },
@@ -170,12 +190,12 @@ export class BacktestRunner {
         await adapter.connect();
         adapter.loadBars(symbol, bars);
 
-        // 6. Create fresh SessionRunner
+        // 6. Create fresh SessionRunner (use preset config if specified)
         const sessionRunner = new SessionRunner(
           adapter,
           clock,
           this.log,
-          this.config,
+          config,
         );
 
         // 7. Run the session
@@ -206,6 +226,9 @@ export class BacktestRunner {
           },
           `Completed ${date}`,
         );
+
+        // Report progress
+        onProgress?.(i + 1, totalDays);
 
         // Cleanup
         await adapter.disconnect();

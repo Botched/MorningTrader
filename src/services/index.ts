@@ -50,3 +50,8 @@ export type {
   NarrativeKeyValue,
   KeyValueType,
 } from './narrative-types.js';
+
+export {
+  JobQueue,
+  type JobQueueOptions,
+} from './job-queue.js';

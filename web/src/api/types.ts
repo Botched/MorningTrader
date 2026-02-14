@@ -156,3 +156,149 @@ export interface DailyStatsResponse {
 export interface SymbolsResponse {
   symbols: string[];
 }
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Config Presets
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+export interface ConfigPreset {
+  id: number;
+  name: string;
+  isDefault: boolean;
+  maxBreakAttempts: number;
+  minZoneSpreadCents: number;
+  maxZoneSpreadPercent: number;
+  minZoneBars: number;
+  premarketTime: string;
+  zoneStartTime: string;
+  zoneEndTime: string;
+  executionEndTime: string;
+  target1RMultiple: number;
+  target2RMultiple: number;
+  target3RMultiple: number;
+  trailingStopAt1R: boolean;
+  createdAt: number;
+  updatedAt: number;
+}
+
+export interface CreateConfigPresetRequest {
+  name: string;
+  maxBreakAttempts?: number;
+  minZoneSpreadCents?: number;
+  maxZoneSpreadPercent?: number;
+  minZoneBars?: number;
+  premarketTime?: string;
+  zoneStartTime?: string;
+  zoneEndTime?: string;
+  executionEndTime?: string;
+  target1RMultiple?: number;
+  target2RMultiple?: number;
+  target3RMultiple?: number;
+  trailingStopAt1R?: boolean;
+}
+
+export interface UpdateConfigPresetRequest {
+  name?: string;
+  maxBreakAttempts?: number;
+  minZoneSpreadCents?: number;
+  maxZoneSpreadPercent?: number;
+  minZoneBars?: number;
+  premarketTime?: string;
+  zoneStartTime?: string;
+  zoneEndTime?: string;
+  executionEndTime?: string;
+  target1RMultiple?: number;
+  target2RMultiple?: number;
+  target3RMultiple?: number;
+  trailingStopAt1R?: boolean;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Backtest Jobs
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+export type BacktestJobStatus = 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED';
+
+export interface BacktestJob {
+  id: string;
+  symbol: string;
+  fromDate: string;
+  toDate: string;
+  presetId: number | null;
+  status: BacktestJobStatus;
+  progress: {
+    current: number;
+    total: number;
+    percent: number;
+  };
+  result: {
+    totalR: number;
+    winRate: number;
+    totalTrades: number;
+    sessionsCompleted: number;
+    errorCount: number;
+  } | null;
+  error: string | null;
+  createdAt: number;
+  startedAt: number | null;
+  completedAt: number | null;
+}
+
+export interface SubmitBacktestJobRequest {
+  symbol: string;
+  fromDate: string;
+  toDate: string;
+  presetId?: number;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Watchlist
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+export interface WatchlistItem {
+  id: number;
+  symbol: string;
+  isActive: boolean;
+  isMock: boolean;
+  scheduleEnabled: boolean;
+  createdAt: number;
+  updatedAt: number;
+}
+
+export interface CreateWatchlistItemRequest {
+  symbol: string;
+  isMock: boolean;
+  scheduleEnabled: boolean;
+}
+
+export interface UpdateWatchlistItemRequest {
+  isActive?: boolean;
+  isMock?: boolean;
+  scheduleEnabled?: boolean;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Summary
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+export interface SessionSummary {
+  sessionId: number;
+  date: string;
+  symbol: string;
+  zoneResistance: number | null;
+  zoneSupport: number | null;
+  totalR: number;
+  tradeCount: number;
+  result: string | null;
+}
+
+export interface StockSummary {
+  symbol: string;
+  sessionCount: number;
+  tradeCount: number;
+  wins: number;
+  losses: number;
+  winRate: number;
+  totalR: number;
+  avgR: number;
+}
