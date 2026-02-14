@@ -212,3 +212,41 @@ export interface UpdateConfigPresetRequest {
   target3RMultiple?: number;
   trailingStopAt1R?: boolean;
 }
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Backtest Jobs
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+export type BacktestJobStatus = 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED';
+
+export interface BacktestJob {
+  id: string;
+  symbol: string;
+  fromDate: string;
+  toDate: string;
+  presetId: number | null;
+  status: BacktestJobStatus;
+  progress: {
+    current: number;
+    total: number;
+    percent: number;
+  };
+  result: {
+    totalR: number;
+    winRate: number;
+    totalTrades: number;
+    sessionsCompleted: number;
+    errorCount: number;
+  } | null;
+  error: string | null;
+  createdAt: number;
+  startedAt: number | null;
+  completedAt: number | null;
+}
+
+export interface SubmitBacktestJobRequest {
+  symbol: string;
+  fromDate: string;
+  toDate: string;
+  presetId?: number;
+}

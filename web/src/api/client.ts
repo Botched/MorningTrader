@@ -8,6 +8,8 @@ import type {
   ConfigPreset,
   CreateConfigPresetRequest,
   UpdateConfigPresetRequest,
+  BacktestJob,
+  SubmitBacktestJobRequest,
 } from './types';
 
 const API_BASE = import.meta.env.VITE_API_BASE || 'http://127.0.0.1:3847';
@@ -143,5 +145,41 @@ export const api = {
       throw new Error(error.error || `HTTP ${response.status}`);
     }
     return response.json();
+  },
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Backtest Jobs API
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  async submitBacktestJob(data: SubmitBacktestJobRequest): Promise<{ jobId: string }> {
+    const response = await fetch(`${API_BASE}/api/backtest-jobs`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: response.statusText }));
+      throw new Error(error.error || `HTTP ${response.status}`);
+    }
+    return response.json();
+  },
+
+  async getBacktestJob(id: string): Promise<BacktestJob> {
+    return fetchAPI(`/api/backtest-jobs/${id}`);
+  },
+
+  async listBacktestJobs(status?: string): Promise<BacktestJob[]> {
+    const query = status ? `?status=${status}` : '';
+    return fetchAPI(`/api/backtest-jobs${query}`);
+  },
+
+  async cancelBacktestJob(id: string): Promise<void> {
+    const response = await fetch(`${API_BASE}/api/backtest-jobs/${id}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: response.statusText }));
+      throw new Error(error.error || `HTTP ${response.status}`);
+    }
   },
 };

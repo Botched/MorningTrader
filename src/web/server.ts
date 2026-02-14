@@ -19,6 +19,13 @@ import { registerSessionRoutes } from './routes/sessions.js';
 import { registerStatsRoutes } from './routes/stats.js';
 import { maintenanceRoutes } from './routes/maintenance.js';
 import { registerConfigPresetRoutes } from './routes/config-presets.js';
+import { registerBacktestJobRoutes } from './routes/backtest-jobs.js';
+import { JobQueue } from '../services/job-queue.js';
+import { BacktestRunner } from '../services/backtest-runner.js';
+import { createLogger } from '../services/logger.js';
+import { presetToStrategyConfig } from '../adapters/storage/config-adapter.js';
+import { loadHolidayCalendar } from '../utils/holidays.js';
+import type { StrategyConfig } from '../core/models/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -43,6 +50,50 @@ export async function createDashboardServer(options: DashboardServerOptions) {
   const maintenanceStorage = new SQLiteAdapter(dbPath);
   maintenanceStorage.initialize();
 
+  // ── JobQueue for async backtests ─────────────────────────────
+  const logger = createLogger();
+  const calendar = loadHolidayCalendar();
+
+  // Get default config (will be overridden by preset during job execution)
+  const defaultPreset = maintenanceStorage.getDefaultConfigPreset();
+  const defaultConfig: StrategyConfig = defaultPreset
+    ? presetToStrategyConfig(defaultPreset)
+    : {
+        maxBreakAttempts: 5,
+        minZoneSpreadCents: 10,
+        maxZoneSpreadPercent: 3.0,
+        barSizeMinutes: 5 as const,
+        sessionWindows: {
+          premarketTime: '04:30',
+          zoneStartTime: '09:30',
+          zoneEndTime: '10:00',
+          executionEndTime: '12:00',
+        },
+        minZoneBars: 3,
+        targets: {
+          target1RMultiple: 1.0,
+          target2RMultiple: 2.0,
+          target3RMultiple: 3.0,
+        },
+        trailingStopAt1R: true,
+      };
+
+  const backtestRunner = new BacktestRunner(
+    logger,
+    defaultConfig,
+    calendar,
+    maintenanceStorage,
+  );
+
+  const jobQueue = new JobQueue({
+    storage: maintenanceStorage,
+    backtestRunner,
+  });
+
+  // Initialize job queue (recover stale jobs)
+  await jobQueue.initialize();
+  jobQueue.start();
+
   const app = Fastify({
     logger: {
       level: 'info',
@@ -56,7 +107,7 @@ export async function createDashboardServer(options: DashboardServerOptions) {
   // ── CORS for development ──────────────────────────────────────
   app.addHook('onRequest', async (request, reply) => {
     reply.header('Access-Control-Allow-Origin', '*');
-    reply.header('Access-Control-Allow-Methods', 'GET, DELETE, OPTIONS');
+    reply.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     reply.header('Access-Control-Allow-Headers', 'Content-Type');
     if (request.method === 'OPTIONS') {
       return reply.code(204).send();
@@ -69,6 +120,7 @@ export async function createDashboardServer(options: DashboardServerOptions) {
   registerStatsRoutes(app, dashboardQueries, aggregationQueries);
   await maintenanceRoutes(app, maintenanceStorage);
   await registerConfigPresetRoutes(app, maintenanceStorage);
+  await registerBacktestJobRoutes(app, jobQueue);
 
   // ── Static SPA serving ────────────────────────────────────────
   // Serve built frontend assets from web/dist
@@ -104,6 +156,7 @@ export async function createDashboardServer(options: DashboardServerOptions) {
 
   // ── Lifecycle hooks ───────────────────────────────────────────
   app.addHook('onClose', async () => {
+    await jobQueue.stop();
     db.close();
     maintenanceStorage.close();
   });
