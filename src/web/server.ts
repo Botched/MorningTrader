@@ -13,10 +13,12 @@ import fastifyStatic from '@fastify/static';
 import Database from 'better-sqlite3';
 import { createDashboardQueries } from '../adapters/storage/queries/dashboard.js';
 import { createAggregationQueries } from '../adapters/storage/queries/aggregations.js';
+import { createSummaryQueries } from '../adapters/storage/queries/summary.js';
 import { SQLiteAdapter } from '../adapters/storage/sqlite-adapter.js';
 import { registerOverviewRoutes } from './routes/overview.js';
 import { registerSessionRoutes } from './routes/sessions.js';
 import { registerStatsRoutes } from './routes/stats.js';
+import { registerSummaryRoutes } from './routes/summary.js';
 import { maintenanceRoutes } from './routes/maintenance.js';
 import { registerConfigPresetRoutes } from './routes/config-presets.js';
 import { registerBacktestJobRoutes } from './routes/backtest-jobs.js';
@@ -46,6 +48,7 @@ export async function createDashboardServer(options: DashboardServerOptions) {
 
   const dashboardQueries = createDashboardQueries(db);
   const aggregationQueries = createAggregationQueries(db);
+  const summaryQueries = createSummaryQueries(db);
 
   // Separate read-write connection for maintenance operations
   const maintenanceStorage = new SQLiteAdapter(dbPath);
@@ -119,6 +122,7 @@ export async function createDashboardServer(options: DashboardServerOptions) {
   registerOverviewRoutes(app, dashboardQueries);
   registerSessionRoutes(app, dashboardQueries);
   registerStatsRoutes(app, dashboardQueries, aggregationQueries);
+  registerSummaryRoutes(app, summaryQueries);
   await maintenanceRoutes(app, maintenanceStorage);
   await registerConfigPresetRoutes(app, maintenanceStorage);
   await registerBacktestJobRoutes(app, jobQueue);
