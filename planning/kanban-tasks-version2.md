@@ -22,7 +22,8 @@
 
 | ID | Title | Phase | Assigned Agent | Priority | Effort |
 |----|-------|-------|---------------|----------|--------|
-| *(none)* | | | | | |
+| T101 | Create migration 003-v2-features | 1 | Database Architect | P0 | M |
+| T102 | Update migration index to include 003 | 1 | Database Architect | P0 | S |
 
 ## IN PROGRESS (agent actively working)
 
@@ -34,16 +35,14 @@
 
 | ID | Title | Phase | Assigned Agent | Priority | Effort |
 |----|-------|-------|---------------|----------|--------|
-| T101 | Create migration 003-v2-features | 1 | Database Architect | P0 | M |
-| T102 | Update migration index to include 003 | 1 | Database Architect | P0 | S |
+| T103 | Extend SQLiteAdapter with watchlist CRUD | 1 | Database Architect | P0 | M |
+| T104 | Extend SQLiteAdapter with backtest job CRUD | 1 | Database Architect | P0 | M |
+| T105 | Extend SQLiteAdapter with config preset CRUD | 1 | Database Architect | P0 | M |
 
 ## BACKLOG (has unmet dependencies)
 
 | ID | Title | Phase | Assigned Agent | Priority | Effort |
 |----|-------|-------|---------------|----------|--------|
-| T103 | Extend SQLiteAdapter with watchlist CRUD | 1 | Database Architect | P0 | M |
-| T104 | Extend SQLiteAdapter with backtest job CRUD | 1 | Database Architect | P0 | M |
-| T105 | Extend SQLiteAdapter with config preset CRUD | 1 | Database Architect | P0 | M |
 | T106 | Create config-adapter preset converter | 1 | Backend Architect | P0 | M |
 | T107 | Unit tests for config-adapter | 1 | Fullstack Developer | P1 | S |
 | T108 | Integration tests for new SQLite methods | 1 | Fullstack Developer | P1 | M |
@@ -106,10 +105,10 @@
 
 - **Total Tasks**: 58
 - **Done**: 0
-- **In Review**: 0
+- **In Review**: 2 (T101, T102)
 - **In Progress**: 0
-- **Ready**: 2
-- **Backlog**: 56
+- **Ready**: 3 (T103, T104, T105)
+- **Backlog**: 53
 
 **By Phase**:
 - Phase 1 (Database & Config Foundation): 9 tasks
@@ -134,7 +133,9 @@
 - **Dependencies**: None (builds on existing v1 schema)
 - **Priority**: P0 (critical path)
 - **Effort**: M (1-3hr)
-- **Status**: READY
+- **Status**: REVIEW
+- **Completed**: 2026-02-13
+- **Notes**: Migration creates 3 tables (watchlist_items, strategy_presets, backtest_jobs) with proper indexes and constraints. Verified with test script - all tables created successfully. Committed in 826ab51.
 - **Acceptance Criteria**:
   - Migration file created at `src/adapters/storage/migrations/003-v2-features.ts`
   - Follows Migration interface pattern (id, description, up function)
@@ -163,7 +164,9 @@
 - **Dependencies**: T101 (migration 003 created)
 - **Priority**: P0 (critical path)
 - **Effort**: S (< 1hr)
-- **Status**: READY
+- **Status**: REVIEW
+- **Completed**: 2026-02-13
+- **Notes**: Updated index.ts to export migration003, updated SQLiteAdapter.initialize() to run migration003. Zero compilation errors. Committed in 826ab51.
 - **Acceptance Criteria**:
   - `src/adapters/storage/migrations/index.ts` exports migration003
   - If index.ts doesn't exist, create it and export all 3 migrations
@@ -182,7 +185,7 @@
 - **Dependencies**: T102 (migration 003 registered)
 - **Priority**: P0 (critical path)
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: READY
 - **Acceptance Criteria**:
   - Add 6 new methods to SQLiteAdapter class:
     - `getWatchlistItems(): WatchlistItem[]` → SELECT all, ordered by created_at DESC
@@ -207,7 +210,7 @@
 - **Dependencies**: T102 (migration 003 registered)
 - **Priority**: P0 (critical path)
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: READY
 - **Acceptance Criteria**:
   - Add 7 new methods to SQLiteAdapter:
     - `getBacktestJob(id: string): BacktestJob | null` → SELECT by id
@@ -232,7 +235,7 @@
 - **Dependencies**: T102 (migration 003 registered)
 - **Priority**: P0 (critical path)
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: READY
 - **Acceptance Criteria**:
   - Add 6 new methods to SQLiteAdapter:
     - `getConfigPresets(): ConfigPreset[]` → SELECT all, ordered by name
