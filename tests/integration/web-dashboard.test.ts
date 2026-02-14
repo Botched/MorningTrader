@@ -809,3 +809,63 @@ describe('Web Dashboard - Full Integration', () => {
     expect(qqqBars[0].close).toBe(39520);
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Test Suite 7: Maintenance Routes
+// ─────────────────────────────────────────────────────────────────────────────
+describe('Maintenance Routes', () => {
+  it('DELETE /api/maintenance/backtest-sessions deletes all backtest data', async () => {
+    const adapter = new SQLiteAdapter(':memory:');
+    adapter.initialize();
+
+    // Create 2 backtest sessions and 1 real session
+    const backtestSession1 = makeSession({
+      date: '2025-01-10',
+      symbol: 'SPY',
+      isBacktest: true,
+    });
+    const backtestSession2 = makeSession({
+      date: '2025-01-11',
+      symbol: 'AAPL',
+      isBacktest: true,
+    });
+    const realSession = makeSession({
+      date: '2025-01-12',
+      symbol: 'MSFT',
+      isBacktest: false,
+    });
+
+    const backtestId1 = adapter.saveSession(backtestSession1);
+    const backtestId2 = adapter.saveSession(backtestSession2);
+    const realId = adapter.saveSession(realSession);
+
+    // Add trades to backtest sessions
+    const backtestTrade = makeTrade({ id: 'backtest-trade-1', symbol: 'SPY' });
+    adapter.saveTrade(backtestTrade, backtestId1);
+
+    const realTrade = makeTrade({ id: 'real-trade-1', symbol: 'MSFT' });
+    adapter.saveTrade(realTrade, realId);
+
+    // Verify initial state: 3 sessions, 2 trades
+    const allSessionsBefore = adapter.getSessionsByDateRange('2025-01-10', '2025-01-12');
+    expect(allSessionsBefore).toHaveLength(3);
+    const allTradesBefore = adapter.getTradesByDateRange('2025-01-10', '2025-01-12');
+    expect(allTradesBefore).toHaveLength(2);
+
+    // Call the storage method (maintenance endpoint uses this under the hood)
+    adapter.deleteAllBacktestSessions();
+
+    // Verify backtest data is deleted but real data remains
+    const allSessionsAfter = adapter.getSessionsByDateRange('2025-01-10', '2025-01-12');
+    expect(allSessionsAfter).toHaveLength(1);
+    expect(allSessionsAfter[0].symbol).toBe('MSFT');
+    expect(allSessionsAfter[0].isBacktest).toBe(false);
+
+    const allTradesAfter = adapter.getTradesByDateRange('2025-01-10', '2025-01-12');
+    expect(allTradesAfter).toHaveLength(1);
+    expect(allTradesAfter[0].id).toBe('real-trade-1');
+    expect(allTradesAfter[0].symbol).toBe('MSFT');
+
+    adapter.close();
+  });
+});

@@ -13,9 +13,11 @@ import fastifyStatic from '@fastify/static';
 import Database from 'better-sqlite3';
 import { createDashboardQueries } from '../adapters/storage/queries/dashboard.js';
 import { createAggregationQueries } from '../adapters/storage/queries/aggregations.js';
+import { SQLiteAdapter } from '../adapters/storage/sqlite-adapter.js';
 import { registerOverviewRoutes } from './routes/overview.js';
 import { registerSessionRoutes } from './routes/sessions.js';
 import { registerStatsRoutes } from './routes/stats.js';
+import { maintenanceRoutes } from './routes/maintenance.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -35,6 +37,10 @@ export async function createDashboardServer(options: DashboardServerOptions) {
 
   const dashboardQueries = createDashboardQueries(db);
   const aggregationQueries = createAggregationQueries(db);
+
+  // Separate read-write connection for maintenance operations
+  const maintenanceStorage = new SQLiteAdapter(dbPath);
+  maintenanceStorage.initialize();
 
   const app = Fastify({
     logger: {
@@ -60,6 +66,7 @@ export async function createDashboardServer(options: DashboardServerOptions) {
   registerOverviewRoutes(app, dashboardQueries);
   registerSessionRoutes(app, dashboardQueries);
   registerStatsRoutes(app, dashboardQueries, aggregationQueries);
+  await maintenanceRoutes(app, maintenanceStorage);
 
   // ── Static SPA serving ────────────────────────────────────────
   // Serve built frontend assets from web/dist
@@ -96,6 +103,7 @@ export async function createDashboardServer(options: DashboardServerOptions) {
   // ── Lifecycle hooks ───────────────────────────────────────────
   app.addHook('onClose', async () => {
     db.close();
+    maintenanceStorage.close();
   });
 
   return {
