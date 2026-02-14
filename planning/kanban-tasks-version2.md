@@ -24,6 +24,9 @@
 |----|-------|-------|---------------|----------|--------|
 | T101 | Create migration 003-v2-features | 1 | Database Architect | P0 | M |
 | T102 | Update migration index to include 003 | 1 | Database Architect | P0 | S |
+| T103 | Extend SQLiteAdapter with watchlist CRUD | 1 | Database Architect | P0 | M |
+| T104 | Extend SQLiteAdapter with backtest job CRUD | 1 | Database Architect | P0 | M |
+| T105 | Extend SQLiteAdapter with config preset CRUD | 1 | Database Architect | P0 | M |
 
 ## IN PROGRESS (agent actively working)
 
@@ -35,15 +38,12 @@
 
 | ID | Title | Phase | Assigned Agent | Priority | Effort |
 |----|-------|-------|---------------|----------|--------|
-| T103 | Extend SQLiteAdapter with watchlist CRUD | 1 | Database Architect | P0 | M |
-| T104 | Extend SQLiteAdapter with backtest job CRUD | 1 | Database Architect | P0 | M |
-| T105 | Extend SQLiteAdapter with config preset CRUD | 1 | Database Architect | P0 | M |
+| T106 | Create config-adapter preset converter | 1 | Backend Architect | P0 | M |
 
 ## BACKLOG (has unmet dependencies)
 
 | ID | Title | Phase | Assigned Agent | Priority | Effort |
 |----|-------|-------|---------------|----------|--------|
-| T106 | Create config-adapter preset converter | 1 | Backend Architect | P0 | M |
 | T107 | Unit tests for config-adapter | 1 | Fullstack Developer | P1 | S |
 | T108 | Integration tests for new SQLite methods | 1 | Fullstack Developer | P1 | M |
 | T109 | Code review: Database foundation | 1 | Code Reviewer | P1 | M |
@@ -105,10 +105,10 @@
 
 - **Total Tasks**: 58
 - **Done**: 0
-- **In Review**: 2 (T101, T102)
+- **In Review**: 5 (T101-T105)
 - **In Progress**: 0
-- **Ready**: 3 (T103, T104, T105)
-- **Backlog**: 53
+- **Ready**: 1 (T106)
+- **Backlog**: 52
 
 **By Phase**:
 - Phase 1 (Database & Config Foundation): 9 tasks
@@ -185,7 +185,9 @@
 - **Dependencies**: T102 (migration 003 registered)
 - **Priority**: P0 (critical path)
 - **Effort**: M (1-3hr)
-- **Status**: READY
+- **Status**: REVIEW
+- **Completed**: 2026-02-13
+- **Notes**: Added 6 CRUD methods to SQLiteAdapter (getWatchlistItems, getWatchlistItem, getScheduledWatchlistItems, createWatchlistItem, updateWatchlistItem, deleteWatchlistItem). Created WatchlistItem model types. Zero compilation errors. Committed in ed1b486.
 - **Acceptance Criteria**:
   - Add 6 new methods to SQLiteAdapter class:
     - `getWatchlistItems(): WatchlistItem[]` → SELECT all, ordered by created_at DESC
@@ -210,7 +212,9 @@
 - **Dependencies**: T102 (migration 003 registered)
 - **Priority**: P0 (critical path)
 - **Effort**: M (1-3hr)
-- **Status**: READY
+- **Status**: REVIEW
+- **Completed**: 2026-02-13
+- **Notes**: Added 7 CRUD methods to SQLiteAdapter (getBacktestJob, getBacktestJobs, createBacktestJob, updateJobStatus, updateJobProgress, completeBacktestJob, getStaleJobs). Created BacktestJob model types. UUID generation via crypto.randomUUID(). Zero compilation errors. Committed in ed1b486.
 - **Acceptance Criteria**:
   - Add 7 new methods to SQLiteAdapter:
     - `getBacktestJob(id: string): BacktestJob | null` → SELECT by id
@@ -235,7 +239,9 @@
 - **Dependencies**: T102 (migration 003 registered)
 - **Priority**: P0 (critical path)
 - **Effort**: M (1-3hr)
-- **Status**: READY
+- **Status**: REVIEW
+- **Completed**: 2026-02-13
+- **Notes**: Added 7 CRUD methods to SQLiteAdapter (getConfigPresets, getConfigPreset, getDefaultConfigPreset, createConfigPreset, updateConfigPreset, deleteConfigPreset, setDefaultPreset). Created ConfigPreset model types. Prevents deletion of default preset. Zero compilation errors. Committed in ed1b486.
 - **Acceptance Criteria**:
   - Add 6 new methods to SQLiteAdapter:
     - `getConfigPresets(): ConfigPreset[]` → SELECT all, ordered by name
@@ -260,7 +266,7 @@
 - **Dependencies**: T105 (preset CRUD exists)
 - **Priority**: P0 (critical path)
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: READY
 - **Acceptance Criteria**:
   - Create new file `src/adapters/storage/config-adapter.ts`
   - Implement `presetToStrategyConfig(preset: ConfigPreset): StrategyConfig`
