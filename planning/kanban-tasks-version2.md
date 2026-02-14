@@ -27,6 +27,7 @@
 | T103 | Extend SQLiteAdapter with watchlist CRUD | 1 | Database Architect | P0 | M |
 | T104 | Extend SQLiteAdapter with backtest job CRUD | 1 | Database Architect | P0 | M |
 | T105 | Extend SQLiteAdapter with config preset CRUD | 1 | Database Architect | P0 | M |
+| T106 | Create config-adapter preset converter | 1 | Backend Architect | P0 | M |
 
 ## IN PROGRESS (agent actively working)
 
@@ -38,7 +39,8 @@
 
 | ID | Title | Phase | Assigned Agent | Priority | Effort |
 |----|-------|-------|---------------|----------|--------|
-| T106 | Create config-adapter preset converter | 1 | Backend Architect | P0 | M |
+| T107 | Unit tests for config-adapter | 1 | Fullstack Developer | P1 | S |
+| T108 | Integration tests for new SQLite methods | 1 | Fullstack Developer | P1 | M |
 
 ## BACKLOG (has unmet dependencies)
 
@@ -105,10 +107,10 @@
 
 - **Total Tasks**: 58
 - **Done**: 0
-- **In Review**: 5 (T101-T105)
+- **In Review**: 6 (T101-T106)
 - **In Progress**: 0
-- **Ready**: 1 (T106)
-- **Backlog**: 52
+- **Ready**: 2 (T107, T108)
+- **Backlog**: 50
 
 **By Phase**:
 - Phase 1 (Database & Config Foundation): 9 tasks
@@ -266,7 +268,9 @@
 - **Dependencies**: T105 (preset CRUD exists)
 - **Priority**: P0 (critical path)
 - **Effort**: M (1-3hr)
-- **Status**: READY
+- **Status**: REVIEW
+- **Completed**: 2026-02-13
+- **Notes**: Created config-adapter.ts with 3 functions (presetToStrategyConfig, strategyConfigToPreset, getFactoryDefaults). Bidirectional conversion between flat ConfigPreset and nested StrategyConfig. Exported from storage/index.ts. Zero compilation errors. Committed in fc2addf.
 - **Acceptance Criteria**:
   - Create new file `src/adapters/storage/config-adapter.ts`
   - Implement `presetToStrategyConfig(preset: ConfigPreset): StrategyConfig`
@@ -292,7 +296,7 @@
 - **Dependencies**: T106 (config-adapter created)
 - **Priority**: P1
 - **Effort**: S (< 1hr)
-- **Status**: BACKLOG
+- **Status**: READY
 - **Acceptance Criteria**:
   - Create `tests/unit/adapters/storage/config-adapter.test.ts`
   - Test `presetToStrategyConfig()`:
@@ -315,7 +319,7 @@
 - **Dependencies**: T103, T104, T105 (all CRUD methods implemented)
 - **Priority**: P1
 - **Effort**: M (1-3hr)
-- **Status**: BACKLOG
+- **Status**: READY
 - **Acceptance Criteria**:
   - Create `tests/integration/storage/sqlite-v2.test.ts`
   - Test watchlist CRUD:
