@@ -11,6 +11,7 @@ import type { DecisionZoneStatus } from '../../core/models/decision-zone.js';
 import type { Candle } from '../../core/models/candle.js';
 import { migration001, runMigrations } from './migrations/001-initial.js';
 import { migration002 } from './migrations/002-bars.js';
+import { migration003 } from './migrations/003-v2-features.js';
 
 // ── Row types returned by better-sqlite3 ────────────────────────────
 
@@ -191,7 +192,7 @@ export class SQLiteAdapter implements StorageProvider {
   // ── Lifecycle ────────────────────────────────────────────────────
 
   initialize(): void {
-    runMigrations(this.db, [migration001, migration002]);
+    runMigrations(this.db, [migration001, migration002, migration003]);
 
     const result = this.db.pragma('integrity_check') as { integrity_check: string }[];
     const status = result[0]?.integrity_check ?? '';
