@@ -20,6 +20,7 @@ import { registerStatsRoutes } from './routes/stats.js';
 import { maintenanceRoutes } from './routes/maintenance.js';
 import { registerConfigPresetRoutes } from './routes/config-presets.js';
 import { registerBacktestJobRoutes } from './routes/backtest-jobs.js';
+import { registerWatchlistRoutes } from './routes/watchlist.js';
 import { JobQueue } from '../services/job-queue.js';
 import { BacktestRunner } from '../services/backtest-runner.js';
 import { createLogger } from '../services/logger.js';
@@ -121,6 +122,7 @@ export async function createDashboardServer(options: DashboardServerOptions) {
   await maintenanceRoutes(app, maintenanceStorage);
   await registerConfigPresetRoutes(app, maintenanceStorage);
   await registerBacktestJobRoutes(app, jobQueue);
+  await registerWatchlistRoutes(app, maintenanceStorage);
 
   // ── Static SPA serving ────────────────────────────────────────
   // Serve built frontend assets from web/dist
