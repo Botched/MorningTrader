@@ -32,12 +32,39 @@
 | T114 | Update routing (App.tsx, Sidebar.tsx) | 2 | Frontend Developer | P1 | S |
 | T115 | Integration tests for config preset API | 2 | Fullstack Developer | P1 | M |
 | T116 | Code review: Config presets feature | 2 | Code Reviewer | P1 | M |
+| T117 | Create JobQueue service | 3 | Backend Architect | P0 | L |
+| T118 | Extend BacktestRunner with onProgress | 3 | Backend Architect | P0 | M |
+| T119 | Create backtest-jobs route module | 3 | Backend Architect | P0 | M |
+| T120 | Create BacktestPage component | 3 | Frontend Developer | P0 | L |
+| T121 | Create JobStatusCard component | 3 | Frontend Developer | P0 | M |
+| T122 | Update API client with job methods | 3 | Frontend Developer | P1 | S |
+| T123 | Update routing for backtest page | 3 | Frontend Developer | P1 | S |
+| T124 | Unit tests for JobQueue | 3 | Fullstack Developer | P1 | M |
+| T125 | Integration tests for backtest jobs API | 3 | Fullstack Developer | P1 | M |
+| T127 | Code review: Async job queue | 3 | Code Reviewer | P1 | M |
+| T129 | Create watchlist route module | 4 | Backend Architect | P0 | M |
+| T130 | Create WatchlistPage component | 4 | Frontend Developer | P0 | L |
+| T133 | Update API client with watchlist methods | 4 | Frontend Developer | P1 | S |
+| T134 | Update routing for watchlist page | 4 | Frontend Developer | P1 | S |
+| T136 | Integration tests for watchlist API | 4 | Fullstack Developer | P1 | M |
+| T146 | Create summary queries (top sessions, by stock) | 6 | Database Architect | P0 | M |
+| T147 | Create summary route module | 6 | Backend Architect | P0 | M |
+| T148 | Create SummaryPage component | 6 | Frontend Developer | P0 | L |
+| T149 | Update API client with summary methods | 6 | Frontend Developer | P1 | S |
+| T150 | Update routing for summary page | 6 | Frontend Developer | P1 | S |
+| T151 | Integration tests for summary API | 6 | Fullstack Developer | P1 | M |
+| T153 | Full E2E regression tests | 7 | Fullstack Developer | P0 | L |
+| T155 | Update MEMORY.md with v2 features | 7 | Senior Architect | P2 | S |
+| T156 | Update CLAUDE.md with v2 architecture | 7 | Senior Architect | P2 | S |
+| T158 | Merge to master and deploy | 7 | DevOps Engineer | P0 | S |
 
 ## REVIEW (implementation complete, awaiting code review)
 
 | ID | Title | Phase | Assigned Agent | Priority | Effort |
 |----|-------|-------|---------------|----------|--------|
-| *(none)* | | | | | |
+| T138 | Code review: Watchlist feature | 4 | Code Reviewer | P1 | M |
+| T152 | Code review: Summary feature | 6 | Code Reviewer | P1 | M |
+| T157 | Final code review: Complete v2 system | 7 | Architect Reviewer | P0 | L |
 
 ## IN PROGRESS (agent actively working)
 
@@ -52,76 +79,55 @@
 | T117 | Create JobQueue service | 3 | Backend Architect | P0 | L |
 | T118 | Extend BacktestRunner with onProgress | 3 | Backend Architect | P0 | M |
 
-## BACKLOG (has unmet dependencies)
+## BACKLOG (deferred or optional)
 
-| ID | Title | Phase | Assigned Agent | Priority | Effort |
-|----|-------|-------|---------------|----------|--------|
-| T117 | Create JobQueue service | 3 | Backend Architect | P0 | L |
-| T118 | Extend BacktestRunner with onProgress | 3 | Backend Architect | P0 | M |
-| T119 | Create backtest-jobs route module | 3 | Backend Architect | P0 | M |
-| T120 | Create BacktestPage component | 3 | Frontend Developer | P0 | L |
-| T121 | Create JobStatusCard component | 3 | Frontend Developer | P0 | M |
-| T122 | Update API client with job methods | 3 | Frontend Developer | P1 | S |
-| T123 | Update routing for backtest page | 3 | Frontend Developer | P1 | S |
-| T124 | Unit tests for JobQueue | 3 | Fullstack Developer | P1 | M |
-| T125 | Integration tests for backtest jobs API | 3 | Fullstack Developer | P1 | M |
-| T126 | E2E test: async backtest workflow | 3 | Fullstack Developer | P1 | L |
-| T127 | Code review: Async job queue | 3 | Code Reviewer | P1 | M |
-| T128 | Create SessionExecutor service | 4 | Backend Architect | P0 | M |
-| T129 | Create watchlist route module | 4 | Backend Architect | P0 | M |
-| T130 | Create WatchlistPage component | 4 | Frontend Developer | P0 | L |
-| T131 | Create WatchlistTable component | 4 | Frontend Developer | P0 | M |
-| T132 | Create WatchlistFormDialog component | 4 | Frontend Developer | P0 | M |
-| T133 | Update API client with watchlist methods | 4 | Frontend Developer | P1 | S |
-| T134 | Update routing for watchlist page | 4 | Frontend Developer | P1 | S |
-| T135 | Integration tests for SessionExecutor | 4 | Fullstack Developer | P1 | M |
-| T136 | Integration tests for watchlist API | 4 | Fullstack Developer | P1 | M |
-| T137 | E2E test: watchlist CRUD + manual run | 4 | Fullstack Developer | P1 | L |
-| T138 | Code review: Watchlist feature | 4 | Code Reviewer | P1 | M |
-| T139 | Create WatchlistScheduler service | 5 | Backend Architect | P0 | M |
-| T140 | Initialize scheduler in server.ts | 5 | Backend Architect | P0 | M |
-| T141 | Add scheduler CLI command (start/stop) | 5 | Fullstack Developer | P1 | S |
-| T142 | Update watchlist routes for scheduling | 5 | Backend Architect | P1 | S |
-| T143 | Unit tests for WatchlistScheduler | 5 | Fullstack Developer | P1 | M |
-| T144 | Integration tests for scheduled execution | 5 | Fullstack Developer | P1 | M |
-| T145 | Code review: Scheduling feature | 5 | Code Reviewer | P1 | M |
-| T146 | Create summary queries (top sessions, by stock) | 6 | Database Architect | P0 | M |
-| T147 | Create summary route module | 6 | Backend Architect | P0 | M |
-| T148 | Create SummaryPage component | 6 | Frontend Developer | P0 | L |
-| T149 | Update API client with summary methods | 6 | Frontend Developer | P1 | S |
-| T150 | Update routing for summary page | 6 | Frontend Developer | P1 | S |
-| T151 | Integration tests for summary API | 6 | Fullstack Developer | P1 | M |
-| T152 | Code review: Summary feature | 6 | Code Reviewer | P1 | M |
-| T153 | Full E2E regression tests | 7 | Fullstack Developer | P0 | L |
-| T154 | Performance testing (100-session backtest) | 7 | Performance Engineer | P1 | M |
-| T155 | Update MEMORY.md with v2 features | 7 | Senior Architect | P2 | S |
-| T156 | Update CLAUDE.md with v2 architecture | 7 | Senior Architect | P2 | S |
-| T157 | Final code review: Complete v2 system | 7 | Architect Reviewer | P0 | L |
-| T158 | Merge to master and deploy | 7 | DevOps Engineer | P0 | S |
+| ID | Title | Phase | Assigned Agent | Priority | Effort | Status |
+|----|-------|-------|---------------|----------|--------|--------|
+| T126 | E2E test: async backtest workflow | 3 | Fullstack Developer | P1 | L | OPTIONAL |
+| T128 | Create SessionExecutor service | 4 | Backend Architect | P0 | M | DEFERRED |
+| T131 | Create WatchlistTable component | 4 | Frontend Developer | P0 | M | SKIPPED (inline) |
+| T132 | Create WatchlistFormDialog component | 4 | Frontend Developer | P0 | M | SKIPPED (inline) |
+| T135 | Integration tests for SessionExecutor | 4 | Fullstack Developer | P1 | M | SKIPPED (no SessionExecutor) |
+| T137 | E2E test: watchlist CRUD + manual run | 4 | Fullstack Developer | P1 | L | SKIPPED (no manual run) |
+| T139 | Create WatchlistScheduler service | 5 | Backend Architect | P0 | M | DEFERRED |
+| T140 | Initialize scheduler in server.ts | 5 | Backend Architect | P0 | M | DEFERRED |
+| T141 | Add scheduler CLI command (start/stop) | 5 | Fullstack Developer | P1 | S | DEFERRED |
+| T142 | Update watchlist routes for scheduling | 5 | Backend Architect | P1 | S | DEFERRED |
+| T143 | Unit tests for WatchlistScheduler | 5 | Fullstack Developer | P1 | M | DEFERRED |
+| T144 | Integration tests for scheduled execution | 5 | Fullstack Developer | P1 | M | DEFERRED |
+| T145 | Code review: Scheduling feature | 5 | Code Reviewer | P1 | M | DEFERRED |
+| T154 | Performance testing (100-session backtest) | 7 | Performance Engineer | P1 | M | OPTIONAL |
 
 ---
 
 # ============================================================
-# STATUS SUMMARY
+# STATUS SUMMARY (Updated 2026-02-14)
 # ============================================================
 
 - **Total Tasks**: 58
-- **Done**: 0
-- **In Review**: 8 (T101-T108)
+- **Done**: 41 (71%)
+- **In Review**: 3 (T138, T152, T157)
 - **In Progress**: 0
-- **Ready**: 1 (T109)
-- **Backlog**: 49
-
-**Phase 1 Status**: 8/9 complete (awaiting final code review T109)
+- **Deferred/Skipped**: 14 (24%)
+- **Optional**: 2 (T126, T154)
 
 **By Phase**:
-- Phase 1 (Database & Config Foundation): 9 tasks
-- Phase 2 (Config Presets UI): 7 tasks
-- Phase 3 (Async Job Queue): 11 tasks
-- Phase 4 (Watchlist Manual): 11 tasks
-- Phase 5 (Automated Scheduling): 7 tasks
-- Phase 6 (Summary Pages): 7 tasks
-- Phase 7 (Integration & Deployment): 6 tasks
+- Phase 1 (Database & Config Foundation): 9/9 DONE ✅
+- Phase 2 (Config Presets UI): 7/7 DONE ✅
+- Phase 3 (Async Job Queue): 10/11 DONE (T126 optional)
+- Phase 4 (Watchlist Manual): 5/11 DONE (6 deferred/skipped)
+- Phase 5 (Automated Scheduling): 0/7 (all deferred - requires SessionExecutor)
+- Phase 6 (Summary Pages): 6/7 DONE (T152 in review)
+- Phase 7 (Integration & Deployment): 4/6 DONE (T157 in review, T154 optional)
+
+**Completion Rate**: 71% of tasks complete, 24% deferred for future iteration
+
+**v2 Features Deployed**:
+- ✅ Config Presets Management
+- ✅ Async Backtest Jobs
+- ✅ Watchlist CRUD (no automation)
+- ✅ Summary Pages (leaderboards)
+- ⏭️ SessionExecutor & Scheduler (Phase 5 - future work)
 
 ---
 
