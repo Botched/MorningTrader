@@ -925,12 +925,15 @@ export class SQLiteAdapter implements StorageProvider {
     const ids = backtestSessionIds.map((row) => row.id);
     const placeholders = ids.map(() => '?').join(',');
 
-    // Delete related data for backtest sessions only
-    this.db.prepare(`DELETE FROM signals WHERE session_id IN (${placeholders})`).run(...ids);
-    this.db.prepare(`DELETE FROM bars WHERE session_id IN (${placeholders})`).run(...ids);
-    this.db.prepare(`DELETE FROM trade_outcomes WHERE trade_id IN (SELECT id FROM trades WHERE session_id IN (${placeholders}))`).run(...ids);
-    this.db.prepare(`DELETE FROM trades WHERE session_id IN (${placeholders})`).run(...ids);
-    this.db.prepare(`DELETE FROM sessions WHERE is_backtest = 1`).run();
+    // Wrap all deletes in a transaction for atomicity
+    this.db.transaction(() => {
+      // Delete related data for backtest sessions only
+      this.db.prepare(`DELETE FROM signals WHERE session_id IN (${placeholders})`).run(...ids);
+      this.db.prepare(`DELETE FROM bars WHERE session_id IN (${placeholders})`).run(...ids);
+      this.db.prepare(`DELETE FROM trade_outcomes WHERE trade_id IN (SELECT id FROM trades WHERE session_id IN (${placeholders}))`).run(...ids);
+      this.db.prepare(`DELETE FROM trades WHERE session_id IN (${placeholders})`).run(...ids);
+      this.db.prepare(`DELETE FROM sessions WHERE is_backtest = 1`).run();
+    })();
   }
 
   close(): void {

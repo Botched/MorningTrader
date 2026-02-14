@@ -230,9 +230,9 @@ export class JobQueue extends EventEmitter {
       this.storage.completeBacktestJob(jobId, JSON.stringify(summary));
       this.emit('completed', jobId, summary);
     } catch (error) {
-      // Mark as failed
+      // Mark as failed with error message
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      this.storage.updateJobStatus(jobId, 'FAILED');
+      this.storage.updateJobStatus(jobId, 'FAILED', errorMessage);
       this.emit('failed', jobId, error);
 
       throw error; // Re-throw to be caught by processNext

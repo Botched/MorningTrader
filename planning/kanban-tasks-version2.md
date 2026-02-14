@@ -47,6 +47,7 @@
 | T133 | Update API client with watchlist methods | 4 | Frontend Developer | P1 | S |
 | T134 | Update routing for watchlist page | 4 | Frontend Developer | P1 | S |
 | T136 | Integration tests for watchlist API | 4 | Fullstack Developer | P1 | M |
+| T138 | Code review: Watchlist feature | 4 | Code Reviewer | P1 | M |
 | T146 | Create summary queries (top sessions, by stock) | 6 | Database Architect | P0 | M |
 | T147 | Create summary route module | 6 | Backend Architect | P0 | M |
 | T148 | Create SummaryPage component | 6 | Frontend Developer | P0 | L |
@@ -60,11 +61,10 @@
 
 ## REVIEW (implementation complete, awaiting code review)
 
-| ID | Title | Phase | Assigned Agent | Priority | Effort |
-|----|-------|-------|---------------|----------|--------|
-| T138 | Code review: Watchlist feature | 4 | Code Reviewer | P1 | M |
-| T152 | Code review: Summary feature | 6 | Code Reviewer | P1 | M |
-| T157 | Final code review: Complete v2 system | 7 | Architect Reviewer | P0 | L |
+| ID | Title | Phase | Assigned Agent | Priority | Effort | Review Status |
+|----|-------|-------|---------------|----------|--------|---------------|
+| T152 | Code review: Summary feature | 6 | Code Reviewer | P1 | M | CHANGES REQUIRED (2 critical) |
+| T157 | Final code review: Complete v2 system | 7 | Architect Reviewer | P0 | L | CHANGES REQUIRED (NO-GO) |
 
 ## IN PROGRESS (agent actively working)
 
@@ -105,8 +105,8 @@
 # ============================================================
 
 - **Total Tasks**: 58
-- **Done**: 41 (71%)
-- **In Review**: 3 (T138, T152, T157)
+- **Done**: 42 (72%)
+- **In Review**: 2 (T152, T157) - CHANGES REQUIRED
 - **In Progress**: 0
 - **Deferred/Skipped**: 14 (24%)
 - **Optional**: 2 (T126, T154)
@@ -120,7 +120,12 @@
 - Phase 6 (Summary Pages): 6/7 DONE (T152 in review)
 - Phase 7 (Integration & Deployment): 4/6 DONE (T157 in review, T154 optional)
 
-**Completion Rate**: 71% of tasks complete, 24% deferred for future iteration
+**Completion Rate**: 72% of tasks complete, 24% deferred for future iteration
+
+**Review Status**:
+- T138 (Watchlist): ✅ APPROVED
+- T152 (Summary): ⚠️ CHANGES REQUIRED (2 critical issues)
+- T157 (Final System): 🚫 NO-GO (2 critical issues, deployment blocked)
 
 **v2 Features Deployed**:
 - ✅ Config Presets Management
