@@ -250,3 +250,29 @@ export interface SubmitBacktestJobRequest {
   toDate: string;
   presetId?: number;
 }
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Watchlist
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+export interface WatchlistItem {
+  id: number;
+  symbol: string;
+  isActive: boolean;
+  isMock: boolean;
+  scheduleEnabled: boolean;
+  createdAt: number;
+  updatedAt: number;
+}
+
+export interface CreateWatchlistItemRequest {
+  symbol: string;
+  isMock: boolean;
+  scheduleEnabled: boolean;
+}
+
+export interface UpdateWatchlistItemRequest {
+  isActive?: boolean;
+  isMock?: boolean;
+  scheduleEnabled?: boolean;
+}

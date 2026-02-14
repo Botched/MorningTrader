@@ -8,6 +8,7 @@ export function Sidebar() {
   const navItems = [
     { path: '/', label: 'Dashboard', icon: '📊' },
     { path: '/sessions', label: 'Sessions', icon: '📋' },
+    { path: '/watchlist', label: 'Watchlist', icon: '⭐' },
     { path: '/backtest', label: 'Backtest', icon: '🔬' },
     { path: '/config', label: 'Config Presets', icon: '⚙️' },
   ];

@@ -10,6 +10,9 @@ import type {
   UpdateConfigPresetRequest,
   BacktestJob,
   SubmitBacktestJobRequest,
+  WatchlistItem,
+  CreateWatchlistItemRequest,
+  UpdateWatchlistItemRequest,
 } from './types';
 
 const API_BASE = import.meta.env.VITE_API_BASE || 'http://127.0.0.1:3847';
@@ -175,6 +178,53 @@ export const api = {
 
   async cancelBacktestJob(id: string): Promise<void> {
     const response = await fetch(`${API_BASE}/api/backtest-jobs/${id}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: response.statusText }));
+      throw new Error(error.error || `HTTP ${response.status}`);
+    }
+  },
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Watchlist API
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  async getWatchlistItems(): Promise<WatchlistItem[]> {
+    return fetchAPI('/api/watchlist');
+  },
+
+  async createWatchlistItem(data: CreateWatchlistItemRequest): Promise<WatchlistItem> {
+    const response = await fetch(`${API_BASE}/api/watchlist`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: response.statusText }));
+      throw new Error(error.error || `HTTP ${response.status}`);
+    }
+    return response.json();
+  },
+
+  async updateWatchlistItem(
+    id: number,
+    data: UpdateWatchlistItemRequest,
+  ): Promise<WatchlistItem> {
+    const response = await fetch(`${API_BASE}/api/watchlist/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: response.statusText }));
+      throw new Error(error.error || `HTTP ${response.status}`);
+    }
+    return response.json();
+  },
+
+  async deleteWatchlistItem(id: number): Promise<void> {
+    const response = await fetch(`${API_BASE}/api/watchlist/${id}`, {
       method: 'DELETE',
     });
     if (!response.ok) {

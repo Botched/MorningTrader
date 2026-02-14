@@ -6,6 +6,7 @@ import SessionsPage from './pages/SessionsPage';
 import SessionDetailPage from './pages/SessionDetailPage';
 import ConfigPresetsPage from './pages/ConfigPresetsPage';
 import BacktestPage from './pages/BacktestPage';
+import WatchlistPage from './pages/WatchlistPage';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
               <Route path="/" element={<DashboardPage />} />
               <Route path="/sessions" element={<SessionsPage />} />
               <Route path="/sessions/:id" element={<SessionDetailPage />} />
+              <Route path="/watchlist" element={<WatchlistPage />} />
               <Route path="/backtest" element={<BacktestPage />} />
               <Route path="/config" element={<ConfigPresetsPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
