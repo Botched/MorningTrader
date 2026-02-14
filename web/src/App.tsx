@@ -4,6 +4,7 @@ import { Header } from './components/layout/Header';
 import DashboardPage from './pages/DashboardPage';
 import SessionsPage from './pages/SessionsPage';
 import SessionDetailPage from './pages/SessionDetailPage';
+import ConfigPresetsPage from './pages/ConfigPresetsPage';
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
               <Route path="/" element={<DashboardPage />} />
               <Route path="/sessions" element={<SessionsPage />} />
               <Route path="/sessions/:id" element={<SessionDetailPage />} />
+              <Route path="/config" element={<ConfigPresetsPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>
